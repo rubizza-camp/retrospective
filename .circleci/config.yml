@@ -39,7 +39,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            bundle install --jobs=4 --retry=3 --path vendor/bundle
+            gem install bundler && bundle install --jobs=4 --retry=3 --path vendor/bundle
 
       - save_cache:
           paths:
@@ -67,6 +67,10 @@ jobs:
       - run: bundle exec rake db:migrate
       - run: bundle exec rake db:create
       - run: bundle exec rake db:schema:load
+
+      - run:
+          name: run rubocop 
+          command: bundle exec rubocop 
 
       - run:
           name: run tests

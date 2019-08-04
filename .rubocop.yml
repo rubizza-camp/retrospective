@@ -1,0 +1,30 @@
+# ./.rubocop.yml
+AllCops:
+  Exclude:
+    - bin/*
+    - db/schema.rb
+    - node_modules/**/*
+
+Metrics/LineLength:
+  Max: 100
+  IgnoredPatterns: ['\A#']
+  Exclude:
+    - ./db/seeds.rb
+
+Metrics/BlockLength:
+  Exclude:
+    - ./spec/**/*_spec.rb
+
+Metrics/MethodLength:
+  Exclude:
+    - ./db/migrate/*.rb
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - ./spec/**/*_spec.rb
+
+Style/Documentation:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
