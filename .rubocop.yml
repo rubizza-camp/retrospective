@@ -1,15 +1,17 @@
 # ./.rubocop.yml
 AllCops:
+  TargetRubyVersion: 2.6
   Exclude:
     - bin/*
     - db/schema.rb
     - node_modules/**/*
+    - vendor/bundle/**/*
 
 Metrics/LineLength:
   Max: 100
-  IgnoredPatterns: ['\A#']
   Exclude:
     - ./db/seeds.rb
+    - ./config/initializers/*.rb
 
 Metrics/BlockLength:
   Exclude:
