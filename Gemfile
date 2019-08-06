@@ -69,3 +69,4 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'devise'
 gem 'omniauth-github'
 gem 'webpacker', '~> 4.x'
+gem 'rails-assets-bulma', source: 'https://rails-assets.org'
