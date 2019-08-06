@@ -12,7 +12,7 @@
   <tbody>
     <% @boards.each do |board| %>
       <tr>
-        <th><%= board.title %></th>
+        <th><%= link_to board.title, board %></th>
         <th><%= board.created_at %></th>  
       </tr>
     <% end %>
