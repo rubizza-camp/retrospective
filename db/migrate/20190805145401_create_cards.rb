@@ -5,7 +5,7 @@ class CreateCards < ActiveRecord::Migration[5.2]
     create_table :cards do |t|
       t.string :kind, null: false
       t.text :body, null: false
-      t.references :user, foreign_key: true
+      t.references :author, foreign_key: { to_table: 'users' }
       t.references :board, foreign_key: true
 
       t.timestamps

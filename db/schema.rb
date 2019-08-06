@@ -26,21 +26,21 @@ ActiveRecord::Schema.define(version: 2019_08_05_145659) do
 
   create_table "boards", force: :cascade do |t|
     t.string "title", null: false
-    t.bigint "user_id"
+    t.bigint "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_boards_on_user_id"
+    t.index ["creator_id"], name: "index_boards_on_creator_id"
   end
 
   create_table "cards", force: :cascade do |t|
     t.string "kind", null: false
     t.text "body", null: false
-    t.bigint "user_id"
+    t.bigint "author_id"
     t.bigint "board_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_cards_on_author_id"
     t.index ["board_id"], name: "index_cards_on_board_id"
-    t.index ["user_id"], name: "index_cards_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 2019_08_05_145659) do
   end
 
   add_foreign_key "action_items", "boards"
-  add_foreign_key "boards", "users"
+  add_foreign_key "boards", "users", column: "creator_id"
   add_foreign_key "cards", "boards"
-  add_foreign_key "cards", "users"
+  add_foreign_key "cards", "users", column: "author_id"
 end
