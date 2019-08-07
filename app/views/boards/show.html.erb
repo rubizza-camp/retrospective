@@ -1,0 +1,40 @@
+<h1><%= @board.title %></h1>
+
+<div class="columns">
+  <div class="column">
+    <h2>MAD</h2>
+    <% @cards.where( kind: 'mad' ).each do |card| %>
+      <div>
+        <%= card.body %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="column">
+    <h2>SAD</h2>
+    <% @cards.where( kind: 'sad' ).each do |card| %>
+      <div>
+        <%= card.body %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="column">
+    <h2>GLAD</h2>
+    <% @cards.where( kind: 'glad' ).each do |card| %>
+      <div>
+        <%= card.body %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="column">
+  <h2>ACTION ITEMS</h2>
+  <% @action_items.each do |action_item| %>
+    <div>
+      <%= action_item.body %>
+    </div>
+  <% end %>
+  </div>
+</div>
+
