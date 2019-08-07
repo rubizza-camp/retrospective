@@ -9,7 +9,11 @@ class BoardsController < ApplicationController
 
   def show
     @board = Board.find(params[:id])
-    @cards = @board.cards
+    @cards_by_type = {
+      mad: @board.cards.mad,
+      sad: @board.cards.sad,
+      glad: @board.cards.glad
+    }
     @action_items = @board.action_items
   end
 end
