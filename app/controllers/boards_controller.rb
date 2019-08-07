@@ -8,7 +8,7 @@ class BoardsController < ApplicationController
   end
 
   def new
-    @board = Board.new
+    @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
   end
 
   def create
