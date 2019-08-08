@@ -21,17 +21,16 @@ RSpec.describe User, type: :model do
     end
   end
 
-  let(:auth_hash) do
-    OmniAuth::AuthHash.new(
-      provider: 'github',
-      uid: '1234',
-      info: {
-        email: 'user@example.com'
-      }
-    )
-  end
-
   context '#from_omniauth' do
+    let(:auth_hash) do
+      OmniAuth::AuthHash.new(
+        provider: 'github',
+        uid: '1234',
+        info: {
+          email: 'user@example.com'
+        }
+      )
+    end
     subject { described_class.from_omniauth(auth_hash) }
     it 'retrieves an existing user' do
       user = create(:user, :github)
