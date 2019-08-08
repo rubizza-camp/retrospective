@@ -7,7 +7,8 @@
       <% cards.each do |card| %>
         <div><%= card.body %></div>
       <% end %>
-     </div>
+    <%= render 'cards/form', card: @board.cards.build(kind: kind) %>
+    </div>
   <% end %>
 
   <div class="column">
