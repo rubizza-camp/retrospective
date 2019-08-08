@@ -6,7 +6,7 @@ FactoryBot.define do
     password { 'password' }
     password_confirmation { 'password' }
 
-    factory :github_user do
+    trait :github do
       provider { 'github' }
       uid { 1234 }
     end

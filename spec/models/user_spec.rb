@@ -3,39 +3,43 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe 'Validations' do
+  context 'validations' do
     it 'is valid with valid attributes' do
-      expect(FactoryBot.create(:user)).to be_valid
+      expect(build(:user)).to be_valid
     end
-    it 'is not valid without a email' do
-      expect(FactoryBot.build(:user, email: nil)).to_not be_valid
+    it 'is not valid without an email' do
+      expect(build(:user, email: nil)).to_not be_valid
     end
   end
 
-  describe 'Associations' do
-    it { is_expected.to have_many(:boards) }
-    it { is_expected.to have_many(:cards) }
+  context 'associations' do
+    it 'has many boards' do
+      expect(build(:user)).to respond_to(:boards)
+    end
+    it 'has many cards' do
+      expect(build(:user)).to respond_to(:cards)
+    end
   end
 
-  auth_hash = OmniAuth::AuthHash.new(
-    provider: 'github',
-    uid: '1234',
-    info: {
-      email: 'user@example.com'
-    }
-  )
+  let(:auth_hash) do
+    OmniAuth::AuthHash.new(
+      provider: 'github',
+      uid: '1234',
+      info: {
+        email: 'user@example.com'
+      }
+    )
+  end
 
-  describe 'Omniauth' do
+  context '#from_omniauth' do
+    subject { described_class.from_omniauth(auth_hash) }
     it 'retrieves an existing user' do
-      user = FactoryBot.create(:github_user)
-      omniauth_user = User.from_omniauth(auth_hash)
-      expect(user).to eq(omniauth_user)
+      user = create(:user, :github)
+      expect(subject).to eq(user)
     end
 
     it "creates a new user if one doesn't already exist" do
-      expect(User.count).to eq(0)
-      User.from_omniauth(auth_hash)
-      expect(User.count).to eq(1)
+      expect { subject }.to change { User.count }.by(1)
     end
   end
 end
