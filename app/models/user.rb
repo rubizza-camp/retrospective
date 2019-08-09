@@ -5,8 +5,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: %i[github]
-  has_many :cards
-  has_many :boards
+  has_many :cards, foreign_key: :author_id
+  has_many :boards, foreign_key: :creator_id
 
   mount_uploader :avatar, AvatarUploader
 
