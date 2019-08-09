@@ -33,16 +33,16 @@ RSpec.describe User, type: :model do
     subject { described_class.from_omniauth(auth_hash) }
 
     it 'retrieves an existing user' do
-        user = create(:user, :github)
-        expect(subject).to eq(user)
+      user = create(:user, :github)
+      expect(subject).to eq(user)
     end
 
     it "creates a new user if one doesn't already exist" do
-        expect { subject }.to change { User.count }.by(1)
+      expect { subject }.to change { User.count }.by(1)
     end
 
     it 'created user has avatar' do
-        expect(subject.avatar_url).not_to be_nil
+      expect(subject.avatar_url).not_to be_nil
     end
   end
 end
