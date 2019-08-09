@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if Rails.env.test?
 
   CarrierWave.configure do |config|
@@ -5,10 +7,9 @@ if Rails.env.test?
     config.enable_processing = false
   end
 
-  AvatarUploader
-
   CarrierWave::Uploader::Base.descendants.each do |klass|
     next if klass.anonymous?
+
     klass.class_eval do
       def store_dir
         "#{Rails.root}/spec/support/uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
