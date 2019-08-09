@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-class CardsController < ApplicationController
+class ActionItemsController < ApplicationController
   before_action :set_board
 
   def create
-    @card = @board.cards.new(card_params)
-    @card.author_id = current_user.id
-    unless @card.save
+    @action_item = @board.action_items.new(action_item_params)
+    unless @action_item.save
       # error handling wip
     end
     redirect_to board_path(@board.id)
@@ -14,8 +13,8 @@ class CardsController < ApplicationController
 
   private
 
-  def card_params
-    params.require(:card).permit(:kind, :body)
+  def action_item_params
+    params.require(:action_item).permit(:status, :body)
   end
 
   def set_board
