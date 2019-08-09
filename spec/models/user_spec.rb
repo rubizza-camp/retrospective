@@ -23,27 +23,26 @@ RSpec.describe User, type: :model do
     end
   end
 
-  context '#from_omniauth' do
+  context '#from_omniauth', :vcr do
+    after(:each) do
+      FileUtils.rm_rf(Dir["#{Rails.root}/spec/support/uploads"])
+    end
+
     let(:auth_hash) { build(:omniauth) }
+
     subject { described_class.from_omniauth(auth_hash) }
 
     it 'retrieves an existing user' do
-      VCR.use_cassette('from_omniauth') do
         user = create(:user, :github)
         expect(subject).to eq(user)
-      end
     end
 
     it "creates a new user if one doesn't already exist" do
-      VCR.use_cassette('from_omniauth') do
         expect { subject }.to change { User.count }.by(1)
-      end
     end
 
     it 'created user has avatar' do
-      VCR.use_cassette('from_omniauth') do
         expect(subject.avatar_url).not_to be_nil
-      end
     end
   end
 end
