@@ -35,5 +35,9 @@ RSpec.describe User, type: :model do
     it "creates a new user if one doesn't already exist" do
       expect { subject }.to change { User.count }.by(1)
     end
+
+    it 'created user has avatar' do
+      expect(subject.avatar_url).not_to be_nil
+    end
   end
 end
