@@ -4,11 +4,8 @@ class ActionItemsController < ApplicationController
   before_action :set_board
 
   def create
-    @action_item = @board.action_items.new(action_item_params)
-    unless @action_item.save
-      # error handling wip
-    end
-    redirect_to board_path(@board.id)
+    @board.action_items.create(action_item_params)
+    redirect_to @board
   end
 
   private
