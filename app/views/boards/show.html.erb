@@ -1,4 +1,12 @@
-<h1><%= @board.title %></h1>
+<section class="hero is-light">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        <%= @board.title %>
+      </h1>
+    </div>
+  </div>
+</section>
 
 <div class="columns">
   <% @cards_by_type.each do |kind, cards| %>
@@ -7,7 +15,10 @@
       <% cards.each do |card| %>
         <div class="message">
           <div class="message-body">
-            <%= card.body %>
+            <p> <%= card.body %> </p>
+            <figure class="image is-48x48">
+              <%= image_tag(card.author.avatar.url(:thumb), class: "is-rounded") if card.author.avatar.url %>
+            </figure>
           </div>
         </div>
       <% end %>
