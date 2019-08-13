@@ -21,6 +21,10 @@ RSpec.describe User, type: :model do
     it 'has many cards' do
       expect(build(:user)).to respond_to(:cards)
     end
+
+    it 'has many teams' do
+      expect(build(:user)).to respond_to(:teams)
+    end
   end
 
   context '#from_omniauth', :vcr do
