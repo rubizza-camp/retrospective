@@ -28,7 +28,8 @@ RSpec.describe BoardsController do
 
   context 'POST #create' do
     it 'redirects if params valid' do
-      post :create, params: { board: FactoryBot.attributes_for(:board) }
+      team = create(:team)
+      post :create, params: { board: FactoryBot.attributes_for(:board, team_id: team.id) }
       expect(response).to have_http_status(:redirect)
     end
 

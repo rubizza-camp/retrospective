@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe Team, :type => :model do
+RSpec.describe Team, type: :model do
   context 'validations' do
     it 'is valid with valid attributes' do
       expect(build(:team)).to be_valid
@@ -14,6 +16,10 @@ RSpec.describe Team, :type => :model do
   context 'associations' do
     it 'has_many_users' do
       expect(build(:team)).to respond_to(:users)
+    end
+
+    it 'has_many_boards' do
+      expect(build(:team)).to respond_to(:boards)
     end
   end
 end
