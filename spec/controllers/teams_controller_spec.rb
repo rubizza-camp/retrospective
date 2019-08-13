@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe TeamsController do
-
-  let(:team) { create(:team) }
+  let_it_be(:team) { create(:team) }
 
   context 'GET #index' do
     it 'returns http success' do

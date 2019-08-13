@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-
-  let(:user) { build_stubbed(:user) }
+  let_it_be(:user) { build_stubbed(:user) }
 
   context 'validations' do
     it 'is valid with valid attributes' do

@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe ActionItem, type: :model do
-
-  let(:action_item) { build_stubbed(:action_item) }
+  let_it_be(:action_item) { build_stubbed(:action_item) }
 
   context 'validations' do
     it 'is valid with valid attributes' do

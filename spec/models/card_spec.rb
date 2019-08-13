@@ -3,9 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Card, type: :model do
+  let_it_be(:card) { build_stubbed(:card) }
 
-  let(:card) { build_stubbed(:card) }
-  
   context 'validations' do
     it 'is valid with valid attributes' do
       expect(card).to be_valid

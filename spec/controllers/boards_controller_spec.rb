@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe BoardsController do
   login_user
 
-  let(:board) { create(:board) }
-  let(:team) { create(:team) }
+  let_it_be(:board) { create(:board) }
+  let_it_be(:team) { create(:team) }
 
   context 'GET #index' do
     it 'returns http success' do

@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Board, type: :model do
-
-  let(:board) { build_stubbed(:board) }
+  let_it_be(:board) { build_stubbed(:board) }
 
   context 'validations' do
     it 'is valid with valid attributes' do

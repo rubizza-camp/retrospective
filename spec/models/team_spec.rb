@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Team, type: :model do
-
-  let(:team) { build_stubbed(:team) }
+  let_it_be(:team) { build_stubbed(:team) }
 
   context 'validations' do
     it 'is valid with valid attributes' do
