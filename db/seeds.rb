@@ -16,12 +16,18 @@ User.create([
               { email: 'tu5@mail.com', password: '123456' }
             ])
 
+Team.create([
+              { name: 'Wolves', user_ids: [1, 2, 3, 4, 5] },
+              { name: 'Tigers', user_ids: [1, 5] },
+              { name: 'Eagles', user_ids: [2, 3, 4] }
+            ])
+
 Board.create([
-               { title: 'TestUser1_RetroBoard', creator_id: 1 },
-               { title: 'TestUser2_RetroBoard', creator_id: 2 },
-               { title: 'TestUser3_RetroBoard', creator_id: 3 },
-               { title: 'TestUser4_RetroBoard', creator_id: 4 },
-               { title: 'TestUser5_RetroBoard', creator_id: 5 }
+               { title: 'TestUser1_RetroBoard', creator_id: 1, team_id: 1 },
+               { title: 'TestUser2_RetroBoard', creator_id: 2, team_id: 1 },
+               { title: 'TestUser3_RetroBoard', creator_id: 3, team_id: 1 },
+               { title: 'TestUser4_RetroBoard', creator_id: 4, team_id: 1 },
+               { title: 'TestUser5_RetroBoard', creator_id: 5, team_id: 1 }
              ])
 
 Card.create([
@@ -40,9 +46,3 @@ ActionItem.create([
                     { body: 'meetings should be held', board_id: 1 },
                     { body: 'actions should be taken', board_id: 1 }
                   ])
-
-Team.create([
-              { name: 'Wolves', user_ids: [1, 2, 3, 4, 5] },
-              { name: 'Tigers', user_ids: [1, 5] },
-              { name: 'Eagles', user_ids: [2, 3, 4] }
-            ])

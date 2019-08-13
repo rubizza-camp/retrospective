@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe BoardsController do
   login_user
+
+  let(:board) { create(:board) }
+  let(:team) { create(:team) }
+
   context 'GET #index' do
     it 'returns http success' do
       get :index
@@ -20,7 +24,6 @@ RSpec.describe BoardsController do
 
   context 'GET #show' do
     it 'returns http success' do
-      board = create(:board)
       get :show, params: { id: board.id }
       expect(response).to have_http_status(:success)
     end
@@ -28,7 +31,6 @@ RSpec.describe BoardsController do
 
   context 'POST #create' do
     it 'redirects if params valid' do
-      team = create(:team)
       post :create, params: { board: FactoryBot.attributes_for(:board, team_id: team.id) }
       expect(response).to have_http_status(:redirect)
     end
