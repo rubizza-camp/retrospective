@@ -3,6 +3,12 @@
     <%= @board.title %>
   </h1>
 </div>
+<% @board.memberships.each do |member| %>
+<%= member.user.email %>
+<% end  %>
+<div class="box">
+  <%= render 'memberships/form'  %>  
+</div>
 
 <div class='columns'>
   <% @cards_by_type.each do |kind, cards| %>

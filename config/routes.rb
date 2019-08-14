@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   resources :boards do
     resources :cards
     resources :action_items
+    member do
+      post '/memberships/invite', to: 'memberships#invite'
+    end
   end
 
   resources :teams

@@ -1,0 +1,4 @@
+<%= form_with(model: Membership, url: memberships_invite_board_path(@board), local: true) do |form| %>
+  <h2>Add member</h2>
+  <%= form.text_field :email, class: 'input' %>
+<% end %>
