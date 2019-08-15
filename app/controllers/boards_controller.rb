@@ -15,6 +15,7 @@ class BoardsController < ApplicationController
       glad: @board.cards.glad.includes(:author)
     }
     @action_items = @board.action_items
+    @membership = Membership.new(board_id: @board.id)
   end
 
   def new
