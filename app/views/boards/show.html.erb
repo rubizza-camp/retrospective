@@ -1,8 +1,22 @@
+<!--
+<% if !current_user %>
+  <%= link_to 'Sign up', new_user_session_path %>
+<% elsif @board.memberships.exists?(user_id: current_user.id) %>
+  READY Button
+<% else %>
+  <%= link_to 'Join', memberships_path(board_id: @board.id), method: :post %>
+<% end %>
+-->
+
 <div class='box has-text-centered'>
   <h1 class='title'>
     <%= @board.title %>
   </h1>
 </div>
+
+<% @board.users.each do |user| %>
+  <%= user.email %>
+<% end %>
 
 <div class='columns'>
   <% @cards_by_type.each do |kind, cards| %>
