@@ -1,6 +1,6 @@
 <%= form_with(model: Membership, url: memberships_invite_board_path(@board), local: true) do |form| %>
   <h2>Add member</h2>
   <%# form.text_field :email, class: 'input' %>
-  <%= form.select(:id, User.all.collect {|p| [ p.email, p.id ] } ) %>
+  <%= form.select(:user_id, User.all.collect {|p| [ p.email, p.id ] } ) %>
   <%= form.submit 'invite' %>
 <% end %>
