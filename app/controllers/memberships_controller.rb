@@ -3,7 +3,7 @@
 class MembershipsController < ApplicationController
   before_action :set_board
 
-  # def invite
+  # def create
   #   membership = Membership.new(membership_params.merge(board_id: @board.id, role: 'member'))
 
   #   if membership.save
@@ -13,17 +13,20 @@ class MembershipsController < ApplicationController
   #   end
   # end
 
-  def invite
-  	user = User.find_by(email: membership_params[:email])
-    if user 
+  def create
+    user = User.find_by(email: membership_params[:email])
+    if user
       membership = Membership.new(board_id: @board.id, role: 'member', user_id: user.id)
-      membership.save
-      redirect_to @board, notice: 'Member was successfully created.'
+      if membership.save
+        redirect_to @board, notice: 'Member was successfully created.'
+      else
+        redirect_to @board, alert: membership.errors.full_messages.join(', ')
+      end
     else
-    	redirect_to @board, alert: 'Member was NOT created.'
+      redirect_to @board, alert: 'Member was NOT created.'
     end
   end
-  
+
   private
 
   # def membership_params
@@ -35,6 +38,6 @@ class MembershipsController < ApplicationController
   end
 
   def set_board
-    @board = Board.find(params[:id])
+    @board = Board.find(params[:board_id])
   end
 end
