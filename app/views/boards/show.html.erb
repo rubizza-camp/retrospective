@@ -1,12 +1,10 @@
-<!--
 <% if !current_user %>
-  <%= link_to 'Sign up', new_user_session_path %>
+  <%= link_to 'Sign up to Join', new_user_session_path %>
 <% elsif @board.memberships.exists?(user_id: current_user.id) %>
-  READY Button
+  <%= link_to 'READY', url_for %>
 <% else %>
-  <%= link_to 'Join', memberships_path(board_id: @board.id), method: :post %>
+  <%= link_to 'Join', board_memberships_path(board_id: @board.id), method: :post %>
 <% end %>
--->
 
 <div class='box has-text-centered'>
   <h1 class='title'>

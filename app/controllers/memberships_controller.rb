@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 class MembershipsController < ApplicationController
+  def create
+    authenticate_user!
+    @board = Board.find(params[:board_id])
+    @membership = @board.memberships.build(user_id: current_user.id, role: :member)
 
-  #def create
-  #  @board.cards.create(card_params.merge(author_id: current_user.id))
-  #  redirect_to @board
-  #end
-
-  private
-
-  def membership_params
-    params.require(:membership).permit! #(:kind, :body)
+    if @membership.save
+      redirect_to @board, notice: "#{current_user.email} user has joined the board!"
+    else
+      redirect_to @board, alert: @membership.errors.full_messages.join(', ')
+    end
   end
 end
