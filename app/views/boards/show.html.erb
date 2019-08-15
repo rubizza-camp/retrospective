@@ -3,11 +3,14 @@
     <%= @board.title %>
   </h1>
 </div>
-<% @board.memberships.each do |member| %>
-<%= member.user.email %>
-<% end  %>
-<div class="box">
-  <%= render 'memberships/form', membership: @membership %>  
+<%# @board.memberships.each do |member| %>
+<%#= member.user.email %>
+<%# end  %>
+<div class="box" id='autocomplete'>
+  <%# render 'memberships/form', membership: @membership %>
+  <% content_for :scripts do %>
+  <%= javascript_pack_tag 'autocomplete' %>
+  <% end %>
 </div>
 
 <div class='columns'>
