@@ -8,51 +8,47 @@ import PropTypes from 'prop-types'
 
 
 export class Autocomplete extends Component {
-  static propTypes = {
-    suggestions: PropTypes.instanceOf(Array)
-  };
-  static defaultProperty = {
-        suggestions: []
-  };
 
   constructor(props) {
     super(props);
     this.state = {
-      activeSuggestion: 0,
-      filteredSuggestions: [],
+      suggestions: [],
       showSuggestions: false,
       userInput: ''
     };
-  }
+    this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  };
+
 
 
   onChange = e => {
-    const { suggestions } = this.props;
     const userInput = e.currentTarget.value;
 
-    const filteredSuggestions = suggestions.filter(
-      suggestion =>
-        suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-    );
-
-    this.setState({
-      activeSuggestion: 0,
-      filteredSuggestions,
-      showSuggestions: true,
-      userInput: e.currentTarget.value
-    });
+    fetch(`http://localhost:5000/users/suggestions?autocomplete=${userInput}`)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+    	      suggestions: result,
+            showSuggestions: true,
+            userInput: userInput
+          });
+        },
+      )  
   };
   
   onClick = (e) => {
     this.setState({
-      activeSuggestion: 0,
-      filteredSuggestions: [],
+      ...this.state,
       showSuggestions: false,
       userInput: e.currentTarget.innerText
     });
   };
   handleSubmit = (e) => {
     this.setState({
+    	...this.state,
       showSuggestions: false,
       userInput: 'your request submited'
     });
@@ -61,44 +57,30 @@ export class Autocomplete extends Component {
 
   render() {
   	const {
-      onChange,
-      onClick,
-      handleSubmit,
-      state: {
-        activeSuggestion,
-        filteredSuggestions,
-        showSuggestions,
-        userInput
-      }
-    } = this;
+      suggestions,
+      showSuggestions,
+      userInput
+    } = this.state;
     let suggestionsListComponent;
       if (showSuggestions && userInput) {
-        if (filteredSuggestions.length) {
           suggestionsListComponent = (
             <ul>
-              {filteredSuggestions.map((suggestion, index) => {
+              {suggestions.map((suggestion, index) => {
                 return (
-                  <li  key={suggestion} onClick={onClick}>
+                  <li  key={suggestion} onClick={this.onClick}>
                     {suggestion}
                   </li>
                 );
               })}
             </ul>
           );
-        } else {
-          suggestionsListComponent = (
-            <div>
-              <em>No suggestions!</em>
-            </div>
-          );
-        }
       }
     return (
     	<React.Fragment>
-        <form action="/boards/1/memberships" method="post" onSubmit={handleSubmit}>
+        <form action="/boards/1/memberships" method="post" onSubmit={this.handleSubmit}>
         <input
           type="text"
-          onChange={onChange}
+          onChange={this.onChange}
           value={userInput}
           name='membership[email]'
         />
@@ -113,9 +95,7 @@ export class Autocomplete extends Component {
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Autocomplete
-          suggestions={['iris-miz@yandex.ru', 'new@mail.ru', 'test@test.com']}
-        />,
+    <Autocomplete />,
     document.getElementById('autocomplete'));
 
 })
