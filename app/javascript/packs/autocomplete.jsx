@@ -51,12 +51,19 @@ export class Autocomplete extends Component {
       userInput: e.currentTarget.innerText
     });
   };
+  handleSubmit = (e) => {
+    this.setState({
+      showSuggestions: false,
+      userInput: 'your request submited'
+    });
+    console.log('submited')
+  };
 
   render() {
   	const {
       onChange,
       onClick,
-      onKeyDown,
+      handleSubmit,
       state: {
         activeSuggestion,
         filteredSuggestions,
@@ -88,14 +95,16 @@ export class Autocomplete extends Component {
       }
     return (
     	<React.Fragment>
+        <form action="/boards/1/memberships" method="post" onSubmit={handleSubmit}>
         <input
           type="text"
           onChange={onChange}
-          onKeyDown={onKeyDown}
           value={userInput}
           name='membership[email]'
         />
         {suggestionsListComponent}
+        <input type="submit" value="Invite" />
+        </form>
       </React.Fragment>
       );
   };
