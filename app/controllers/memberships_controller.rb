@@ -15,15 +15,11 @@ class MembershipsController < ApplicationController
 
   def create
     user = User.find_by(email: membership_params[:email])
-    if user
-      membership = Membership.new(board_id: @board.id, role: 'member', user_id: user.id)
-      if membership.save
-        redirect_to @board, notice: 'Member was successfully created.'
-      else
-        redirect_to @board, alert: membership.errors.full_messages.join(', ')
-      end
+    membership = Membership.new(board_id: @board.id, role: 'member', user_id: user.id)
+    if membership.save
+      redirect_to @board, notice: 'Member was successfully created.'
     else
-      redirect_to @board, alert: 'Member was NOT created.'
+      redirect_to @board, alert: membership.errors.full_messages.join(', ')
     end
   end
 
