@@ -13,13 +13,25 @@ export class Suggestion extends Component {
   };
   render () {
     return (
-      <li key={this.suggestion} onClick={this.onClick}>
+      <li className='tag is-light' key={this.suggestion} onClick={this.onClick}>
         {this.suggestion}
       </li>
     );
   }
+};
 
-
+export class User extends Component {
+  constructor(props) {
+    super(props);
+    this.email = this.props.email
+  };
+  render () {
+    return (
+      <span className='tag is-info' key={this.email}>
+        {this.email}
+      </span>
+    );
+  }
 };
 
 export class Autocomplete extends Component {
@@ -29,7 +41,8 @@ export class Autocomplete extends Component {
     this.state = {
       suggestions: [],
       showSuggestions: false,
-      userInput: ''
+      userInput: '',
+      emails: []
     };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
@@ -45,6 +58,7 @@ export class Autocomplete extends Component {
       .then(
         (result) => {
           this.setState({
+            ...this.state,
     	      suggestions: result,
             showSuggestions: true,
             userInput: userInput
@@ -83,30 +97,52 @@ export class Autocomplete extends Component {
 		});
   };
 
+  componentDidMount = (e) => {
+    fetch(`http://localhost:5000/${window.location.pathname}/users`)
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.setState({
+          ...this.state,
+  	      emails: result
+        });
+      },
+    )
+  }
+
   render() {
   	const {
       suggestions,
       showSuggestions,
-      userInput
+      userInput,
+      emails
     } = this.state;
     let suggestionsListComponent;
     if (showSuggestions && userInput) {
       suggestionsListComponent =
         suggestions.map((suggestion, index) => {
-	        return <Suggestion suggestion ={suggestion} onClick = {this.onClick}/>
+	        return <Suggestion suggestion = {suggestion} onClick = {this.onClick}/>
         })
     };
+    let usersListComponent;
+    usersListComponent = 
+      emails.map((email, index) => {
+        return <User email = {email}/>
+      })
 
     return (
     	<React.Fragment>
+        <p>users on this board:</p>
+    	  <div className="tags">
+          {usersListComponent}
+        </div>
         <form  onSubmit={this.handleSubmit}>
         <input
           type="text"
           onChange={this.onChange}
           value={userInput}
-          name='membership[email]'
         />
-        <input type="submit" value="Invite" />
+        <input type='submit' value='Invite' />
         </form>
         <ul>
           {suggestionsListComponent}

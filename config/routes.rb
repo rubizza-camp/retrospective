@@ -9,6 +9,9 @@ Rails.application.routes.draw do
     resources :cards
     resources :action_items
     resources :memberships
+    member do
+      get 'users'
+    end
   end
 
   resources :teams

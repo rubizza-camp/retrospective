@@ -16,10 +16,15 @@ class BoardsController < ApplicationController
       glad: @board.cards.glad.includes(:author)
     }
     @action_items = @board.action_items
-    @membership = Membership.new(board_id: @board.id)
     @action_item = ActionItem.new(board_id: @board.id)
   end
+
   # rubocop:enable Metrics/AbcSize
+  def users
+    @board = Board.find(params[:id])
+    users = @board.users.pluck(:email)
+    render json: users.as_json
+  end
 
   def new
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
