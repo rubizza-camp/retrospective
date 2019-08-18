@@ -60,13 +60,27 @@ export class Autocomplete extends Component {
       userInput: e.currentTarget.innerText
     });
   };
+
   handleSubmit = (e) => {
-    this.setState({
-    	...this.state,
+  	this.setState({
+      ...this.state,
       showSuggestions: false,
-      userInput: 'your request submited'
+      userInput: e.currentTarget.innerText
     });
-    console.log('submited')
+  	
+    fetch(`http://localhost:5000/${window.location.pathname}/memberships`, {
+		  method: 'POST',
+		  headers: {
+		  	Accept: 'application/json',
+		    'Content-Type': 'application/json',
+		    'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute("content")
+		  },
+		  body: JSON.stringify({
+		    membership: {
+		   		email: this.state.userInput
+		    }
+		  }),
+		});
   };
 
   render() {
