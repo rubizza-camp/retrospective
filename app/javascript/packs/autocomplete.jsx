@@ -4,8 +4,23 @@
 
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
 
+export class Suggestion extends Component {
+  constructor(props) {
+    super(props);
+    this.onClick = this.props.onClick.bind(this);
+    this.suggestion = this.props.suggestion
+  };
+  render () {
+    return (
+      <li key={this.suggestion} onClick={this.onClick}>
+        {this.suggestion}
+      </li>
+    );
+  }
+
+
+};
 
 export class Autocomplete extends Component {
 
@@ -25,7 +40,6 @@ export class Autocomplete extends Component {
 
   onChange = e => {
     const userInput = e.currentTarget.value;
-
     fetch(`http://localhost:5000/users/suggestions?autocomplete=${userInput}`)
       .then(res => res.json())
       .then(
@@ -62,31 +76,27 @@ export class Autocomplete extends Component {
       userInput
     } = this.state;
     let suggestionsListComponent;
-      if (showSuggestions && userInput) {
-          suggestionsListComponent = (
-            <ul>
-              {suggestions.map((suggestion, index) => {
-                return (
-                  <li  key={suggestion} onClick={this.onClick}>
-                    {suggestion}
-                  </li>
-                );
-              })}
-            </ul>
-          );
-      }
+    if (showSuggestions && userInput) {
+      suggestionsListComponent =
+        suggestions.map((suggestion, index) => {
+	        return <Suggestion suggestion ={suggestion} onClick = {this.onClick}/>
+        })
+    };
+
     return (
     	<React.Fragment>
-        <form action="/boards/1/memberships" method="post" onSubmit={this.handleSubmit}>
+        <form  onSubmit={this.handleSubmit}>
         <input
           type="text"
           onChange={this.onChange}
           value={userInput}
           name='membership[email]'
         />
-        {suggestionsListComponent}
         <input type="submit" value="Invite" />
         </form>
+        <ul>
+          {suggestionsListComponent}
+        </ul>
       </React.Fragment>
       );
   };
@@ -97,5 +107,4 @@ document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <Autocomplete />,
     document.getElementById('autocomplete'));
-
 })
