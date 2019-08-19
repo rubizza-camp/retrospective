@@ -11,11 +11,19 @@ export class ReadyButton extends React.Component {
   }
 
   handleClick() {
-
+    fetch(`http://localhost:3000/${window.location.pathname}/memberships/ready_toggle`)
+    .then(result => result.json())
+    .then(
+      (result) => {
+        this.setState({
+          ready : result
+        });
+      },
+    )
   }
   
   componentDidMount() {
-    fetch(`http://localhost:3000/boards/1/memberships/ready`)
+    fetch(`http://localhost:3000/${window.location.pathname}/memberships/ready_status`)
     .then(result => result.json())
     .then(
       (result) => {

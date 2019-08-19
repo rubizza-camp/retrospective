@@ -9,7 +9,8 @@ Rails.application.routes.draw do
     resources :action_items
     resources :memberships do
       collection do
-        get 'ready'
+        get 'ready_status'
+        get 'ready_toggle'
       end
     end
   end

@@ -13,17 +13,15 @@ class MembershipsController < ApplicationController
     end
   end
 
-  def ready
-    #if (membership = @board.memberships.find_by(user_id: current_user.id))
-    #  membership.update(ready: !membership.ready)
-    #  render json: membership.ready
-    #end
+  # send json with current_user ready status for now
+  def ready_status
     render json: @board.memberships.find_by(user_id: current_user.id).ready
   end
 
-  # for now this returns current_user ready status
-  def new
-    render json: @board.memberships.find_by(user_id: current_user.id).ready
+  def ready_toggle
+    membership = @board.memberships.find_by(user_id: current_user.id)
+    membership.update(ready: !membership.ready)
+    render json: membership.ready
   end
 
   private
