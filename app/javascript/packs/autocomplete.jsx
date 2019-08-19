@@ -82,7 +82,7 @@ export class Autocomplete extends Component {
       userInput: e.currentTarget.innerText
     });
   	
-    fetch(`http://localhost:5000/${window.location.pathname}/memberships`, {
+    fetch(`http://localhost:5000/${window.location.pathname}/memberships/invite`, {
 		  method: 'POST',
 		  headers: {
 		  	Accept: 'application/json',
