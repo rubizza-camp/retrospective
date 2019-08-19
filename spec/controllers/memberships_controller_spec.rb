@@ -6,17 +6,11 @@ RSpec.describe MembershipsController do
   login_user
 
   let_it_be(:board) { create(:board) }
-  let_it_be(:user) { create(:user, email: 'some@mail.ru') }
 
-  let_it_be(:valid_params) do
-    { board_id: board.id,
-      membership: { email: user.email } }
-  end
-
-  context 'POST #invite' do
+  context 'POST #create' do
     it 'redirects' do
-      post :invite, params: valid_params
-      # expect(response).to have_http_status(:redirect)
+      post :create, params: { board_id: board.id }
+      expect(response).to have_http_status(:redirect)
     end
   end
 end
