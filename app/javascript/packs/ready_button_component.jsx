@@ -11,8 +11,12 @@ export class ReadyButton extends React.Component {
   }
 
   handleClick() {
-    fetch(`http://localhost:3000/boards/1/memberships/new`)
-    .then(res => res.json())
+
+  }
+  
+  componentDidMount() {
+    fetch(`http://localhost:3000/boards/1/memberships/ready`)
+    .then(result => result.json())
     .then(
       (result) => {
         this.setState({
@@ -21,15 +25,6 @@ export class ReadyButton extends React.Component {
       },
     )
   }
-  
-  /*
-  componentDidMount() {
-    const response = fetch(`http://localhost:5000/memberships/toggle_ready`).then(res => res.json()); 
-      this.setState({
-      ready: fetch(`http://localhost:5000/memberships/toggle_ready`)
-    });
-  }
-  */
 
   render() {
     return (

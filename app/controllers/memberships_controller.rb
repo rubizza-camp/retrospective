@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MembershipsController < ApplicationController
-  before_action :authenticate_user!, :set_board, except: :ready
+  before_action :authenticate_user!, :set_board
 
   def create
     @membership = @board.memberships.build(user_id: current_user.id, role: :member)
@@ -18,7 +18,7 @@ class MembershipsController < ApplicationController
     #  membership.update(ready: !membership.ready)
     #  render json: membership.ready
     #end
-    render plain: 'yoyo this is memberships/ready'
+    render json: @board.memberships.find_by(user_id: current_user.id).ready
   end
 
   # for now this returns current_user ready status
