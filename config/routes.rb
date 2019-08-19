@@ -8,13 +8,9 @@ Rails.application.routes.draw do
   resources :boards do
     resources :cards
     resources :action_items
-    resources :memberships do
-      collection do
-        post 'invite'
-      end
-    end
+    resources :memberships
     member do
-      get 'users'
+      post 'invite'
     end
   end
 

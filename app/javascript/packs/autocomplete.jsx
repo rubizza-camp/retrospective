@@ -57,14 +57,14 @@ export class Autocomplete extends Component {
         (result) => {
           this.setState({
             ...this.state,
-    	      suggestions: result,
+            suggestions: result,
             showSuggestions: true,
             userInput: userInput
           });
         },
-      )  
+      )
   };
-  
+
   onClick = (e) => {
     this.setState({
       ...this.state,
@@ -74,42 +74,59 @@ export class Autocomplete extends Component {
   };
 
   handleSubmit = (e) => {
-  	this.setState({
+    e.preventDefault();
+    this.setState({
       ...this.state,
       showSuggestions: false,
       userInput: e.currentTarget.innerText
     });
-  	
-    fetch(`http://localhost:5000/${window.location.pathname}/memberships/invite`, {
-		  method: 'POST',
-		  headers: {
-		  	Accept: 'application/json',
-		    'Content-Type': 'application/json',
-		    'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute("content")
-		  },
-		  body: JSON.stringify({
-		    membership: {
-		   		email: this.state.userInput
-		    }
-		  }),
-		});
+
+    fetch(`http://localhost:5000/${window.location.pathname}/invite`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute("content")
+      },
+      body: JSON.stringify({
+        board: {
+          email: this.state.userInput
+        }
+      }),
+    }).then((res) => {
+      if (res.status == 200) {
+        return res.json();
+      }
+      else { throw res }
+    }).then (
+      (result) => {
+        this.setState({
+          ...this.state,
+          emails:result
+        });
+      }
+    ).catch((error) => {
+       error.text().then( errorMessage => {
+        console.log(errorMessage)
+      })
+    });
   };
 
   componentDidMount = (e) => {
-    fetch(`http://localhost:5000/${window.location.pathname}/users`)
+    fetch(`http://localhost:5000/${window.location.pathname}/memberships`)
     .then(res => res.json())
     .then(
       (result) => {
         this.setState({
           ...this.state,
-  	      emails: result
+          emails: result
         });
       },
     )
   }
 
   render() {
-  	const {
+    const {
       suggestions,
       showSuggestions,
       userInput,
@@ -119,19 +136,19 @@ export class Autocomplete extends Component {
     if (showSuggestions && userInput) {
       suggestionsListComponent =
         suggestions.map((suggestion, index) => {
-	        return <Suggestion suggestion = {suggestion} onClick = {this.onClick}/>
+          return <Suggestion suggestion = {suggestion} onClick = {this.onClick}/>
         })
     };
     let usersListComponent;
-    usersListComponent = 
+    usersListComponent =
       emails.map((email, index) => {
         return <User email = {email}/>
       })
 
     return (
-    	<React.Fragment>
+      <React.Fragment>
         <p>users on this board:</p>
-    	  <div className="tags">
+        <div className="tags">
           {usersListComponent}
         </div>
         <form  onSubmit={this.handleSubmit}>

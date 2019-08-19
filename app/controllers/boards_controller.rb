@@ -3,14 +3,13 @@
 class BoardsController < ApplicationController
   # allow access boards#show without authentication for now
   before_action :authenticate_user!, except: :show
+  before_action :set_board, only: %i[show invite]
 
   def index
     @boards = Board.all
   end
 
-  # rubocop:disable Metrics/AbcSize
   def show
-    @board = Board.find(params[:id])
     @cards_by_type = {
       mad: @board.cards.mad.includes(:author),
       sad: @board.cards.sad.includes(:author),
@@ -20,11 +19,15 @@ class BoardsController < ApplicationController
     @action_item = ActionItem.new(board_id: @board.id)
   end
 
-  # rubocop:enable Metrics/AbcSize
-  def users
-    @board = Board.find(params[:id])
-    users = @board.users.pluck(:email)
-    render json: users.as_json
+  def invite
+    user = User.find_by(email: board_params[:email])
+    membership = @board.memberships.build(role: 'member', user_id: user.id)
+    if membership.save
+      users = @board.users.pluck(:email)
+      render json: users
+    else
+      render json: { error: membership.errors.full_messages.join(',') }, status: 400
+    end
   end
 
   def new
@@ -45,6 +48,10 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.require(:board).permit(:title, :team_id)
+    params.require(:board).permit(:title, :team_id, :email)
+  end
+
+  def set_board
+    @board = Board.find(params[:id])
   end
 end
