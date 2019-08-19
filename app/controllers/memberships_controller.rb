@@ -13,6 +13,10 @@ class MembershipsController < ApplicationController
     end
   end
 
+  def toggle_ready
+    
+  end
+
   private
 
   def set_board
