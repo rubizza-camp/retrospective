@@ -49,8 +49,6 @@ export class Autocomplete extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   };
 
-
-
   onChange = e => {
     const userInput = e.currentTarget.value;
     fetch(`http://localhost:5000/users/suggestions?autocomplete=${userInput}`)
@@ -151,7 +149,6 @@ export class Autocomplete extends Component {
       );
   };
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
