@@ -14,7 +14,11 @@ class MembershipsController < ApplicationController
   end
 
   def toggle_ready
-    
+    #if (membership = @board.memberships.find_by(user_id: current_user.id))
+    #  membership.update(ready: !membership.ready)
+    #  render json: membership.ready
+    #end
+    render json: current_user
   end
 
   private
