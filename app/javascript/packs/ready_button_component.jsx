@@ -35,8 +35,13 @@ export class ReadyButton extends React.Component {
   }
 
   render() {
+    if (this.state.ready == true) {
+      var className = 'button is-large is-success';
+    } else {
+      var className = 'button is-large';
+    }
     return (
-        <button className='button is-large' onClick={this.handleClick}>READY</button>
+      <button className={className} onClick={this.handleClick}>READY</button>
     );
   }
 };
