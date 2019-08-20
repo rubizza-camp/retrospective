@@ -4,30 +4,25 @@ import ReactDOM from 'react-dom'
 export class ReadyButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      ready: null
-    };
+    this.state = {};
     this.handleClick = this.handleClick.bind(this)
   }
 
   handleClick() {
-    fetch(`http://localhost:3000/${window.location.pathname}/memberships/ready_toggle`)
-    .then(result => result.json())
-    .then(
-      (result) => {
-        this.setState({
-          ready : result
-        });
-      },
-    )
+    this.setReadyState('ready_toggle')
   }
-  
+
   componentDidMount() {
-    fetch(`http://localhost:3000/${window.location.pathname}/memberships/ready_status`)
+    this.setReadyState('ready_status')
+  }
+
+  setReadyState(action) {
+    fetch(`${window.location.pathname}/memberships/${action}`)
     .then(result => result.json())
     .then(
       (result) => {
         this.setState({
+          ...this.state,
           ready : result
         });
       },
