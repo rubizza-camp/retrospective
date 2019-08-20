@@ -17,7 +17,7 @@ export class ReadyButton extends React.Component {
   }
 
   setReadyState(action) {
-    fetch(`${window.location.pathname}/memberships/${action}`)
+    fetch(`/api/${window.location.pathname}/memberships/${action}`)
     .then(result => result.json())
     .then(
       (result) => {
