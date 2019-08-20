@@ -3,7 +3,7 @@
 class BoardsController < ApplicationController
   # allow access boards#show without authentication for now
   before_action :authenticate_user!, except: :show
-  before_action :set_board, only: %i[show invite]
+  before_action :set_board, only: :show
 
   def index
     @boards = Board.all
@@ -17,17 +17,6 @@ class BoardsController < ApplicationController
     }
     @action_items = @board.action_items
     @action_item = ActionItem.new(board_id: @board.id)
-  end
-
-  def invite
-    user = User.find_by(email: board_params[:email])
-    membership = @board.memberships.build(role: 'member', user_id: user.id)
-    if membership.save
-      users = @board.users.pluck(:email)
-      render json: users
-    else
-      render json: { error: membership.errors.full_messages.join(',') }, status: 400
-    end
   end
 
   def new

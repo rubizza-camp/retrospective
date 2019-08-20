@@ -13,11 +13,6 @@ class MembershipsController < ApplicationController
     end
   end
 
-  def index
-    users = @board.users.pluck(:email)
-    render json: users
-  end
-
   private
 
   def membership_params

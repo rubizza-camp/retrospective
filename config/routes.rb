@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'users/suggestions'
   root to: 'home#index'
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
@@ -9,10 +8,17 @@ Rails.application.routes.draw do
     resources :cards
     resources :action_items
     resources :memberships
-    member do
-      post 'invite'
-    end
   end
 
   resources :teams
+
+  namespace :api do
+    get 'users/suggestions'
+    resources :boards do
+      member do
+        post 'invite'
+      end
+      resources :memberships, only: :index
+    end
+  end
 end

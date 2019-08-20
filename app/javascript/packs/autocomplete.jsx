@@ -51,7 +51,7 @@ export class Autocomplete extends Component {
 
   onChange = e => {
     const userInput = e.currentTarget.value;
-    fetch(`http://localhost:5000/users/suggestions?autocomplete=${userInput}`)
+    fetch(`/api/users/suggestions?autocomplete=${userInput}`)
       .then(res => res.json())
       .then(
         (result) => {
@@ -81,7 +81,7 @@ export class Autocomplete extends Component {
       userInput: e.currentTarget.innerText
     });
 
-    fetch(`http://localhost:5000/${window.location.pathname}/invite`, {
+    fetch(`/api/${window.location.pathname}/invite`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -113,7 +113,7 @@ export class Autocomplete extends Component {
   };
 
   componentDidMount = (e) => {
-    fetch(`http://localhost:5000/${window.location.pathname}/memberships`)
+    fetch(`/api/${window.location.pathname}/memberships`)
     .then(res => res.json())
     .then(
       (result) => {
