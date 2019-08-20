@@ -12,8 +12,7 @@ module API
       if user
         membership = @board.memberships.build(role: 'member', user_id: user.id)
         if membership.save
-          users = @board.users.pluck(:email)
-          render json: users
+          render json: {email: user.email}
         else
           render json: { error: membership.errors.full_messages.join(',') }, status: 400
         end
