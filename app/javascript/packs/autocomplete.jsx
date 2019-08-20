@@ -78,7 +78,6 @@ export class Autocomplete extends Component {
     this.setState({
       ...this.state,
       showSuggestions: false,
-      userInput: e.currentTarget.innerText
     });
 
     fetch(`/api/${window.location.pathname}/invite`, {
@@ -102,7 +101,7 @@ export class Autocomplete extends Component {
       (result) => {
         this.setState({
           ...this.state,
-          emails:result
+          emails: result
         });
       }
     ).catch((error) => {

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Api
+module API
   class MembershipsController < ApplicationController
     before_action :authenticate_user!, :set_board
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Api
+module API
   class BoardsController < ApplicationController
     before_action :authenticate_user!
     before_action :set_board, only: :invite
