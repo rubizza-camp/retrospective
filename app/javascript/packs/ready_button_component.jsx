@@ -46,4 +46,3 @@ document.addEventListener('DOMContentLoaded', () => {
       <ReadyButton />,
       document.getElementById('ready-button'))
 })
-        
