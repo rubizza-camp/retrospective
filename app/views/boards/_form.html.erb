@@ -10,7 +10,10 @@
       </ul>
     </div>
   <% end %>
+  <div class='field'>
   <%= form.text_field :title, class: 'input' %>
+  </div>
+  <div class="select"><%= form.collection_select :previous_board_id, @boards, :id, :title, prompt: 'choose board to continue'%></div>
   <div class="actions">
     <%= form.submit %>
   </div>

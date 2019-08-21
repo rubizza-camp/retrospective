@@ -9,6 +9,7 @@ class BoardsController < ApplicationController
     @boards = Board.all
   end
 
+  # rubocop: disable Metrics/AbcSize
   def show
     @cards_by_type = {
       mad: @board.cards.mad.includes(:author),
@@ -17,10 +18,13 @@ class BoardsController < ApplicationController
     }
     @action_items = @board.action_items
     @action_item = ActionItem.new(board_id: @board.id)
+    @previous_action_items = @board.previous_board.action_items unless @board.previous_board.nil?
   end
+  # rubocop: enable Metrics/AbcSize
 
   def new
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
+    @boards = Board.all
   end
 
   def create
@@ -37,7 +41,7 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.require(:board).permit(:title, :team_id, :email)
+    params.require(:board).permit(:title, :team_id, :email, :previous_board_id)
   end
 
   def set_board

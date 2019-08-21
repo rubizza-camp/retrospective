@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_15_085538) do
+ActiveRecord::Schema.define(version: 2019_08_21_124734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 2019_08_15_085538) do
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "previous_board_id"
+    t.index ["previous_board_id"], name: "index_boards_on_previous_board_id"
   end
 
   create_table "cards", force: :cascade do |t|
@@ -82,6 +84,7 @@ ActiveRecord::Schema.define(version: 2019_08_15_085538) do
   end
 
   add_foreign_key "action_items", "boards"
+  add_foreign_key "boards", "boards", column: "previous_board_id"
   add_foreign_key "cards", "boards"
   add_foreign_key "cards", "users", column: "author_id"
   add_foreign_key "memberships", "boards"
