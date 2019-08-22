@@ -24,7 +24,6 @@ class BoardsController < ApplicationController
 
   def new
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
-    @boards = Board.all
   end
 
   def create
@@ -39,20 +38,18 @@ class BoardsController < ApplicationController
   end
 
   def continue
-    @new_board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
-    @new_board.previous_board = @board
-    @new_board.memberships = @board.memberships
-    if @new_board.save
-      redirect_to @new_board, notice: 'Board was successfully created.'
+    @result = Boards::Continue.new(@board).call
+    if @result.success?
+      redirect_to @result.value, notice: 'Board was successfully created.'
     else
-      render :new, alert: 'wasnt'
+      redirect_to boards_path, alert: @result.error
     end
   end
 
   private
 
   def board_params
-    params.require(:board).permit(:title, :team_id, :email, :previous_board_id)
+    params.require(:board).permit(:title, :team_id, :email)
   end
 
   def set_board
