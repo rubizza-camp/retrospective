@@ -14,7 +14,7 @@ class Board < ApplicationRecord
   end
 
   private
-  
+
   def set_slug
     loop do
       self.slug = Nanoid.generate(size: 10)
