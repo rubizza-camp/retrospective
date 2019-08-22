@@ -43,6 +43,6 @@ class BoardsController < ApplicationController
   def set_board
     @board = Board.find_by(slug: params[:slug])
     redirect_to boards_path, alert: 'No such board exists!' unless @board
-    #raise ActionController::RoutingError.new('Board Not Found!') unless @board
+    # raise ActionController::RoutingError.new('Board Not Found!') unless @board
   end
 end
