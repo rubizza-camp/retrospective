@@ -8,6 +8,10 @@ class Board < ApplicationRecord
   validates_presence_of :title
 
   before_create :set_slug  
+
+  def to_param
+    slug
+  end
   
   private  
   

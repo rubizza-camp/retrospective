@@ -26,6 +26,7 @@ class BoardsController < ApplicationController
   def create
     @board = Board.new(board_params)
     @board.memberships.build(user_id: current_user.id, role: 'creator')
+    byebug
 
     if @board.save
       redirect_to @board, notice: 'Board was successfully created.'
@@ -41,6 +42,6 @@ class BoardsController < ApplicationController
   end
 
   def set_board
-    @board = Board.find(params[:id])
+    @board = Board.find_by(slug: params[:slug])
   end
 end
