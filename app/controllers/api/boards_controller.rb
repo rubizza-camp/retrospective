@@ -28,7 +28,7 @@ module API
     end
 
     def set_board
-      @board = Board.find_by(slug: params[:slug])
+      @board = Board.find_by!(slug: params[:slug])
     end
   end
 end
