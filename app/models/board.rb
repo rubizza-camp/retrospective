@@ -14,8 +14,11 @@ class Board < ApplicationRecord
   end
 
   private
-
+  
   def set_slug
-    self.slug = Nanoid.generate(size: 20)
+    loop do
+      self.slug = Nanoid.generate(size: 10)
+      break unless Board.where(slug: slug).exists?
+    end
   end
 end
