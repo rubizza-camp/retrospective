@@ -39,4 +39,11 @@ RSpec.describe BoardsController do
       expect(response).to have_http_status(:success)
     end
   end
+
+  context 'POST #continue' do
+    it 'redirects' do
+      post :continue, params: { id: board.id }
+      expect(response).to have_http_status(:redirect)
+    end
+  end
 end
