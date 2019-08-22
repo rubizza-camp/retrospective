@@ -7,14 +7,14 @@ class Board < ApplicationRecord
   has_many :users, through: :memberships
   validates_presence_of :title
 
-  before_create :set_slug  
+  before_create :set_slug
 
   def to_param
     slug
   end
-  
-  private  
-  
+
+  private
+
   def set_slug
     self.slug = Nanoid.generate(size: 20)
   end

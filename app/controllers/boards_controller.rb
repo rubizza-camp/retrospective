@@ -26,7 +26,6 @@ class BoardsController < ApplicationController
   def create
     @board = Board.new(board_params)
     @board.memberships.build(user_id: current_user.id, role: 'creator')
-    byebug
 
     if @board.save
       redirect_to @board, notice: 'Board was successfully created.'
@@ -43,5 +42,7 @@ class BoardsController < ApplicationController
 
   def set_board
     @board = Board.find_by(slug: params[:slug])
+    redirect_to boards_path, alert: 'No such board exists!' unless @board
+    #raise ActionController::RoutingError.new('Board Not Found!') unless @board
   end
 end
