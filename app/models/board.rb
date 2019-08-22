@@ -22,5 +22,4 @@ class Board < ApplicationRecord
       break unless Board.where(slug: slug).exists?
     end
   end
-
 end
