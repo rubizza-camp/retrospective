@@ -3,7 +3,7 @@
 class BoardsController < ApplicationController
   # allow access boards#show without authentication for now
   before_action :authenticate_user!, except: :show
-  before_action :set_board, only: :show
+  before_action :set_board, only: %i[show continue]
 
   def index
     @boards = Board.all
@@ -35,6 +35,17 @@ class BoardsController < ApplicationController
       redirect_to @board, notice: 'Board was successfully created.'
     else
       render :new
+    end
+  end
+
+  def continue
+    @new_board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
+    @new_board.previous_board = @board
+    @new_board.memberships = @board.memberships
+    if @new_board.save
+      redirect_to @new_board, notice: 'Board was successfully created.'
+    else
+      render :new, alert: 'wasnt'
     end
   end
 
