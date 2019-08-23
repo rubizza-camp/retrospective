@@ -15,11 +15,11 @@ module Boards
         previous_board_id: prev_board.id
       )
       new_board.memberships = prev_board.memberships.map(&:dup)
-      new_board.save
+      new_board.save!
 
-      Result.new(value: new_board, success?: true)
+      Success(new_board)
     rescue StandardError => e
-      Result.new(error: e.message, success?: false)
+      Failure(e)
     end
 
     def default_board_name
