@@ -9,7 +9,7 @@ class ChangeSlugInBoards < ActiveRecord::Migration[5.2]
   end
 
   def populate_board_slugs
-    Board.all.each { |board| board.set_slug.save }
+    Board.where(slug: nil).each { |board| board.set_slug.save }
   end
 end
 
