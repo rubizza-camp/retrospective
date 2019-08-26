@@ -15,6 +15,7 @@ module Boards
         title: default_board_name,
         previous_board_id: prev_board.id
       )
+
       new_board.memberships = duplicate_memberships
       new_board.memberships.build(user_id: current_user.id, role: 'creator')
       new_board.save!
@@ -25,13 +26,10 @@ module Boards
     end
 
     def duplicate_memberships
-      prev_board.memberships.map do |member|
-        if member.user_id == current_user.id
-          member.dup.tap { |m| m.role = 'creator' }
-        else
-          member.dup.tap { |m| m.role = 'member' }
-        end
-      end
+      prev_board.memberships
+                .map(&:dup)
+                .each { |member| member.role = 'member' }
+                .delete_if { |member| member.user == current_user }
     end
 
     def default_board_name
