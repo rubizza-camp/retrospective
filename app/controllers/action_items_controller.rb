@@ -4,7 +4,8 @@ class ActionItemsController < ApplicationController
   before_action :set_board
 
   def create
-    @board.action_items.create(action_item_params)
+    action_item = @board.action_items.create(action_item_params)
+    authorize! action_item
     redirect_to @board
   end
 

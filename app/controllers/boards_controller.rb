@@ -2,15 +2,17 @@
 
 class BoardsController < ApplicationController
   # allow access boards#show without authentication for now
-  before_action :authenticate_user!, except: :show
+  # before_action :authenticate_user!, except: :show
   before_action :set_board, only: %i[show continue]
 
   def index
+    authorize!
     @boards = Board.all
   end
 
   # rubocop: disable Metrics/AbcSize
   def show
+    authorize! @board
     @cards_by_type = {
       mad: @board.cards.mad.includes(:author),
       sad: @board.cards.sad.includes(:author),
@@ -23,10 +25,12 @@ class BoardsController < ApplicationController
   # rubocop: enable Metrics/AbcSize
 
   def new
+    authorize!
     @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
   end
 
   def create
+    authorize!
     @board = Board.new(board_params)
     @board.memberships.build(user_id: current_user.id, role: 'creator')
 
@@ -38,6 +42,7 @@ class BoardsController < ApplicationController
   end
 
   def continue
+    authorize! @board
     result = Boards::Continue.new(@board, current_user).call
     if result.success?
       redirect_to result.value, notice: 'Board was successfully created.'

@@ -23,15 +23,15 @@
 
   </div>
 </div>
-<!--  <p>CUrrent user: <%= current_user.email %> </p>
+ <p>CUrrent user: <%# current_user.email %> </p>
 <% @board.memberships.each do |member| %>
 <p> <%= member.user.email %>, <%= member.role %></p>
-<% end  %> -->
+<% end  %>
 <div class="box" id='autocomplete'>
 <!--   <%# render 'memberships/form', membership: @membership %> -->
-  <% content_for :scripts do %>
-  <%= javascript_pack_tag 'autocomplete' %>
-  <% end %>
+  <%# content_for :scripts do %>
+  <%#= javascript_pack_tag 'autocomplete' %>
+  <%# end %>
 </div>
 
 <div class='columns'>

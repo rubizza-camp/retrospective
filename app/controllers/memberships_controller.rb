@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class MembershipsController < ApplicationController
-  before_action :authenticate_user!, :set_board
+  # before_action :authenticate_user!, :set_board
+  before_action :set_board
 
   def create
     @membership = @board.memberships.build(user_id: current_user.id, role: :member)
-
+    authorize! @membership
     if @membership.save
       redirect_to @board, notice: "#{current_user.email.split('@').first} has joined the board!"
     else

@@ -4,7 +4,8 @@ class CardsController < ApplicationController
   before_action :set_board
 
   def create
-    @board.cards.create(card_params.merge(author_id: current_user.id))
+    card = @board.cards.create(card_params.merge(author_id: current_user.id))
+    authorize! card
     redirect_to @board
   end
 
