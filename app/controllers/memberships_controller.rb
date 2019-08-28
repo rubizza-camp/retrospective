@@ -3,6 +3,7 @@
 class MembershipsController < ApplicationController
   before_action :set_board
 
+  # rubocop: disable Metrics/AbcSize
   def create
     @membership = @board.memberships.build(user_id: current_user.id, role: :member)
     authorize! @membership
@@ -12,6 +13,7 @@ class MembershipsController < ApplicationController
       redirect_to @board, alert: @membership.errors.full_messages.join(', ')
     end
   end
+  # rubocop: enable Metrics/AbcSize
 
   private
 

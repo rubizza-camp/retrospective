@@ -1,6 +1,6 @@
 <% content_for :scripts do %>
-  <%# javascript_pack_tag 'ready_button_component' %>
-  <% if allowed_to?(:suggesions?) %>
+  <%= javascript_pack_tag 'ready_button_component' %>
+  <% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
     <%= javascript_pack_tag 'autocomplete' %>
   <% end %>
 

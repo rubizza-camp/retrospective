@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class BoardsController < ApplicationController
-  # allow access boards#show without authentication for now
-  # before_action :authenticate_user!, except: :show
   before_action :set_board, only: %i[show continue]
   skip_before_action :authenticate_user!, only: :show
 

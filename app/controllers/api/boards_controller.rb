@@ -6,7 +6,9 @@ module API
     before_action :set_board, only: %i[invite suggestions]
 
     # rubocop: disable Metrics/MethodLength
+    # rubocop: disable Metrics/AbcSize
     def invite
+      authorize! @board
       user = User.find_by(email: board_params[:email])
       if user
         membership = @board.memberships.build(role: 'member', user_id: user.id)
@@ -19,8 +21,9 @@ module API
         render json: { error: 'User was not found' }, status: 400
       end
     end
-
     # rubocop: enable Metrics/MethodLength
+    # rubocop: enable Metrics/AbcSize
+
     def suggestions
       authorize! @board
       users = User.where('email LIKE ?', "#{params[:autocomplete]}%")

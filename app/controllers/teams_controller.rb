@@ -3,6 +3,7 @@
 class TeamsController < ApplicationController
   skip_before_action :authenticate_user!
   skip_verify_authorized
+
   def index
     @teams = Team.all
   end

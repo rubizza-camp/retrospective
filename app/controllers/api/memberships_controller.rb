@@ -5,15 +5,18 @@ module API
     before_action :authenticate_user!, :set_board, :set_membership
 
     def index
+      authorize! @membership
       users = @board.users.pluck(:email)
       render json: users
     end
 
     def ready_status
+      authorize! @membership
       render json: @membership.ready
     end
 
     def ready_toggle
+      authorize! @membership
       @membership.update(ready: !@membership.ready)
       render json: @membership.ready
     end
