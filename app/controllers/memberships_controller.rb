@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class MembershipsController < ApplicationController
-  # before_action :authenticate_user!, :set_board
   before_action :set_board
 
   def create

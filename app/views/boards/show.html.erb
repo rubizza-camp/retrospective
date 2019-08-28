@@ -23,7 +23,7 @@
 
   </div>
 </div>
- <p>CUrrent user: <%# current_user.email %> </p>
+ <p>CUrrent user: <%= current_user.email if current_user%> </p>
 <% @board.memberships.each do |member| %>
 <p> <%= member.user.email %>, <%= member.role %></p>
 <% end  %>
