@@ -3,7 +3,7 @@
 module API
   class BoardsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_board, only: :invite
+    before_action :set_board, only: %i[invite suggestions]
 
     # rubocop: disable Metrics/MethodLength
     def invite
@@ -19,7 +19,14 @@ module API
         render json: { error: 'User was not found' }, status: 400
       end
     end
+
     # rubocop: enable Metrics/MethodLength
+    def suggestions
+      authorize! @board
+      users = User.where('email LIKE ?', "#{params[:autocomplete]}%")
+                  .or(User.where('uid LIKE ?', "#{params[:autocomplete]}%")).pluck(:email)
+      render json: users
+    end
 
     private
 

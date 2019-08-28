@@ -1,6 +1,9 @@
 <% content_for :scripts do %>
-  <%= javascript_pack_tag 'ready_button_component' %>
-  <%= javascript_pack_tag 'autocomplete' %>
+  <%# javascript_pack_tag 'ready_button_component' %>
+  <% if allowed_to?(:suggesions?) %>
+    <%= javascript_pack_tag 'autocomplete' %>
+  <% end %>
+
 <% end %>
 
 <div class='box has-text-centered'>
