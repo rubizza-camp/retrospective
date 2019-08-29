@@ -3,20 +3,25 @@
 module API
   class MembershipsController < ApplicationController
     before_action :authenticate_user!, :set_board, :set_membership
+    before_action except: :index do
+      authorize! @membership
+    end
+    skip_verify_authorized only: :index
+
+    rescue_from ActionPolicy::Unauthorized do |ex|
+      redirect_to @board, alert: ex.result.message
+    end
 
     def index
-      authorize! @membership
       users = @board.users.pluck(:email)
       render json: users
     end
 
     def ready_status
-      authorize! @membership
       render json: @membership.ready
     end
 
     def ready_toggle
-      authorize! @membership
       @membership.update(ready: !@membership.ready)
       render json: @membership.ready
     end

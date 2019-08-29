@@ -3,12 +3,17 @@
 module API
   class BoardsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_board, only: %i[invite suggestions]
+    before_action :set_board
+    before_action do
+      authorize! @board
+    end
+
+    rescue_from ActionPolicy::Unauthorized do |ex|
+      redirect_to @board, alert: ex.result.message
+    end
 
     # rubocop: disable Metrics/MethodLength
-    # rubocop: disable Metrics/AbcSize
     def invite
-      authorize! @board
       user = User.find_by(email: board_params[:email])
       if user
         membership = @board.memberships.build(role: 'member', user_id: user.id)
@@ -22,10 +27,8 @@ module API
       end
     end
     # rubocop: enable Metrics/MethodLength
-    # rubocop: enable Metrics/AbcSize
 
     def suggestions
-      authorize! @board
       users = User.where('email LIKE ?', "#{params[:autocomplete]}%")
                   .or(User.where('uid LIKE ?', "#{params[:autocomplete]}%")).pluck(:email)
       render json: users

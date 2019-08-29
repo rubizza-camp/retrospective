@@ -10,16 +10,6 @@ RSpec.describe API::MembershipPolicy do
   let_it_be(:successful_policy) { described_class.new(membership, user: member) }
   let_it_be(:failed_policy) { described_class.new(membership, user: not_a_member) }
 
-  context '#index?' do
-    it 'returns true if user is a member' do
-      expect(successful_policy.apply(:index?)).to eq true
-    end
-
-    it 'returns false if user is not a member' do
-      expect(failed_policy.apply(:index?)).to eq false
-    end
-  end
-
   context '#ready_status?' do
     it 'returns true if user is a member' do
       expect(successful_policy.apply(:ready_status?)).to eq true

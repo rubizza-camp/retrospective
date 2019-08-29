@@ -2,10 +2,6 @@
 
 module API
   class MembershipPolicy < ApplicationPolicy
-    def index?
-      check?(:user_is_member?)
-    end
-
     def ready_status?
       check?(:user_is_member?)
     end
