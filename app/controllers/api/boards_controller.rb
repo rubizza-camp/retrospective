@@ -29,9 +29,8 @@ module API
     # rubocop: enable Metrics/MethodLength
 
     def suggestions
-      users = User.where('email LIKE ?', "#{params[:autocomplete]}%")
-                  .or(User.where('uid LIKE ?', "#{params[:autocomplete]}%")).pluck(:email)
-      render json: users
+      result = Boards::Suggestions.new(params[:autocomplete]).call
+      render json: result
     end
 
     private

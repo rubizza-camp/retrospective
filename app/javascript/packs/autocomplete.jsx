@@ -57,7 +57,7 @@ export class Autocomplete extends Component {
         (result) => {
           this.setState({
             ...this.state,
-            suggestions: result,
+            suggestions: result.users.concat(result.teams),
             showSuggestions: true,
             userInput: userInput
           });
