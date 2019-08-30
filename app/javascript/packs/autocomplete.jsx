@@ -101,10 +101,11 @@ export class Autocomplete extends Component {
       (result) => {
         this.setState({
           ...this.state,
-          emails: this.state.emails.concat(result.email)
+          emails: [...new Set (this.state.emails.concat(result.value.email))]
         });
       }
     ).catch((error) => {
+      console.log(error)
        error.text().then( errorMessage => {
         console.log(errorMessage)
       })
