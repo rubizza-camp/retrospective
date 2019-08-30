@@ -18,6 +18,6 @@ RSpec.describe Boards::Suggestions do
 
   it 'finds team by name' do
     result = described_class.new(team.name).call
-    expect(result[:team]).to eq [team.name]
+    expect(result[:teams]).to eq [team.name]
   end
 end
