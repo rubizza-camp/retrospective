@@ -6,7 +6,7 @@ class BoardsController < ApplicationController
   skip_verify_authorized
 
   def index
-    @boards = current_user.boards
+    @boards = Board.all
   end
 
   # rubocop: disable Metrics/AbcSize

@@ -9,10 +9,12 @@ module Boards
     end
 
     def call
-      {
-        user: fitting_user(query_string),
-        team: fitting_team(query_string)
-      }
+      team = fitting_team(query_string)
+      if team
+        team.users
+      else
+        [fitting_user(query_string)]
+      end
     end
 
     def fitting_user(str)

@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
 module Boards
-  class InviteTeam
+  class InviteUsers
     include Resultable
-    attr_reader :board, :team
+    attr_reader :board, :users
 
-    def initialize(board, team)
+    def initialize(board, users)
       @board = board
-      @team = team
+      @users = users
     end
 
     def call
-      team.users.each do |user|
+      users.each do |user|
         membership = board.memberships.build(role: 'member', user_id: user.id)
         membership.save
         # it will not return an error without an !, and with it it will not save entries at all
       end
-      Success(email: team.users.pluck(:email))
+      Success(email: users.pluck(:email))
     rescue StandardError => e
       Failure(e)
     end
