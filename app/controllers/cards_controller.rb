@@ -14,6 +14,10 @@ class CardsController < ApplicationController
     redirect_to @board
   end
 
+  def destroy
+      
+  end
+
   private
 
   def card_params

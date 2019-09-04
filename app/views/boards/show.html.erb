@@ -63,6 +63,7 @@
             <%= image_tag(card.author.avatar.url(:thumb), class: 'is-rounded') %>
           </figure>
           <% end %>
+          <span class='card-author'>by <%= card.author.email.split('@').first %></span>
         </div>
       <% end %>
     </div>
