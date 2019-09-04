@@ -11,14 +11,13 @@ module Boards
     end
 
     def call
-      users.each do |user|
+      selected_users = users.reject { |user| board.users.include?(user) }
+      selected_users.each do |user|
         membership = board.memberships.build(role: 'member', user_id: user.id)
         membership.save
-        # it will not return an error without an !, and with it it will not save entries at all
       end
-      Success(email: users.pluck(:email))
-    rescue StandardError => e
-      Failure(e)
+
+      Success(email: selected_users.pluck(:email))
     end
   end
 end
