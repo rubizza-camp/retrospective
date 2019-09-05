@@ -10,14 +10,19 @@ module Boards
       @users = users
     end
 
+    # rubocop: disable Metrics/AbcSize
     def call
-      selected_users = users.reject { |user| board.users.include?(user) }
-      selected_users.each do |user|
-        membership = board.memberships.build(role: 'member', user_id: user.id)
-        membership.save
+      board_users_ids = board.users.pluck(:id)
+      selected_ids = users.pluck(:id) - board_users_ids
+      users_array = []
+      selected_ids.each do |id|
+        users_array << { role: 'member', user_id: id }
       end
-
-      Success(email: selected_users.pluck(:email))
+      board.memberships.build(users_array)
+      board.save
+      users_emails = User.find(selected_ids).pluck(:email)
+      Success(email: users_emails)
     end
+    # rubocop: enable Metrics/AbcSize
   end
 end

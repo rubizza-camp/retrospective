@@ -5,24 +5,19 @@ module Boards
     attr_reader :query_string
 
     def initialize(str)
-      @query_string = str
+      @query_string = str.split(',')
     end
 
     def call
-      team = fitting_team(query_string)
-      if team
-        team.users
-      else
-        [fitting_user(query_string)]
-      end
+      fitting_team(query_string) + fitting_users(query_string)
     end
 
-    def fitting_user(str)
-      User.find_by(email: str)
+    def fitting_users(str)
+      User.where(email: str)
     end
 
     def fitting_team(str)
-      Team.find_by(name: str)
+      User.joins(:teams).where(teams: { name: str })
     end
   end
 end

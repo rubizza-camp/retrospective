@@ -9,6 +9,8 @@
     "react": "^16.8.6",
     "react-bulma-components": "2.3.0",
     "react-dom": "^16.8.6",
+    "react-select": "^3.0.4",
+    "react-tag-autocomplete": "^5.11.1",
     "yarn": "^1.17.3"
   },
   "devDependencies": {

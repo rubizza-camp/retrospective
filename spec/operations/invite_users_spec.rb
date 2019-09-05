@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Boards::InviteUsers do
-  let_it_be(:user) { create(:user) }
-  let_it_be(:board) { create(:board) }
+  let(:user) { create(:user) }
+  let(:board) { create(:board) }
 
   it 'creates membership' do
     described_class.new(board, [user]).call
