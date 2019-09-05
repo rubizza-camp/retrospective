@@ -57,15 +57,21 @@
       </div>
       <% cards.each do |card| %>
         <div class='box'>
+
           <p> <%= card.body %> </p>
+
+          <!--card footer -->
           <% if card.author.avatar.url %>
           <figure class='image is-32x32'>
             <%= image_tag(card.author.avatar.url(:thumb), class: 'is-rounded') %>
           </figure>
           <% end %>
           <span class='card-author'>by <%= card.author.email.split('@').first %></span>
-          <%= link_to 'delete', board_card_path(board_slug: @board.slug, id: card.id), 
-                      method: :delete, data: { confirm: 'Are you sure you want to delete this card?' } %>
+
+          <% if allowed_to?(:destroy?, card) %>
+            <%= link_to 'delete', board_card_path(board_slug: @board.slug, id: card.id), 
+                        method: :delete, data: { confirm: 'Are you sure you want to delete this card?' } %>
+          <% end %>
         </div>
       <% end %>
     </div>
