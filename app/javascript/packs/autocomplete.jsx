@@ -98,14 +98,15 @@ export class Autocomplete extends Component {
             ...this.state,
             suggestions: [...new Set (result.users.concat(result.teams))],
           });
-          const options_array = []
-          const { suggestions } = this.state;
-          for(var i = 0, l = suggestions.length; i < l; i++) {
-            options_array.push({value: suggestions[i], label: suggestions[i]})
-          };
+          const optionsArray = this.state.suggestions.map(function (a) {
+            return {
+              value: a,
+              label: a
+            };
+          });
           this.setState({
               ...this.state,
-              options: options_array
+              options: optionsArray
             })
         },
       )}
