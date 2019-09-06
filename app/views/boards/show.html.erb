@@ -56,24 +56,36 @@
       <div class='box'>
         <%= render 'cards/form', card: @board.cards.build(kind: kind) %>
       </div>
+
       <% cards.each do |card| %>
         <div class='box'>
+          <%= react_component('card/index', { 
+                                              author: card.author,
+                                              avatar: card.author.avatar.url(:thumb),
+                                              body: card.body,
+                                              editable: true,
+                                              deletable: true  
+                                            }) %>
 
-          <%= react_component("HelloWorld", { greeting: "Hello from react-rails." }) %>
+<!--
           <p> <%= card.body %> </p>
 
-          <!--card footer -->
           <% if card.author.avatar.url %>
-          <figure class='image is-32x32'>
-            <%= image_tag(card.author.avatar.url(:thumb), class: 'is-rounded') %>
-          </figure>
+            <figure class='image is-32x32'>
+              <%= image_tag(card.author.avatar.url(:thumb), class: 'is-rounded') %>
+            </figure>
           <% end %>
+
           <span class='card-author'>by <%= card.author.email.split('@').first %></span>
+
+          <%= react_component('card/index', { greeting: 'CardComp' }) %>
 
           <% if allowed_to?(:destroy?, card) %>
             <%= link_to 'delete', board_card_path(board_slug: @board.slug, id: card.id), 
                         method: :delete, data: { confirm: 'Are you sure you want to delete this card?' } %>
           <% end %>
+-->
+
         </div>
       <% end %>
     </div>
