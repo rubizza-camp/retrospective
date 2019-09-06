@@ -16,6 +16,7 @@ class CardsController < ApplicationController
   end
 
   def destroy
+    byebug
     authorize! @card
     @card.destroy
     redirect_to @board, notice: 'Card was successfully deleted.'
