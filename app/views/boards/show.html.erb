@@ -1,5 +1,6 @@
 <% content_for :scripts do %>
   <%= javascript_pack_tag 'ready_button_component' %>
+  <%= javascript_pack_tag 'application' %>
   <% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
     <%= javascript_pack_tag 'autocomplete' %>
   <% end %>
@@ -58,6 +59,7 @@
       <% cards.each do |card| %>
         <div class='box'>
 
+          <%= react_component("HelloWorld", { greeting: "Hello from react-rails." }) %>
           <p> <%= card.body %> </p>
 
           <!--card footer -->
