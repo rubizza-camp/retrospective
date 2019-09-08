@@ -27,6 +27,7 @@ Rails.application.routes.draw do
           get 'ready_toggle'
         end
       end
+      resources :cards
     end
   end
 end

@@ -1,5 +1,4 @@
 import React from "react"
-//import PropTypes from "prop-types"
 
 import Delete from "./Delete"
 
@@ -24,14 +23,10 @@ class Card extends React.Component {
       <div className='box' style={this.state.cardStyle}>
         {body}
         {deletable && <Delete id={id} hideCard={this.hideCard}/>}
-        {/*editable && <div>edit</div>*/}
+        {/*editable && <Edit />*/}
       </div>
     );
   }
 }
-
-//Card.propTypes = {
-//  greeting: PropTypes.string
-//};
 
 export default Card

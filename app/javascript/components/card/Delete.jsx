@@ -1,5 +1,4 @@
 import React from "react"
-//import PropTypes from "prop-types"
 
 class Delete extends React.Component {
   constructor(props) {
@@ -11,7 +10,7 @@ class Delete extends React.Component {
   handleClick(e) {
     e.preventDefault()
     
-    fetch(`${window.location.pathname}/cards/${this.props.id}`, {
+    fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',

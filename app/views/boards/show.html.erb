@@ -64,7 +64,7 @@
                                             avatar: card.author.avatar.url(:thumb),
                                             body: card.body,
                                             # editable: true,
-                                            deletable: allowed_to?(:destroy?, card) 
+                                            deletable: allowed_to?(:destroy?, card, with: API::CardPolicy) 
                                           }) %>
       <% end %>
     </div>
