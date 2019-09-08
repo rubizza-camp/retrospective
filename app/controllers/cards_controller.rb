@@ -15,14 +15,6 @@ class CardsController < ApplicationController
     redirect_to @board
   end
 
-  def destroy
-    authorize! @card
-    @card.destroy
-    respond_to do |format|
-      format.json { head :ok }
-    end
-  end
-
   private
 
   def card_params

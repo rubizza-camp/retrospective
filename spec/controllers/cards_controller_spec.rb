@@ -17,11 +17,4 @@ RSpec.describe CardsController do
       expect(response).to have_http_status(:redirect)
     end
   end
-
-  context 'POST #destroy' do
-    it 'redirects' do
-      delete :destroy, params: { board_slug: board.slug, id: card.id }
-      expect(response).to have_http_status(:redirect)
-    end
-  end
 end
