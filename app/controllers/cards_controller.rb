@@ -18,11 +18,9 @@ class CardsController < ApplicationController
   def destroy
     authorize! @card
     @card.destroy
-    puts 'destroyeeed!!!'
     respond_to do |format|
       format.json { head :ok }
     end
-    #redirect_to @board, notice: 'Card was successfully deleted.'
   end
 
   private

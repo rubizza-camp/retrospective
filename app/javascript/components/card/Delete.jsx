@@ -9,7 +9,6 @@ class Delete extends React.Component {
   }
 
   handleClick(e) {
-    
     e.preventDefault()
     
     fetch(`${window.location.pathname}/cards/${this.props.id}`, {
@@ -21,24 +20,17 @@ class Delete extends React.Component {
       }
     }).then((result) => {
       if (result.status == 200) {
-        console.log('All good!')
+        this.props.hideCard()
       }
       else { console.log('Error!') }
     })
-
   }
 
   render () {
-    //const {} = this.props;
-
     return (
       <div><a href='' onClick={this.handleClick}>delete</a></div>
     );
   }
 }
-
-//Delete.propTypes = {
-//  greeting: PropTypes.string
-//};
 
 export default Delete
