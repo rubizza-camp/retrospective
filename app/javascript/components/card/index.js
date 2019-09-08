@@ -4,15 +4,19 @@ import React from "react"
 import Delete from "./Delete"
 
 class Card extends React.Component {
+  
+
+
+
   render () {
-    const { body, deletable, editable } = this.props;
+    const { id, body, deletable, editable } = this.props;
 
     return (
-      <React.Fragment>
+      <div className='box' style={{marginBottom: '1.5rem'}}>
         {body}
-        {deletable && <Delete />}
+        {deletable && <Delete id={id}/>}
         {/*editable && <div>edit</div>*/}
-      </React.Fragment>
+      </div>
     );
   }
 }

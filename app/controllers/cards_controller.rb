@@ -16,10 +16,13 @@ class CardsController < ApplicationController
   end
 
   def destroy
-    byebug
     authorize! @card
     @card.destroy
-    redirect_to @board, notice: 'Card was successfully deleted.'
+    puts 'destroyeeed!!!'
+    respond_to do |format|
+      format.json { head :ok }
+    end
+    #redirect_to @board, notice: 'Card was successfully deleted.'
   end
 
   private

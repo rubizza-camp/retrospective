@@ -8,31 +8,31 @@ class Delete extends React.Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick() {
-
-    console.log(`I send delete request to ${window.location.pathname}/cards/1`)
+  handleClick(e) {
     
-    fetch(`${window.location.pathname}/cards/1`, {
+    e.preventDefault()
+    
+    fetch(`${window.location.pathname}/cards/${this.props.id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-      },
-      body: JSON.stringify({
-        mainKey: {
-        innerKey: 'innerValue'
-        }
-      })
+      }
+    }).then((result) => {
+      if (result.status == 200) {
+        console.log('All good!')
+      }
+      else { console.log('Error!') }
     })
-    
+
   }
 
   render () {
     //const {} = this.props;
 
     return (
-      <div><a href='' onClick={this.handleClick}>delete react</a></div>
+      <div><a href='' onClick={this.handleClick}>delete</a></div>
     );
   }
 }
