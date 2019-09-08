@@ -13,7 +13,7 @@ module API
     end
 
     def invite
-      users = Boards::FindUsers.new(board_params[:email]).call
+      users = Boards::FindUsersToInvite.new(board_params[:email], @board).call
       if users
         result = Boards::InviteUsers.new(@board, users).call
         render json: result
