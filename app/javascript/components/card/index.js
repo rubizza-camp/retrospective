@@ -17,13 +17,16 @@ class Card extends React.Component {
   }
   
   render () {
-    const { id, body, deletable, editable } = this.props;
+    const { id, body, deletable, editable, author, avatar } = this.props;
 
     return (
       <div className='box' style={this.state.cardStyle}>
         {body}
-        {deletable && <Delete id={id} hideCard={this.hideCard}/>}
         {/*editable && <Edit />*/}
+
+        <hr style={{margin: '0.5rem'}} />
+        <span>by {author}</span>
+        {deletable && <Delete id={id} hideCard={this.hideCard}/>}
       </div>
     );
   }

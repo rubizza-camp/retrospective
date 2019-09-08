@@ -60,7 +60,7 @@
       <% cards.each do |card| %>
         <%= react_component('card/index', { 
                                             id: card.id,
-                                            author: card.author,
+                                            author: card.author.email.split('@').first,
                                             avatar: card.author.avatar.url(:thumb),
                                             body: card.body,
                                             # editable: true,
