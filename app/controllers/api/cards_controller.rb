@@ -6,7 +6,7 @@ module API
     before_action :set_card
 
     rescue_from ActionPolicy::Unauthorized do |ex|
-      redirect_to @board, alert: ex.result.message
+      render json: { error: ex.result.message }, status: 401
     end
 
     def destroy
