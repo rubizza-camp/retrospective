@@ -9,6 +9,11 @@ module API
       render json: { error: ex.result.message }, status: 401
     end
 
+    def update
+      authorize! @card
+      puts 'we are updating this card for sure yo!'
+    end
+
     def destroy
       authorize! @card
       if @card.destroy

@@ -63,7 +63,7 @@
                                             author: card.author.email.split('@').first,
                                             avatar: card.author.avatar.url(:thumb),
                                             body: card.body,
-                                            # editable: true,
+                                            editable: allowed_to?(:update?, card, with: API::CardPolicy),
                                             deletable: allowed_to?(:destroy?, card, with: API::CardPolicy) 
                                           }) %>
       <% end %>
