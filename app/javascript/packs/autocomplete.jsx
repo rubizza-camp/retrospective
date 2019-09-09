@@ -5,12 +5,12 @@ import Select from 'react-select';
 export class User extends Component {
   constructor(props) {
     super(props);
-    this.email = this.props.email
+    this.user = this.props.user
   };
   render () {
     return (
-      <span className='tag is-info' key={this.email}>
-        {this.email}
+      <span className={this.user.readiness ? 'tag is-success' : 'tag is-info'} key={this.user}>
+        {this.user.email}
       </span>
     );
   }
@@ -22,7 +22,7 @@ export class Autocomplete extends Component {
     super(props);
     this.state = {
       suggestions: [],
-      emails: [],
+      users: [],
       selectedOption: null,
       options: [],
     };
@@ -36,7 +36,7 @@ export class Autocomplete extends Component {
       (result) => {
         this.setState({
           ...this.state,
-          emails: result
+          users: result
         });
       },
     )
@@ -63,9 +63,10 @@ export class Autocomplete extends Component {
       else { throw res }
     }).then (
       (result) => {
+        console.log(result)
         this.setState({
           ...this.state,
-          emails: [...new Set (this.state.emails.concat(result.value.email))],
+          users: [...new Set (this.state.users.concat(result.value))],          
           selectedOption: null
         });
       }
@@ -115,12 +116,12 @@ export class Autocomplete extends Component {
   render() {
     const {
       suggestions,
-      emails
+      users
     } = this.state;
     let usersListComponent;
     usersListComponent =
-      emails.map((email, index) => {
-        return <User email = {email}/>
+      users.map((user, index) => {
+        return <User user = {user}/>
       })
     const components = {
       DropdownIndicator: null,
