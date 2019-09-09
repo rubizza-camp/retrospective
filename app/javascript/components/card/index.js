@@ -1,6 +1,7 @@
 import React from "react"
 
 import Delete from "./Delete"
+import Body from "./Body"
 
 class Card extends React.Component {
   constructor(props) {
@@ -21,8 +22,7 @@ class Card extends React.Component {
 
     return (
       <div className='box' style={this.state.cardStyle}>
-        {body}
-        {/*editable && <Edit />*/}
+        <Body editable={editable} body={body}/>
 
         <hr style={{margin: '0.5rem'}} />
         <span>by {author}</span>
