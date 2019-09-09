@@ -11,12 +11,10 @@ module API
 
     def destroy
       authorize! @card
-      respond_to do |format|
-        if @card.destroy
-          format.json { head :ok }
-        else
-          format.json { redirect_to @board, alert: 'Card delete sequence failed' }
-        end
+      if @card.destroy
+        head :ok
+      else
+        render json: { error: @card.errors.full_messages.join(',') }, status: 400
       end
     end
 

@@ -21,8 +21,12 @@ class Delete extends React.Component {
       if (result.status == 200) {
         this.props.hideCard()
       }
-      else { console.log('Error!') }
-    })
+      else { throw result }
+    }).catch((error) => {
+      error.json().then( errorHash => {
+        console.log(errorHash.error)
+      })
+    });
   }
 
   render () {

@@ -6,9 +6,6 @@ RSpec.describe CardsController do
   # login_user
 
   let_it_be(:board) { create(:board) }
-  let_it_be(:user) { build_stubbed(:user) }
-  let_it_be(:membership) { build_stubbed(:membership, user: user, board: board) }
-  let_it_be(:card) { build_stubbed(:card, board: board, author: user) }
 
   context 'POST #create' do
     it 'redirects' do
