@@ -3,21 +3,18 @@
 module Boards
   class InviteUsers
     include Resultable
-    attr_reader :board, :users_ids
+    attr_reader :board, :users
 
-    def initialize(board, users_ids)
+    def initialize(board, users)
       @board = board
-      @users_ids = users_ids
+      @users = users
     end
 
     def call
-      users_array = []
-      users_ids.each do |id|
-        users_array << { role: 'member', user_id: id }
-      end
+      users_array = users.map { |user| { role: 'member', user_id: user.id } }
       board.memberships.build(users_array)
       board.save
-      users_emails = User.find(users_ids).pluck(:email)
+      users_emails = users.pluck(:email)
       Success(email: users_emails)
     end
   end

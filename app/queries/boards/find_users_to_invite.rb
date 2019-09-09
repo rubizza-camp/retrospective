@@ -10,18 +10,10 @@ module Boards
     end
 
     def call
-      all_users = fitting_team(query_string) + fitting_users(query_string)
-      all_users - board.users.ids
-    end
-
-    private
-
-    def fitting_users(str)
-      User.where(email: str).ids
-    end
-
-    def fitting_team(str)
-      User.joins(:teams).where(teams: { name: str }).ids
+      all_users = User.joins(:teams)
+                      .where('teams.name IN (?) or users.email IN (?)', query_string, query_string)
+                      .distinct
+      all_users - board.users
     end
   end
 end
