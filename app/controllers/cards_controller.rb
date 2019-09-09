@@ -2,7 +2,6 @@
 
 class CardsController < ApplicationController
   before_action :set_board
-  before_action :set_card, only: :destroy
 
   rescue_from ActionPolicy::Unauthorized do |ex|
     redirect_to @board, alert: ex.result.message
@@ -23,9 +22,5 @@ class CardsController < ApplicationController
 
   def set_board
     @board = Board.find_by!(slug: params[:board_slug])
-  end
-
-  def set_card
-    @card = Card.find(params[:id])
   end
 end
