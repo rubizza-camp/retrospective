@@ -5,38 +5,38 @@ class CardBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-                   body: this.props.body 
+                   bodyValue: this.props.body
                  };
 
-
-    
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.buttonClick = this.buttonClick.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
 
+  handleChange(e) {
+    this.setState({inputValue: e.target.value});
   }
 
   handleSubmit(e) {
     e.preventDefault();
+    
+    //if unsuccessful edit
+    this.setState({inputValue: this.props.body});
     console.log('submit happened');
   }
 
-  buttonClick() {
-
-  }
 
   render () {
-    const { editable } = this.props;
-    const { body } = this.state;
+    const { bodyValue, inputValue } = this.state;
 
     return (
       <>
         {/*<div onClick={ ()=> { editable ? console.log('editable') : console.log('non-editable') }}>{body}</div>*/}
         
-        <div className='bordered'>{body}</div>
+        <div>{bodyValue}</div>
+
         <form onSubmit={this.handleSubmit}>
-          <input type='text' defaultValue={body} />
+          <input type='text' defaultValue={bodyValue} value={inputValue} onChange={this.handleChange} />
         </form>
-        <button onClick={this.buttonClick}></button>
       </>
     );
   }

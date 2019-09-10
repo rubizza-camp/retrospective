@@ -23,6 +23,8 @@ class Card extends React.Component {
     return (
       <div className='box' style={this.state.cardStyle}>
         
+                
+
         <CardBody editable={editable} body={body}/>
 
 
