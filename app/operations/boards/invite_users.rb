@@ -14,7 +14,8 @@ module Boards
       users_array = users.map { |user| { role: 'member', user_id: user.id } }
       board.memberships.build(users_array)
       board.save
-      Success(users)
+      emails = users.pluck(:email)
+      Success(emails)
     end
   end
 end

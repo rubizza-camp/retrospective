@@ -13,8 +13,8 @@ module API
     end
 
     def index
-      users = @board.users
-      render json: users, each_serializer: UserSerializer, board_id: @board.id
+      members = @board.memberships
+      render json: members, each_serializer: MembershipSerializer
     end
 
     def ready_status
