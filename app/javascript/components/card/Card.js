@@ -25,7 +25,7 @@ class Card extends React.Component {
         
                 
 
-        <CardBody editable={editable} body={body}/>
+        <CardBody id={id} editable={editable} body={body}/>
 
 
         <hr style={{margin: '0.5rem'}} />
