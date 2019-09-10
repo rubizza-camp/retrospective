@@ -11,6 +11,8 @@ class CardBody extends React.Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+
+    this.onKeyPress = this.onKeyPress.bind(this);
   }
 
   handleChange(e) {
@@ -57,6 +59,14 @@ class CardBody extends React.Component {
     console.log('submit happened');
   }
 
+  onKeyPress(e) {
+    if(e.key === 'Enter'){
+      console.log('enter press!')
+      e.target.blur()
+      e.preventDefault()
+    }
+  }
+
   render () {
     const { bodyValue, inputValue } = this.state;
 
@@ -64,10 +74,10 @@ class CardBody extends React.Component {
       <>
         {/*<div onClick={ ()=> { editable ? console.log('editable') : console.log('non-editable') }}>{body}</div>*/}
         
+        <div contentEditable={true} onKeyPress={this.onKeyPress}>this is an editable div test!</div>
+      
 
-
-        <div contentEditable>{bodyValue}</div>
-
+        <div>{bodyValue}</div>
         <form onSubmit={this.handleSubmit}>
           <input value={inputValue} onChange={this.handleChange} />
         </form>
