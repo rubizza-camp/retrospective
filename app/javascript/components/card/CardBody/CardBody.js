@@ -1,6 +1,6 @@
 import React from "react"
-import './CardBody.css'
-import Textarea from 'react-textarea-autosize';
+import Textarea from "react-textarea-autosize"
+import "./CardBody.css"
 
 class CardBody extends React.Component {
   constructor(props) {
