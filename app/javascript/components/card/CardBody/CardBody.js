@@ -45,7 +45,7 @@ class CardBody extends React.Component {
         'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
       },
       body: JSON.stringify({
-        edited_body: this.state.inputValue 
+        edited_body: this.state.inputValue
       })
     }).then((result) => {
       if (result.status == 200) {
