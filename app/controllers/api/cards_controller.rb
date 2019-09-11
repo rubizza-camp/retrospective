@@ -11,14 +11,11 @@ module API
 
     def update
       authorize! @card
-
       if @card.update(body: params[:edited_body])
         render json: { updated_body: @card.body }, status: 200
       else
         render json: { error: @card.errors.full_messages.join(',') }, status: 400
       end
-
-      puts 'we are updating this card for sure yo!'
     end
 
     def destroy

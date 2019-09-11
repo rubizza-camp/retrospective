@@ -62,8 +62,10 @@ class CardBody extends React.Component {
   onKeyPress(e) {
     if(e.key === 'Enter'){
       console.log('enter press!')
+      console.log(e.target.textContent)
+      //e.target.textContent = 'yyyyyy'
       e.target.blur()
-      e.preventDefault()
+      //e.preventDefault()
     }
   }
 
@@ -74,7 +76,7 @@ class CardBody extends React.Component {
       <>
         {/*<div onClick={ ()=> { editable ? console.log('editable') : console.log('non-editable') }}>{body}</div>*/}
         
-        <div contentEditable={true} onKeyPress={this.onKeyPress}>this is an editable div test!</div>
+        <div contentEditable={true} onKeyPress={this.onKeyPress}>Testcontent</div>
       
 
         <div>{bodyValue}</div>
