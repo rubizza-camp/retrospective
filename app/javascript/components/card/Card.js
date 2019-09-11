@@ -23,10 +23,7 @@ class Card extends React.Component {
     return (
       <div className='box' style={this.state.cardStyle}>
         
-                
-
         <CardBody id={id} editable={editable} body={body}/>
-
 
         <hr style={{margin: '0.5rem'}} />
         <span>by {author}</span>

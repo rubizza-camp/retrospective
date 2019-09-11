@@ -6,19 +6,36 @@ class CardBody extends React.Component {
     super(props);
     this.state = { 
                    dbValue: this.props.body,
-                   inputValue: this.props.body
+                   inputValue: this.props.body,
+                   editMode : false
                  };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.editModeToggle = this.editModeToggle.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.submitRequest = this.submitRequest.bind(this);
+  }
+
+  editModeToggle() {
+    this.setState({
+      ...this.state,
+      editMode: !this.state.editMode
+    });
   }
 
   handleChange(e) {
     this.setState({inputValue: e.target.value});
   }
 
-  handleSubmit() {
+  handleKeyPress(e) {
+    if(e.key === 'Enter'){
+      this.submitRequest()
+      this.editModeToggle()
+      e.preventDefault()
+    }
+  }
+
+  submitRequest() {
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
       method: 'PUT',
       headers: {
@@ -54,23 +71,15 @@ class CardBody extends React.Component {
     });
   }
 
-  onKeyPress(e) {
-    if(e.key === 'Enter'){
-      //this.handleSubmit()
-      e.target.blur()
-      e.preventDefault()
-    }
-  }
-
   render () {
-    const { inputValue } = this.state;
+    const { dbValue, inputValue, editMode } = this.state;
     const { editable } = this.props;
 
     return (
-      <>           
-        {/*<div>{dbValue}</div>*/}
-        <textarea value={inputValue} onChange={this.handleChange} onKeyPress={this.onKeyPress} onBlur={this.handleSubmit} disabled={!editable}/>
-      </>
+      <div> 
+        <div onDoubleClick={ editable ? this.editModeToggle : null } hidden={editMode}>{dbValue}</div>
+        <textarea value={inputValue} onChange={this.handleChange} onKeyPress={this.handleKeyPress} hidden={!editMode}/>
+      </div>
     );
   }
 }
