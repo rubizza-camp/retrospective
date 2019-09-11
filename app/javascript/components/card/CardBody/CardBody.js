@@ -5,13 +5,12 @@ class CardBody extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-                   bodyValue: this.props.body,
+                   dbValue: this.props.body,
                    inputValue: this.props.body
                  };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-
     this.onKeyPress = this.onKeyPress.bind(this);
   }
 
@@ -19,9 +18,7 @@ class CardBody extends React.Component {
     this.setState({inputValue: e.target.value});
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-
+  handleSubmit() {
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
       method: 'PUT',
       headers: {
@@ -38,51 +35,41 @@ class CardBody extends React.Component {
         .then((resultHash) => {
           this.setState({
                           ...this.state,
-                          bodyValue: resultHash.updated_body
+                          dbValue: resultHash.updated_body
                         });
         })
       }
       else { 
         this.setState({
                         ...this.state,
-                        inputValue: this.state.bodyValue
+                        inputValue: this.state.dbValue
                       });
         throw result
       }
     }).catch((error) => {
         error.json()
-          .then((errorHash) => {
-            console.log(errorHash.error)
-          })
+        .then((errorHash) => {
+          console.log(errorHash.error)
+        })
     });
-
-    console.log('submit happened');
   }
 
   onKeyPress(e) {
     if(e.key === 'Enter'){
-      console.log('enter press!')
-      console.log(e.target.textContent)
-      //e.target.textContent = 'yyyyyy'
+      //this.handleSubmit()
       e.target.blur()
-      //e.preventDefault()
+      e.preventDefault()
     }
   }
 
   render () {
-    const { bodyValue, inputValue } = this.state;
+    const { inputValue } = this.state;
+    const { editable } = this.props;
 
     return (
-      <>
-        {/*<div onClick={ ()=> { editable ? console.log('editable') : console.log('non-editable') }}>{body}</div>*/}
-        
-        <div contentEditable={true} onKeyPress={this.onKeyPress}>Testcontent</div>
-      
-
-        <div>{bodyValue}</div>
-        <form onSubmit={this.handleSubmit}>
-          <input value={inputValue} onChange={this.handleChange} />
-        </form>
+      <>           
+        {/*<div>{dbValue}</div>*/}
+        <textarea value={inputValue} onChange={this.handleChange} onKeyPress={this.onKeyPress} onBlur={this.handleSubmit} disabled={!editable}/>
       </>
     );
   }

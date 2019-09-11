@@ -1,3 +1,8 @@
-.hidden { display: none; }
+textarea { 
+           border: none;
+           outline: none;
+           resize: none;
 
-.bordered { border-style: solid; }
+           font-size: 1rem;
+           color: hsl(0, 0%, 29%);
+         }
