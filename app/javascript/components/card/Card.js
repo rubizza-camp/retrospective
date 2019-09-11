@@ -21,8 +21,13 @@ class Card extends React.Component {
 
     return (
       <div className='box' style={this.state.cardStyle}>
-        <CardBody id={id} editable={editable} body={body}/>
-        <CardFooter id={id} author={author} deletable={deletable} hideCard={this.hideCard}/>
+        <CardBody id={id} 
+                  editable={editable}
+                  body={body}/>
+        <CardFooter id={id} 
+                    author={author} 
+                    deletable={deletable} 
+                    hideCard={this.hideCard}/>
       </div>
     );
   }
