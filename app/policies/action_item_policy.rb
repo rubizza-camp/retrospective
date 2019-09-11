@@ -10,8 +10,7 @@ class ActionItemPolicy < ApplicationPolicy
   end
 
   def user_is_creator
-    check?(:user_is_member) &&
-      user.memberships.find_by(board_id: record.board.id).role == 'creator'
+    user.memberships.find_by(board_id: record.board.id, role: 'creator') ? true : false
   end
 
   def user_is_member
