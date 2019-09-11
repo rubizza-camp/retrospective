@@ -1,5 +1,6 @@
 import React from "react"
 import './CardBody.css'
+import Textarea from 'react-textarea-autosize';
 
 class CardBody extends React.Component {
   constructor(props) {
@@ -78,7 +79,7 @@ class CardBody extends React.Component {
     return (
       <div> 
         <div onDoubleClick={ editable ? this.editModeToggle : null } hidden={editMode}>{dbValue}</div>
-        <textarea value={inputValue} onChange={this.handleChange} onKeyPress={this.handleKeyPress} hidden={!editMode}/>
+        <Textarea value={inputValue} onChange={this.handleChange} onKeyPress={this.handleKeyPress} hidden={!editMode}/>
       </div>
     );
   }
