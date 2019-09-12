@@ -3,11 +3,9 @@ import React from "react"
 class CardFooter extends React.Component {
   constructor(props) {
     super(props);
-    
-    this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick(e) {    
+  handleClick = (e) => {    
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
       method: 'DELETE',
       headers: {

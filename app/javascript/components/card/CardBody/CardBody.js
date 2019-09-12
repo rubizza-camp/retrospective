@@ -10,28 +10,20 @@ class CardBody extends React.Component {
       inputValue: this.props.body,
       editMode : false
     };
-
-    this.editModeToggle = this.editModeToggle.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
-    this.submitRequest = this.submitRequest.bind(this);
   }
 
-  editModeToggle() {
-    this.setState({
-      ...this.state,
-      editMode: !this.state.editMode
-    });
+  editModeToggle = () => {
+    this.setState({editMode: !this.state.editMode});
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     this.setState({inputValue: e.target.value});
   }
 
-  handleKeyPress(e) {
+  handleKeyPress = (e) => {
     if(e.key === 'Enter'){
-      this.submitRequest()
       this.editModeToggle()
+      this.submitRequest()
       e.preventDefault()
     }
   }
@@ -51,17 +43,11 @@ class CardBody extends React.Component {
       if (result.status == 200) {
         result.json()
         .then((resultHash) => {
-          this.setState({
-            ...this.state,
-            dbValue: resultHash.updated_body
-          });
+          this.setState({dbValue: resultHash.updated_body});
         })
       }
       else { 
-        this.setState({
-          ...this.state,
-          inputValue: this.state.dbValue
-        });
+        this.setState({inputValue: this.state.dbValue});
         throw result
       }
     }).catch((error) => {
@@ -73,12 +59,14 @@ class CardBody extends React.Component {
   }
 
   render () {
-    const { dbValue, inputValue, editMode } = this.state;
+    const { inputValue, editMode } = this.state;
     const { editable } = this.props;
 
     return (
       <div> 
-        <div onDoubleClick={ editable ? this.editModeToggle : null } hidden={editMode}>{dbValue}</div>
+        <div onDoubleClick={ editable ? this.editModeToggle : null } hidden={editMode}>
+          {inputValue}
+        </div>
         <Textarea value={inputValue} 
                   onChange={this.handleChange} 
                   onKeyPress={this.handleKeyPress} 
