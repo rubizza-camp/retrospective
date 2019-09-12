@@ -7,16 +7,16 @@ class User extends Component {
     this.email = this.props.membership.user.email
     this.id = this.props.membership.id
     this.state = {
-      displayUser: {}
+      displayStyle: {}
     }
   };
-  
+
   hideUser(e) {
     this.setState({
       ...this.state,
-      displayUser: {display: 'none'}
+      displayStyle: {display: 'none'}
     })
-  }
+  };
 
   deleteUser = (e) =>  {
     fetch(`/api/${window.location.pathname}/memberships/${this.id}`, {
@@ -42,11 +42,10 @@ class User extends Component {
   render () {
     return (
       <React.Fragment>
-        <div className={this.ready ? 'tag is-success' : 'tag is-info'} key={this.email} style={this.state.displayUser}>
+        <div className={this.ready ? 'tag is-success' : 'tag is-info'} key={this.email} style={this.state.displayStyle}>
           <p>{this.email}</p>
-           <p>{this.id}</p>
           <a className='delete is-small' onClick={this.deleteUser}></a>
-        </div>  
+        </div>
       </React.Fragment>
     );
   }

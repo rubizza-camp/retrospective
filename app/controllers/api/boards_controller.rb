@@ -16,7 +16,7 @@ module API
       users = Boards::FindUsersToInvite.new(board_params[:email], @board).call
       if users.any?
         result = Boards::InviteUsers.new(@board, users).call
-        render json: result.value!
+        render json: result.value!, each_serializer: MembershipSerializer
       else
         render json: { error: 'User was not found' }, status: 400
       end

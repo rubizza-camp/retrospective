@@ -51,14 +51,9 @@ export class Autocomplete extends Component {
       else { throw res }
     }).then (
       (result) => {
-        const new_memberships = result.map(function (a) {
-          return {
-            user: {email: a}
-          }
-        });
         this.setState({
           ...this.state,
-          memberships: [...new Set (this.state.memberships.concat(new_memberships))],
+          memberships: [...new Set (this.state.memberships.concat(result))],
           selectedOption: null
         });
       }
