@@ -18,7 +18,8 @@ module API
     end
 
     def destroy
-      if @membership.destroy
+      membership = Membership.find(params[:id])
+      if membership.destroy
         head :ok
       else
         render json: { error: @card.errors.full_messages.join(',') }, status: 400
