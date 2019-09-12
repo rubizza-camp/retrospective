@@ -17,6 +17,14 @@ module API
       render json: members, each_serializer: MembershipSerializer
     end
 
+    def destroy
+      if @membership.destroy
+        head :ok
+      else
+        render json: { error: @card.errors.full_messages.join(',') }, status: 400
+      end
+    end
+
     def ready_status
       render json: @membership.ready
     end

@@ -8,11 +8,42 @@ export class User extends Component {
     this.ready = this.props.membership.ready
     this.email = this.props.membership.user.email
   };
+  
+
+
+  deleteUser(e) {
+    e.preventDefault()
+    
+    fetch(`/api/${window.location.pathname}/memberships/1`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
+      }
+    }).then((result) => {
+      if (result.status == 200) {
+        // this.hideUser()
+        console.log('USER WAS DELETED')
+      }
+      else { throw result }
+    }).catch((error) => {
+      error.json().then( errorHash => {
+        console.log(errorHash.error)
+      })
+    });
+  }
+
+
   render () {
     return (
-      <span className={this.ready ? 'tag is-success' : 'tag is-info'} key={this.email}>
-        {this.email}
-      </span>
+      <React.Fragment>
+        <div className={this.ready ? 'tag is-success' : 'tag is-info'} key={this.email}>
+          <p>{this.email}</p>
+          <a className='delete is-small' onClick={this.deleteUser}></a>
+        </div>
+
+      </React.Fragment>
     );
   }
 };
