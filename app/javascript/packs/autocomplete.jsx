@@ -5,11 +5,12 @@ import Select from 'react-select';
 export class User extends Component {
   constructor(props) {
     super(props);
-    this.email = this.props.email
+    this.ready = this.props.membership.ready
+    this.email = this.props.membership.user.email
   };
   render () {
     return (
-      <span className='tag is-info' key={this.email}>
+      <span className={this.ready ? 'tag is-success' : 'tag is-info'} key={this.email}>
         {this.email}
       </span>
     );
@@ -22,7 +23,7 @@ export class Autocomplete extends Component {
     super(props);
     this.state = {
       suggestions: [],
-      emails: [],
+      memberships: [],
       selectedOption: null,
       options: [],
     };
@@ -36,7 +37,7 @@ export class Autocomplete extends Component {
       (result) => {
         this.setState({
           ...this.state,
-          emails: result
+          memberships: result
         });
       },
     )
@@ -63,14 +64,23 @@ export class Autocomplete extends Component {
       else { throw res }
     }).then (
       (result) => {
+        const new_memberships = result.map(function (a) {
+          return {
+            user: {email: a}
+          }
+        });
         this.setState({
           ...this.state,
-          emails: [...new Set (this.state.emails.concat(result.value.email))],
+          memberships: [...new Set (this.state.memberships.concat(new_memberships))],
           selectedOption: null
         });
       }
     ).catch((error) => {
       console.log(error)
+      this.setState({
+          ...this.state,
+         selectedOption: null
+        });
        error.text().then( errorMessage => {
         console.log(errorMessage)
       })
@@ -115,12 +125,12 @@ export class Autocomplete extends Component {
   render() {
     const {
       suggestions,
-      emails
+      memberships
     } = this.state;
     let usersListComponent;
     usersListComponent =
-      emails.map((email, index) => {
-        return <User email = {email}/>
+      memberships.map((membership, index) => {
+        return <User membership = {membership}/>
       })
     const components = {
       DropdownIndicator: null,
