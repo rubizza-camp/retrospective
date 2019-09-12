@@ -9,7 +9,7 @@ module API
     skip_verify_authorized only: :index
 
     rescue_from ActionPolicy::Unauthorized do |ex|
-      redirect_to @board, alert: ex.result.message
+      render json: { error: ex.result.message }, status: 401
     end
 
     def index
@@ -18,11 +18,11 @@ module API
     end
 
     def destroy
-      membership = Membership.find(params[:id])
-      if membership.destroy
+      member = Membership.find(params[:id])
+      if member.destroy
         head :ok
       else
-        render json: { error: @card.errors.full_messages.join(',') }, status: 400
+        render json: { error: member.errors.full_messages.join(',') }, status: 400
       end
     end
 
