@@ -6,9 +6,7 @@ class User extends Component {
     this.ready = this.props.membership.ready
     this.email = this.props.membership.user.email
     this.id = this.props.membership.id
-    this.state = {
-      displayStyle: {}
-    }
+    this.state = { }
   };
 
   hideUser(e) {

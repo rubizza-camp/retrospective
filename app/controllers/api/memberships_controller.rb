@@ -9,7 +9,7 @@ module API
     skip_verify_authorized only: :index
 
     rescue_from ActionPolicy::Unauthorized do |ex|
-      render json: { error: ex.result.message }, status: 401
+      render json: { error: ex.result.message }, status: :unauthorized
     end
 
     def index
@@ -22,7 +22,7 @@ module API
       if member.destroy
         head :ok
       else
-        render json: { error: member.errors.full_messages.join(',') }, status: 400
+        render json: { error: member.errors.full_messages.join(',') }, status: :bad_request
       end
     end
 

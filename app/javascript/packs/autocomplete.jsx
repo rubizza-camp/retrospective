@@ -14,7 +14,6 @@ export class Autocomplete extends Component {
       selectedOption: null,
       options: [],
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
   };
 
   componentDidMount = (e) => {
