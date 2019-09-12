@@ -14,7 +14,7 @@ module API
       if @card.update(body: params.permit(:edited_body)[:edited_body])
         render json: { updated_body: @card.body }, status: :ok
       else
-        render json: { error: { body: @card.errors.full_messages.join(',') } }, status: :bad_request
+        render json: { error: @card.errors }, status: :bad_request
       end
     end
 
