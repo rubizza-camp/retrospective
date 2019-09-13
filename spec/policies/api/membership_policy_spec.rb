@@ -9,7 +9,7 @@ RSpec.describe API::MembershipPolicy do
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { build(:membership, user_id: member.id, board_id: board.id) }
   let_it_be(:creatorship) do
-    create(:membership, user_id: creator.id, board_id: board.id, role: 'creator') 
+    create(:membership, user_id: creator.id, board_id: board.id, role: 'creator')
   end
   let_it_be(:successful_policy) { described_class.new(membership, user: member) }
   let_it_be(:failed_policy) { described_class.new(membership, user: not_a_member) }
@@ -64,5 +64,4 @@ RSpec.describe API::MembershipPolicy do
       expect(failed_policy.apply(:user_is_creator?)).to eq false
     end
   end
-
 end

@@ -3,17 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe API::MembershipsController do
-  login_user
+  let(:current_user) { create(:user, :github) }
+  let(:deleted_user) { create(:user, email: 'test@test.ru') }
 
-  let_it_be(:board) { create(:board) }
-  let_it_be(:user) { create(:user) }
-  let_it_be(:membership) do
-    create(:membership, user_id: user.id, board_id: board.id, role: 'creator') 
+  before do
+    login_as current_user
+  end
+
+  let(:board) { create(:board) }
+
+  let(:membership) { create(:membership, board: board, user: deleted_user) }
+  let!(:current_membership) do
+    create(:membership, user: current_user, board: board, role: 'creator')
   end
 
   context 'DELETE #destroy' do
-    it 'redirects' do
-      destroy :destroy, params: { id: membership.id }
+    it 'respond with no_content' do
+      delete :destroy, params: { board_slug: board.slug, id: membership.id }
       expect(response).to have_http_status(:no_content)
     end
   end
