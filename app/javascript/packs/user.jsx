@@ -28,14 +28,15 @@ class User extends Component {
       if (result.status == 200) {
         this.hideUser()
       }
-      else { throw result }
+      else {
+        throw result
+      }
     }).catch((error) => {
       error.json().then( errorHash => {
         console.log(errorHash.error)
       })
     });
   }
-
 
   render () {
     return (
