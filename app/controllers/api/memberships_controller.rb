@@ -1,16 +1,12 @@
 # frozen_string_literal: true
 
 module API
-  class MembershipsController < ApplicationController
-    before_action :authenticate_user!, :set_board, :set_membership
+  class MembershipsController < API::ApplicationController
+    before_action :set_board, :set_membership
     before_action except: :index do
       authorize! @membership
     end
     skip_verify_authorized only: :index
-
-    rescue_from ActionPolicy::Unauthorized do |ex|
-      render json: { error: ex.result.message }, status: :unauthorized
-    end
 
     def index
       members = @board.memberships

@@ -1,15 +1,10 @@
 # frozen_string_literal: true
 
 module API
-  class BoardsController < ApplicationController
-    before_action :authenticate_user!
+  class BoardsController < API::ApplicationController
     before_action :set_board
     before_action do
       authorize! @board
-    end
-
-    rescue_from ActionPolicy::Unauthorized do |ex|
-      redirect_to @board, alert: ex.result.message
     end
 
     def invite
