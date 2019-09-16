@@ -9,14 +9,14 @@ class ActionItemsController < ApplicationController
   end
 
   def create
+    authorize! @board, with: ActionItemPolicy
     action_item = @board.action_items.build(action_item_params)
-    authorize! action_item
     action_item.save!
     redirect_to @board
   end
 
   def move
-    authorize! @action_item
+    authorize! @board, with: ActionItemPolicy
     @action_item.board_id = @board.id
     if @action_item.save!
       redirect_to @board, notice: 'Action Item was successfully moved'
