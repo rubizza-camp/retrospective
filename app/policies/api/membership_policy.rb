@@ -19,7 +19,7 @@ module API
     end
 
     def user_is_creator?
-      user.memberships.find_by(board_id: record.board.id, role: 'creator') ? true : false
+      user.memberships.exists?(board_id: record.board.id, role: 'creator')
     end
   end
 end

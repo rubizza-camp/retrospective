@@ -18,7 +18,7 @@ module API
       if member.destroy
         head :no_content
       else
-        render json: { error: member.errors.full_messages.join(',') }, status: :bad_request
+        render json: { error: member.errors }, status: :bad_request
       end
     end
 
