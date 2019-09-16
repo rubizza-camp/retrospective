@@ -2,7 +2,7 @@
 
 class ActionItemPolicy < ApplicationPolicy
   def create?
-    check?(:user_is_member)
+    check?(:user_is_creator)
   end
 
   def move?
@@ -11,9 +11,5 @@ class ActionItemPolicy < ApplicationPolicy
 
   def user_is_creator
     user.memberships.find_by(board_id: record.id, role: 'creator') ? true : false
-  end
-
-  def user_is_member
-    record.users.include?(user)
   end
 end
