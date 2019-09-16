@@ -17,10 +17,10 @@ RSpec.describe API::MembershipPolicy do
 
   context '#ready_status?' do
     context 'when user is a member' do
-      it {  expect(member_policy.apply(:ready_toggle?)).to eq true }
+      it {  expect(member_policy.apply(:ready_status?)).to eq true }
     end
     context 'when user is not a member' do
-      it {  expect(failed_policy.apply(:ready_toggle?)).to eq false }
+      it {  expect(failed_policy.apply(:ready_status?)).to eq false }
     end
   end
 
