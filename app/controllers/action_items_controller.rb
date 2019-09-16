@@ -3,20 +3,21 @@
 class ActionItemsController < ApplicationController
   before_action :set_board
   before_action :set_action_item, only: %i[move]
+  before_action do
+    authorize! @board, with: ActionItemPolicy
+  end
 
   rescue_from ActionPolicy::Unauthorized do |ex|
     redirect_to @board, alert: ex.result.message
   end
 
   def create
-    authorize! @board, with: ActionItemPolicy
     action_item = @board.action_items.build(action_item_params)
     action_item.save!
     redirect_to @board
   end
 
   def move
-    authorize! @board, with: ActionItemPolicy
     @action_item.board_id = @board.id
     if @action_item.save!
       redirect_to @board, notice: 'Action Item was successfully moved'
