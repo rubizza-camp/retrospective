@@ -1,0 +1,29 @@
+{ 
+  "title": "boards#invite response json",
+  "description": "contains an array of objects of newly invited to the board users",
+  "type": "array",
+  "uniqueItems": true,
+  "items": {
+    "description": "user data",
+    "type": "object",
+    "properties": {
+      "id": {
+        "type": "number"
+      },
+      "ready": {
+        "type": "boolean"
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "required": ["email"]
+      }
+    },
+    "required": ["id","ready","user"]
+  }
+}

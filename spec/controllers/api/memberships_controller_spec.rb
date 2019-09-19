@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe API::MembershipsController do
   let(:current_user) { create(:user) }
   let(:deleted_user) { create(:user) }
