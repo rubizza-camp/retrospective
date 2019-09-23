@@ -16,7 +16,7 @@ module API
     def destroy
       member = Membership.find(params[:id])
       if member.destroy
-        head :no_content
+        head :ok
       else
         render json: { error: member.errors }, status: :bad_request
       end

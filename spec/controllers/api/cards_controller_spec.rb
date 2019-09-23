@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe API::CardsController do
-  let_it_be(:authorized_user) { create(:user) }
-  let_it_be(:unauthorized_user) { create(:user) }
+  let_it_be(:author) { create(:user) }
+  let_it_be(:not_author) { create(:user) }
   let_it_be(:board) { create(:board) }
-  let_it_be(:card) { create(:card, author: authorized_user) }
+  let_it_be(:card) { create(:card, author: author) }
 
   describe 'DELETE #destroy' do
     subject(:response) { delete :destroy, params: params }
@@ -15,13 +15,13 @@ RSpec.describe API::CardsController do
     end
 
     context 'when user is logged_in' do
-      context 'when user is unauthorized' do
-        before { login_as unauthorized_user }
+      context 'when user is not the card author' do
+        before { login_as not_author }
         it_behaves_like 'an unauthorized action'
       end
 
-      context 'when user is authorized' do
-        before { login_as authorized_user }
+      context 'when user is the card author' do
+        before { login_as author }
         it_behaves_like 'a successful action'
       end
     end
@@ -42,13 +42,13 @@ RSpec.describe API::CardsController do
     end
 
     context 'when user is logged_in' do
-      context 'when user is unauthorized' do
-        before { login_as unauthorized_user }
+      context 'when user is not the card author' do
+        before { login_as not_author }
         it_behaves_like 'an unauthorized action'
       end
 
-      context 'when user is authorized' do
-        before { login_as authorized_user }
+      context 'when user is the card author' do
+        before { login_as author }
 
         context 'when params are not valid' do
           let_it_be(:params) { params.merge edited_body: nil }

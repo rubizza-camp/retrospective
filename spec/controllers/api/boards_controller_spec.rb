@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe API::BoardsController do
-  let_it_be(:authorized_user) { create(:user) }
-  let_it_be(:unauthorized_user) { create(:user) }
+  let_it_be(:member) { create(:user) }
+  let_it_be(:not_member) { create(:user) }
   let_it_be(:board) { create(:board) }
-  let_it_be(:membership) { create(:membership, board_id: board.id, user_id: authorized_user.id) }
+  let_it_be(:membership) { create(:membership, board: board, user: member) }
 
   describe 'POST #invite' do
     subject(:response) { post :invite, params: params }
@@ -15,17 +15,17 @@ RSpec.describe API::BoardsController do
     end
 
     context 'when user is logged_in' do
-      context 'when user is unauthorized' do
-        before { login_as unauthorized_user }
+      context 'when user is not a board member' do
+        before { login_as not_member }
         it_behaves_like 'an unauthorized action'
       end
 
-      context 'when user is authorized' do
-        before { login_as authorized_user }
+      context 'when user is a board member' do
+        before { login_as member }
         let_it_be(:invitee_1) { create(:user) }
         let_it_be(:invitee_2) { create(:user) }
         let_it_be(:invitee_3) { create(:user) }
-        let_it_be(:membership) { create(:membership, board_id: board.id, user_id: invitee_3.id) }
+        let_it_be(:membership) { create(:membership, board: board, user: invitee_3) }
 
         context 'when params are not valid or no new users to invite' do
           let_it_be(:params) do
@@ -64,13 +64,13 @@ RSpec.describe API::BoardsController do
     end
 
     context 'when user is logged_in' do
-      context 'when user is unauthorized' do
-        before { login_as unauthorized_user }
+      context 'when user is not a board member' do
+        before { login_as not_member }
         it_behaves_like 'an unauthorized action'
       end
 
-      context 'when user is authorized' do
-        before { login_as authorized_user }
+      context 'when user is a board member' do
+        before { login_as member }
         let_it_be(:suggestion_user_1) { create(:user, email: 'suggestion_user_1@example.com') }
         let_it_be(:suggestion_user_2) { create(:user, email: 'SUGGESTION_USER_2@example.com') }
         let_it_be(:non_suggestion_user) { create(:user, email: 'non_suggestion_user@example.com') }

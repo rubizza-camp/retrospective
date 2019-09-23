@@ -71,6 +71,7 @@ group :test do
   gem 'webmock'
   gem 'test-prof'
   gem 'json_matchers'
+  gem 'database_cleaner'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
