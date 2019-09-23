@@ -40,6 +40,48 @@ RSpec.describe ActionItemPolicy do
     end
   end
 
+  describe '#close?' do
+    subject { policy.apply(:close?) }
+
+    context 'when user is a creator' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a creator' do
+      let(:test_user) { not_a_creator }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#complete?' do
+    subject { policy.apply(:complete?) }
+
+    context 'when user is a creator' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a creator' do
+      let(:test_user) { not_a_creator }
+      it { is_expected.to eq false }
+    end
+  end
+
+  describe '#reopen?' do
+    subject { policy.apply(:reopen?) }
+
+    context 'when user is a creator' do
+      let(:test_user) { member }
+      it { is_expected.to eq true }
+    end
+
+    context 'when user is not a creator' do
+      let(:test_user) { not_a_creator }
+      it { is_expected.to eq false }
+    end
+  end
+
   describe '#user_is_creator?' do
     subject { policy.apply(:user_is_creator?) }
 

@@ -11,6 +11,18 @@ class ActionItemPolicy < ApplicationPolicy
     check?(:user_is_creator?)
   end
 
+  def close?
+    check?(:user_is_creator?)
+  end
+
+  def complete?
+    check?(:user_is_creator?)
+  end
+
+  def reopen?
+    check?(:user_is_creator?)
+  end
+
   def user_is_creator?
     board.creator?(user)
   end
