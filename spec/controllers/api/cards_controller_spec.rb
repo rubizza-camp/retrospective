@@ -22,7 +22,7 @@ RSpec.describe API::CardsController do
 
       context 'when user is the card author' do
         before { login_as author }
-        it_behaves_like 'a successful action'
+        it_behaves_like 'a successful action', :no_content
       end
     end
   end

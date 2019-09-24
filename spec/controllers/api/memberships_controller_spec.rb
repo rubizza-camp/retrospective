@@ -48,7 +48,7 @@ RSpec.describe API::MembershipsController do
 
       context 'when user is the board creator' do
         before { login_as creator }
-        it_behaves_like 'a successful action'
+        it_behaves_like 'a successful action', :no_content
       end
     end
   end

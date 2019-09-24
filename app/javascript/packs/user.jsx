@@ -25,7 +25,7 @@ class User extends Component {
         'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
       }
     }).then((result) => {
-      if (result.status == 200) {
+      if (result.status == 204) {
         this.hideUser()
       }
       else { 
