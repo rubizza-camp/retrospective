@@ -1,6 +1,6 @@
 {
   "title": "boards#suggestions response json",
-  "description": "contains users and teams autocomplete suggestions in form of the arrays of strings as corresponding hash values",
+  "description": "contains users and teams data in form of the arrays of strings as corresponding hash values",
   "type": "object",
   "properties": {
     "users": {
