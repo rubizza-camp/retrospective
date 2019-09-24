@@ -71,7 +71,7 @@ RSpec.describe API::MembershipsController do
         before { login_as member }
         it_behaves_like 'a successful action'
         it 'responds with default boolean false ready status for newly created membership' do
-          expect(json_body).to be_falsy
+          expect(json_body).to eq false
         end
       end
     end
@@ -95,7 +95,7 @@ RSpec.describe API::MembershipsController do
         before { login_as member }
         it_behaves_like 'a successful action'
         it 'switches boolean ready status value for existing memberships' do
-          expect(json_body).to be_truthy
+          expect(json_body).to eq true
         end
       end
     end

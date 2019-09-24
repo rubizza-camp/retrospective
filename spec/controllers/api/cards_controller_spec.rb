@@ -14,7 +14,7 @@ RSpec.describe API::CardsController do
       it_behaves_like 'an unauthenticated action'
     end
 
-    context 'when user is logged_in' do
+    context 'when user is logged in' do
       context 'when user is not the card author' do
         before { login_as not_author }
         it_behaves_like 'an unauthorized action'
@@ -58,7 +58,7 @@ RSpec.describe API::CardsController do
         context 'when params are valid' do
           it_behaves_like 'a successful action'
           it { is_expected.to match_json_schema('api/cards/update') }
-          it { expect(json_body['updated_body']).to eql params[:edited_body] }
+          it { expect(json_body['updated_body']).to eq params[:edited_body] }
         end
       end
     end
