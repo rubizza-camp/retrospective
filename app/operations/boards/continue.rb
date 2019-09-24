@@ -28,8 +28,11 @@ module Boards
     def duplicate_memberships
       prev_board.memberships
                 .map(&:dup)
-                .each { |member| member.role = 'member' }
                 .delete_if { |member| member.user == current_user }
+                .each do |member|
+                  member.role = 'member'
+                  member.ready = false
+                end
     end
 
     def default_board_name
