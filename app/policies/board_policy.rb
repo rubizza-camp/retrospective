@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class BoardPolicy < ApplicationPolicy
-
   def index?
     true
   end
@@ -28,10 +27,6 @@ class BoardPolicy < ApplicationPolicy
 
   def continue?
     user_is_creator?
-  end
-
-  def user_is_member?
-    record.member?(user)
   end
 
   def user_is_creator?
