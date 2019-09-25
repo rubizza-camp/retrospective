@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe ActionItemsController do
   let_it_be(:board) { create(:board) }
   let_it_be(:action_item) { create(:action_item) }
+  let_it_be(:closed_action_item) { create(:action_item, status: 'closed') }
   let_it_be(:creator) { create(:user) }
   let_it_be(:member) { create(:user) }
   let_it_be(:not_member) { create(:user) }
@@ -142,7 +143,7 @@ RSpec.describe ActionItemsController do
     subject(:response) { put :reopen, params: params }
     let_it_be(:params) do
       { board_slug: board.slug,
-        id: action_item.id }
+        id: closed_action_item.id }
     end
 
     context 'when user is not logged in' do

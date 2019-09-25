@@ -10,6 +10,7 @@ RSpec.describe ActionItemPolicy do
     create(:membership, user_id: member.id, board_id: board.id, role: 'creator')
   end
   let_it_be(:action_item) { build_stubbed(:action_item, board: board) }
+  let_it_be(:closed_action_item) { build_stubbed(:action_item, board: board, status: 'closed') }
   let(:policy) { described_class.new(action_item, user: test_user, board: board) }
 
   describe '#create?' do
@@ -69,6 +70,7 @@ RSpec.describe ActionItemPolicy do
   end
 
   describe '#reopen?' do
+    let(:policy) { described_class.new(closed_action_item, user: test_user, board: board) }
     subject { policy.apply(:reopen?) }
 
     context 'when user is a creator' do

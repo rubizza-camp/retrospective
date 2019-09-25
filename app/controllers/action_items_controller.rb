@@ -40,7 +40,7 @@ class ActionItemsController < ApplicationController
   end
 
   def complete
-    if @action_item.done!
+    if @action_item.complete!
       redirect_to @board, notice: 'Action Item was successfully completed'
     else
       redirect_to @board, alert: @action_item.errors.full_messages.join(', ')
@@ -48,7 +48,7 @@ class ActionItemsController < ApplicationController
   end
 
   def reopen
-    if @action_item.pending!
+    if @action_item.reopen!
       redirect_to @board, notice: 'Action Item was successfully reopend'
     else
       redirect_to @board, alert: @action_item.errors.full_messages.join(', ')

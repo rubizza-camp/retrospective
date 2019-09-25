@@ -1,26 +1,28 @@
 # frozen_string_literal: true
 
 class ActionItem < ApplicationRecord
+  include AASM
+
   belongs_to :board
 
   validates_presence_of :body, :status
 
-  def close!
-    self.status = 'closed'
-    save
-  end
+  aasm column: 'status' do
+    state :pending, initial: true
+    state :closed
+    state :done
 
-  def done!
-    self.status = 'done'
-    save
-  end
+    event :close do
+      transitions from: :pending, to: :closed
+    end
 
-  def pending!
-    self.status = 'pending'
-    save
-  end
+    event :complete do
+      transitions from: :pending, to: :done
+    end
 
-  def pending?
-    status == 'pending'
+    event :reopen do
+      transitions from: :closed, to: :pending
+      transitions from: :done, to: :pending
+    end
   end
 end
