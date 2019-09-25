@@ -23,8 +23,7 @@ class ActionItemsController < ApplicationController
   end
 
   def move
-    @action_item.board_id = @board.id
-    if @action_item.save
+    if @action_item.move!(@board)
       redirect_to @board, notice: 'Action Item was successfully moved'
     else
       redirect_to @board, alert: @action_item.errors.full_messages.join(', ')

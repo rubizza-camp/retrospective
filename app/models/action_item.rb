@@ -25,4 +25,9 @@ class ActionItem < ApplicationRecord
       transitions from: :done, to: :pending
     end
   end
+
+  def move!(board)
+    self.board_id = board.id
+    save
+  end
 end

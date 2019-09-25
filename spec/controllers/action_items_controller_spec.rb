@@ -16,6 +16,8 @@ RSpec.describe ActionItemsController do
     create(:membership, board: board, user: member, role: 'member')
   end
 
+  before { bypass_rescue }
+
   describe 'PUT #create' do
     subject(:response) { post :create, params: params }
     let_it_be(:params) do
@@ -30,12 +32,16 @@ RSpec.describe ActionItemsController do
     context 'when user is logged_in' do
       context 'user is not a board member' do
         before { login_as not_member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { post :create, params: params }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is a board member' do
         before { login_as member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { post :create, params: params }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is the board creator' do
@@ -66,12 +72,16 @@ RSpec.describe ActionItemsController do
     context 'when user is logged_in' do
       context 'user is not a board member' do
         before { login_as not_member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is a board member' do
         before { login_as member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is the board creator' do
@@ -95,12 +105,16 @@ RSpec.describe ActionItemsController do
     context 'when user is logged_in' do
       context 'user is not a board member' do
         before { login_as not_member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is a board member' do
         before { login_as member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is the board creator' do
@@ -124,12 +138,16 @@ RSpec.describe ActionItemsController do
     context 'when user is logged_in' do
       context 'user is not a board member' do
         before { login_as not_member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is a board member' do
         before { login_as member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is the board creator' do
@@ -153,12 +171,16 @@ RSpec.describe ActionItemsController do
     context 'when user is logged_in' do
       context 'user is not a board member' do
         before { login_as not_member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is a board member' do
         before { login_as member }
-        it { is_expected.to have_http_status(:redirect) }
+        it 'raises error ActionPolicy::Unauthorized' do
+          expect { subject }.to raise_error(ActionPolicy::Unauthorized)
+        end
       end
 
       context 'user is the board creator' do
