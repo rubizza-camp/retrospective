@@ -23,7 +23,7 @@ class Board < ApplicationRecord
   end
 
   def continued?
-    Board.exists?(previous_board_id: self.id)
+    Board.exists?(previous_board_id: id)
   end
 
   private
