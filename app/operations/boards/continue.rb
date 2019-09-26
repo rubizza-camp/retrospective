@@ -11,6 +11,10 @@ module Boards
     end
 
     def call
+      if prev_board.continued?
+        raise StandardError.new "This board was already continued! Only one continuation per board is allowed!"  
+      end
+
       new_board = Board.new(
         title: default_board_name,
         previous_board_id: prev_board.id

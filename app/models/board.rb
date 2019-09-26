@@ -22,6 +22,10 @@ class Board < ApplicationRecord
     member?(user, 'creator')
   end
 
+  def continued?
+    Board.exists?(previous_board_id: self.id)
+  end
+
   private
 
   def set_slug
