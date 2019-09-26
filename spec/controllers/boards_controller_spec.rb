@@ -28,6 +28,13 @@ RSpec.describe BoardsController do
     end
   end
 
+  #context 'GET #edit' do
+  #  it 'returns http success' do
+  #    get :edit, params: { slug: board.slug }
+  #    expect(response).to have_http_status(:success)
+  #  end
+  #end
+
   context 'POST #create' do
     it 'redirects if params valid' do
       post :create, params: { board: FactoryBot.attributes_for(:board) }

@@ -72,4 +72,17 @@ RSpec.describe Board, type: :model do
       it { is_expected.to eq false }
     end
   end
+
+  describe '#continued?' do
+    let_it_be(:prev_board) { create(:board) }
+    let_it_be(:next_board) { create(:board, previous_board: prev_board) }
+
+    context 'when the board was continued' do
+      it { expect(prev_board.continued?).to eq true }
+    end
+
+    context 'when the board was not continued' do
+      it { expect(next_board.continued?).to eq false }
+    end
+  end
 end
