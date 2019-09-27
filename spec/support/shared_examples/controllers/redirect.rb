@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Security/Eval
+
 RSpec.shared_examples :controllers_redirect do |path|
   include Rails.application.routes.url_helpers
 
@@ -7,3 +9,5 @@ RSpec.shared_examples :controllers_redirect do |path|
   # controversial eval usage
   it { is_expected.to redirect_to(eval(path.to_s)) }
 end
+
+# rubocop:enable Security/Eval

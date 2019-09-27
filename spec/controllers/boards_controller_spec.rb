@@ -95,7 +95,8 @@ RSpec.describe BoardsController do
       context 'when params are valid' do
         let_it_be(:params) { params.merge board: { title: Date.today.strftime('%d-%m-%Y') } }
 
-        # no idea how to check redirection to the show view for the object created by the subject call
+        # no idea how to check redirection to the show view
+        # for the object created by the subject call
         it { is_expected.to have_http_status(:redirect) }
       end
     end

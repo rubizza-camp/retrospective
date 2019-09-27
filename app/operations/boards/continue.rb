@@ -10,9 +10,11 @@ module Boards
       @current_user = current_user
     end
 
+    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def call
       if prev_board.continued?
-        raise StandardError, 'This board was already continued! Only one continuation per board is allowed!'
+        raise StandardError,
+              'This board was already continued! Only one continuation per board is allowed!'
       end
 
       new_board = Board.new(
@@ -28,6 +30,7 @@ module Boards
     rescue StandardError => e
       Failure(e)
     end
+    # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
     def duplicate_memberships
       prev_board.memberships
