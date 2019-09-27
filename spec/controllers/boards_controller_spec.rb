@@ -138,9 +138,8 @@ RSpec.describe BoardsController do
     end
   end
 
-  describe 'PATCH #destroy' do
-    subject(:response) { delete :destroy, params: params }
-    let_it_be(:params) { { slug: board.slug } }
+  describe 'DELETE #destroy' do
+    subject(:response) { delete :destroy, params: { slug: board.slug } }
 
     context 'when user is not logged in' do
       it_behaves_like :controllers_unauthenticated_action
@@ -162,5 +161,31 @@ RSpec.describe BoardsController do
         it_behaves_like :controllers_redirect, :boards_path
       end
     end
-  end  
+  end
+
+  describe 'POST #continue' do
+    subject(:response) { post :continue, params: params }
+    let_it_be(:params) { { slug: board.slug } }
+
+    context 'when user is not logged in' do
+      it_behaves_like :controllers_unauthenticated_action
+    end
+
+    context 'when any user is logged in' do
+      context 'user is not a board member' do
+        before { login_as not_member }
+        it_behaves_like :controllers_unauthorized_action
+      end
+
+      context 'user is a board member' do
+        before { login_as member }
+        it_behaves_like :controllers_unauthorized_action
+      end
+
+      context 'user is a board creator' do
+        before { login_as creator }
+        it { is_expected.to have_http_status(:redirect) }
+      end
+    end
+  end
 end
