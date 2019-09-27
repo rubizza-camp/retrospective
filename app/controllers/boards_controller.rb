@@ -11,7 +11,7 @@ class BoardsController < ApplicationController
 
   def index
     authorize!
-    @boards = Board.order(created_at: :desc)
+    @boards = current_user.boards.order(created_at: :desc)
   end
 
   # rubocop: disable Metrics/AbcSize

@@ -6,7 +6,6 @@
     <tr>
       <th>TITLE</th>
       <th>DATE</th>
-      <th>MEMBERSHIP</th>
       <th>ACTIONS</th>
     </tr>
   </thead>
@@ -14,9 +13,8 @@
   <tbody>
     <% @boards.each do |board| %>
       <tr>
-        <td><%= link_to board.title, board %></td>
+        <td><%= board.title %></td>
         <td><%= board.created_at %></td>
-        <td><%= 'status' if true %></td>
         <td>
           <%= link_to 'continue',
               continue_board_path(board),

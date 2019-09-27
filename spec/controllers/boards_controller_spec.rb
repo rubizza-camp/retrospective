@@ -95,6 +95,7 @@ RSpec.describe BoardsController do
       context 'when params are valid' do
         let_it_be(:params) { params.merge board: { title: Date.today.strftime('%d-%m-%Y') } }
 
+        # no idea how to check redirection to the show view for the object created by the subject call
         it { is_expected.to have_http_status(:redirect) }
       end
     end
@@ -109,24 +110,57 @@ RSpec.describe BoardsController do
     end
 
     context 'when user is logged in' do
+      context 'user is not a board member' do
+        before { login_as not_member }
+        it_behaves_like :controllers_unauthorized_action
+      end
+
+      context 'user is a board member' do
+        before { login_as member }
+        it_behaves_like :controllers_unauthorized_action
+      end
+
+      context 'user is a board creator' do
+        before { login_as creator }
+
+        context 'when params are valid' do
+          let_it_be(:params) { params.merge board: { title: Faker::Books::Dune.planet } }
+
+          it_behaves_like :controllers_redirect, :boards_path
+        end
+
+        context 'when params are invalid' do
+          let_it_be(:params) { params.merge board: { title: nil } }
+
+          it_behaves_like :controllers_render, :edit
+        end
+      end
     end
   end
-end
 
-#       before { login_as not_member }
-#       context 'when params are invalid' do
-#         let_it_be(:params) { params.merge board: { title: nil } }
-#
-#         it_behaves_like :controllers_render, :new
-#       end
-#
-#       context 'when params are valid' do
-#         let_it_be(:params) { params.merge board: { title: Date.today.strftime('%d-%m-%Y') } }
-#
-#         it { is_expected.to have_http_status(:redirect) }
-#       end
-#     end
-#   end
-#
-# end
-#
+  describe 'PATCH #destroy' do
+    subject(:response) { delete :destroy, params: params }
+    let_it_be(:params) { { slug: board.slug } }
+
+    context 'when user is not logged in' do
+      it_behaves_like :controllers_unauthenticated_action
+    end
+
+    context 'when user is logged in' do
+      context 'user is not a board member' do
+        before { login_as not_member }
+        it_behaves_like :controllers_unauthorized_action
+      end
+
+      context 'user is a board member' do
+        before { login_as member }
+        it_behaves_like :controllers_unauthorized_action
+      end
+
+      context 'user is a board creator' do
+        before { login_as creator }
+        it_behaves_like :controllers_redirect, :boards_path
+      end
+    end
+  end  
+end
