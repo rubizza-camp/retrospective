@@ -5,13 +5,13 @@ require 'rails_helper'
 RSpec.describe Boards::Continue do
   include Dry::Monads[:result]
 
-  let_it_be(:prev_creator) { create(:user) }
-  let_it_be(:current_user) { create(:user) }
-  let_it_be(:prev_board) { create(:board) }
-  let_it_be(:creatorship) do
+  let!(:prev_creator) { create(:user) }
+  let!(:current_user) { create(:user) }
+  let!(:prev_board) { create(:board) }
+  let!(:creatorship) do
     create(:membership, board: prev_board, user: prev_creator, role: 'creator', ready: true)
   end
-  let_it_be(:membership) do
+  let!(:membership) do
     create(:membership, board: prev_board, user: current_user, role: 'member')
   end
 
@@ -50,8 +50,7 @@ RSpec.describe Boards::Continue do
       expect(subject.value!.users).to contain_exactly(*prev_board.users)
     end
     it 'sets dupicated memberships ready statuses to false' do
-      expect(subject.value!.memberships.where(ready: true)).to be_empty
-      expect(subject.value!.memberships.where(ready: false)).to eq subject.value!.memberships
+      expect(subject.value!.memberships).not_to include(be_ready)
     end
     it 'sets current_user as the creator of the new board' do
       expect(subject.value!.memberships.find_by(role: 'creator').user_id).to eq current_user.id
