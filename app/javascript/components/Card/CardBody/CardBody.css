@@ -1,4 +1,5 @@
 textarea { 
+           overflow: hidden;
            resize: none;
            width: 100%;
            font-size: 1rem;

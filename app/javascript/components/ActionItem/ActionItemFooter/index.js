@@ -33,7 +33,7 @@ class ActionItemFooter extends React.Component {
       <div>
         <hr style={{margin: '0.5rem'}}/>
         <div>
-          <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}} hidden={!deletable}>
+          <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}}>
             delete
           </a>
         </div>

@@ -64,7 +64,7 @@ class CardBody extends React.Component {
 
     return (
       <div> 
-        <div onDoubleClick={ editable ? this.editModeToggle : null } hidden={editMode}>
+        <div onDoubleClick={editable && this.editModeToggle} hidden={editMode}>
           {inputValue}
         </div>
         <Textarea value={inputValue} 

@@ -22,9 +22,7 @@ class ActionItem extends React.Component {
         <ActionItemBody id={id} 
                   editable={editable}
                   body={body}/>
-        <ActionItemFooter id={id} 
-                    deletable={deletable} 
-                    hideActionItem={this.hideActionItem}/>
+        {deletable && <ActionItemFooter id={id} hideActionItem={this.hideActionItem}/>}
       </div>
     );
   }
