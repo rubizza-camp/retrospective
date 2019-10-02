@@ -1,46 +1,43 @@
 # frozen_string_literal: true
 
 class ActionItemsController < ApplicationController
-  before_action :set_board
-  before_action :set_action_item, only: %i[move]
-  authorize :board, through: :current_board
+  before_action except: :index do
+    @action_item = ActionItem.find(params[:id])
+    @board = @action_item.board
+    authorize! @action_item, context: { board: @board }
+  end
+
+  skip_verify_authorized only: :index
 
   rescue_from ActionPolicy::Unauthorized do |ex|
-    redirect_to @board, alert: ex.result.message
+    redirect_to action_items_path, alert: ex.result.message
   end
 
-  def create
-    action_item = @board.action_items.build(action_item_params)
-    authorize! action_item
-    action_item.save!
-    redirect_to @board
+  def index
+    @action_items = ActionItem.eager_load(:board).order(created_at: :asc)
   end
 
-  def move
-    authorize! @action_item
-    @action_item.board_id = @board.id
-    if @action_item.save!
-      redirect_to @board, notice: 'Action Item was successfully moved'
+  def close
+    if @action_item.close!
+      redirect_to action_items_path, notice: 'Action Item was successfully closed'
     else
-      redirect_to @board, alert: result.failure
+      redirect_to action_items_path, alert: @action_item.errors.full_messages.join(', ')
     end
   end
 
-  private
-
-  def current_board
-    @board
+  def complete
+    if @action_item.complete!
+      redirect_to action_items_path, notice: 'Action Item was successfully completed'
+    else
+      redirect_to action_items_path, alert: @action_item.errors.full_messages.join(', ')
+    end
   end
 
-  def action_item_params
-    params.require(:action_item).permit(:status, :body)
-  end
-
-  def set_board
-    @board = Board.find_by!(slug: params[:board_slug])
-  end
-
-  def set_action_item
-    @action_item = ActionItem.find(params[:id])
+  def reopen
+    if @action_item.reopen!
+      redirect_to action_items_path, notice: 'Action Item was successfully reopend'
+    else
+      redirect_to action_items_path, alert: @action_item.errors.full_messages.join(', ')
+    end
   end
 end
