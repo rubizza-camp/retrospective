@@ -27,7 +27,7 @@ RSpec.describe API::ActionItemsController do
       it_behaves_like :controllers_api_unauthorized_action
     end
 
-    context 'happy path' do
+    context 'successful action path' do
       before do
         login_as(creator)
         authorize
@@ -66,7 +66,7 @@ RSpec.describe API::ActionItemsController do
       it_behaves_like :controllers_api_unauthorized_action
     end
 
-    context 'happy path' do
+    context 'successful action path' do
       before do
         login_as(creator)
         authorize
