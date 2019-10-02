@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'rails_helper'
+
 RSpec.describe API::CardsController do
   let(:author) { build_stubbed(:user) }
   let(:not_author) { build_stubbed(:user) }
