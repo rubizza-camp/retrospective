@@ -2,6 +2,8 @@
 
 module API
   class MembershipPolicy < ApplicationPolicy
+    authorize :membership_to_destroy, allow_nil: true
+
     def ready_status?
       check?(:user_is_member?)
     end
@@ -11,7 +13,7 @@ module API
     end
 
     def destroy?
-      check?(:user_is_creator?)
+      check?(:user_is_creator?) && !membership_to_destroy.creator?
     end
 
     def user_is_member?

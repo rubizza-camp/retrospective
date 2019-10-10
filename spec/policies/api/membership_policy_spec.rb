@@ -12,7 +12,10 @@ RSpec.describe API::MembershipPolicy do
     create(:membership, user_id: creator.id, board_id: board.id, role: 'creator')
   end
 
-  let(:policy) { described_class.new(membership, user: test_user) }
+  let(:policy) do
+    described_class.new(membership, user: test_user, membership_to_destroy: membership_to_destroy)
+  end
+  let(:membership_to_destroy) { nil }
 
   describe '#ready_status?' do
     subject { policy.apply(:ready_status?) }
@@ -46,8 +49,16 @@ RSpec.describe API::MembershipPolicy do
     subject { policy.apply(:destroy?) }
 
     context 'when user is a creator' do
-      let(:test_user) { creator }
-      it { is_expected.to eq true }
+      context 'when membership_to_destroy role is a member' do
+        let(:membership_to_destroy) { membership }
+        let(:test_user) { creator }
+        it { is_expected.to eq true }
+      end
+      context 'when membership_to_destroy role is a creator' do
+        let(:membership_to_destroy) { creatorship }
+        let(:test_user) { creator }
+        it { is_expected.to eq false }
+      end
     end
 
     context 'when user is not a creator' do

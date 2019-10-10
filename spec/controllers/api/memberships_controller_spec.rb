@@ -59,6 +59,7 @@ RSpec.describe API::MembershipsController do
         login_as(member)
 
         allow(Board).to receive(:find_by!).with(slug: board.slug).and_return(board)
+        allow(Membership).to receive(:find).with(params[:id].to_s).and_return(membership)
 
         allow(Membership)
           .to receive(:find_by)
