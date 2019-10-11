@@ -4,6 +4,7 @@ RSpec.describe BoardPolicy do
   let_it_be(:creator) { create(:user) }
   let_it_be(:member) { create(:user) }
   let_it_be(:not_member) { build_stubbed(:user) }
+  let_it_be(:guest) { build_stubbed(:user, guest: true) }
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { create(:membership, user: member, board: board) }
   let_it_be(:creatorship) { create(:membership, user: creator, board: board, role: 'creator') }
@@ -18,8 +19,8 @@ RSpec.describe BoardPolicy do
       it { is_expected.to eq true }
     end
 
-    context 'when user is nil' do
-      let(:test_user) { nil }
+    context 'when user is a guest' do
+      let(:test_user) { guest }
       it { is_expected.to eq true }
     end
   end
@@ -32,8 +33,8 @@ RSpec.describe BoardPolicy do
       it { is_expected.to eq true }
     end
 
-    context 'when user is nil' do
-      let(:test_user) { nil }
+    context 'when user is a guest' do
+      let(:test_user) { guest }
       it { is_expected.to eq true }
     end
   end
@@ -56,9 +57,9 @@ RSpec.describe BoardPolicy do
       it { is_expected.to eq false }
     end
 
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { expect { subject }.to raise_error(NoMethodError) }
+    context 'when user is a guest' do
+      let(:test_user) { guest }
+      it { is_expected.to eq false }
     end
   end
 
@@ -70,8 +71,8 @@ RSpec.describe BoardPolicy do
       it { is_expected.to eq true }
     end
 
-    context 'when user is nil' do
-      let(:test_user) { nil }
+    context 'when user is a guest' do
+      let(:test_user) { guest }
       it { is_expected.to eq true }
     end
   end
@@ -94,9 +95,9 @@ RSpec.describe BoardPolicy do
       it { is_expected.to eq false }
     end
 
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { expect { subject }.to raise_error(NoMethodError) }
+    context 'when user is a guest' do
+      let(:test_user) { guest }
+      it { is_expected.to eq false }
     end
   end
 
@@ -118,9 +119,9 @@ RSpec.describe BoardPolicy do
       it { is_expected.to eq false }
     end
 
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { expect { subject }.to raise_error(NoMethodError) }
+    context 'when user is a guest' do
+      let(:test_user) { guest }
+      it { is_expected.to eq false }
     end
   end
 
@@ -142,9 +143,9 @@ RSpec.describe BoardPolicy do
       it { is_expected.to eq false }
     end
 
-    context 'when user is nil' do
-      let(:test_user) { nil }
-      it { expect { subject }.to raise_error(NoMethodError) }
+    context 'when user is a guest' do
+      let(:test_user) { guest }
+      it { is_expected.to eq false }
     end
   end
 
@@ -154,6 +155,7 @@ RSpec.describe BoardPolicy do
     context 'when user is the board creator' do
       let(:test_user) { creator }
       it { is_expected.to eq true }
+      it {binding.pry}
     end
 
     context 'when user is not the board creator' do
