@@ -45,13 +45,23 @@ RSpec.describe Board, type: :model do
 
     context 'when user is a member' do
       let(:test_user) { member }
+
+      before do 
+        allow(board).to receive(:memberships).and_return() 
+        #allow(membership).to receive(:memberships).and_return(true) 
+      end
       it { is_expected.to eq true }
     end
 
-    context 'when user is not a member' do
-      let(:test_user) { not_a_member }
-      it { is_expected.to eq false }
-    end
+    #context 'when user is a member' do
+    #  let(:test_user) { member }
+    #  it { is_expected.to eq true }
+    #end
+
+    #context 'when user is not a member' do
+    #  let(:test_user) { not_a_member }
+    #  it { is_expected.to eq false }
+    #end
   end
 
   describe '#creator?' do

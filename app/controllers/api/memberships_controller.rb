@@ -3,10 +3,11 @@
 module API
   class MembershipsController < API::ApplicationController
     before_action :set_board, :set_membership
-    before_action except: %i[index destroy] do
-      authorize! @membership, context: { membership_to_destroy: nil }
+    authorize :membership, through: :current_membership
+
+    before_action except: :destroy do
+      authorize!
     end
-    skip_verify_authorized only: :index
 
     def index
       members = @board.memberships
@@ -15,7 +16,7 @@ module API
 
     def destroy
       member = Membership.find(params[:id])
-      authorize! @membership, context: { membership_to_destroy: member }
+      authorize! member
       if member.destroy
         head :no_content
       else
@@ -44,6 +45,10 @@ module API
 
     def set_membership
       @membership = Membership.find_by(board_id: @board.id, user_id: current_user.id)
+    end
+
+    def current_membership
+      @membership
     end
   end
 end

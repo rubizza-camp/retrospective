@@ -155,7 +155,6 @@ RSpec.describe BoardPolicy do
     context 'when user is the board creator' do
       let(:test_user) { creator }
       it { is_expected.to eq true }
-      it {binding.pry}
     end
 
     context 'when user is not the board creator' do

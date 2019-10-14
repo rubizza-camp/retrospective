@@ -5,7 +5,6 @@ FactoryBot.define do
     sequence(:email) { |n| "user#{n}@example.com" }
     password { 'password' }
     password_confirmation { 'password' }
-    guest { false }
 
     trait :github do
       provider { 'github' }

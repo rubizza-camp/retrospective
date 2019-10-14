@@ -3,7 +3,7 @@
 module API
   class ApplicationController < ActionController::Base
     before_action :authenticate_user!
-    authorize :user, through: :current_user
+    authorize :user, through: :current_or_guest_user
     verify_authorized
 
     rescue_from ActionPolicy::Unauthorized do |ex|
