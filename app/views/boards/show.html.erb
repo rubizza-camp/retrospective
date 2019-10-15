@@ -6,7 +6,7 @@
   <% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
     <%= javascript_pack_tag 'autocomplete' %>
   <% end %>
-
+  <%= javascript_include_tag('https://use.fontawesome.com/releases/v5.3.1/js/all.js') %>
 <% end %>
 
 <div class='box has-text-centered'>
@@ -69,6 +69,7 @@
               author: card.author.email.split('@').first,
               avatar: card.author.avatar.url(:thumb),
               body: card.body,
+              likes: card.likes,
               editable: allowed_to?(:update?, card, with: API::CardPolicy),
               deletable: allowed_to?(:destroy?, card, with: API::CardPolicy) 
             }) 
