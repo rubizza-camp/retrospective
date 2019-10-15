@@ -4,14 +4,12 @@ class Likes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      likes: this.props.likes
+      likes: this.props.likes,
+      style: 'has-text-info',
+      timer: null
     };
   }
   
-  handleClick = () => {
-    this.addLike()
-  }
-
   addLike () {
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}/like`, {
       method: 'PUT',
@@ -36,13 +34,38 @@ class Likes extends React.Component {
           console.log(errorHash.error)
         })
     });
+  };
+
+  handleMouseDown = () => {
+    console.log('mouse was down');
+    this.setState({style: 'has-text-success is-size-4'});
+
+    this.state.timer = setInterval(() =>
+      this.addLike()
+    , 300);
   }
+
+  handleMouseUp = () => {
+    console.log('mouse was up');
+    this.setState({style: 'has-text-info'});
+    clearInterval(this.state.timer);
+  }
+
+  handleMouseLeave = () => {
+    console.log('mouse was leave');
+    this.setState({style: 'has-text-info'});
+    clearInterval(this.state.timer);
+  }
+
   render () {
     const likes = this.state.likes
     return (
       <React.Fragment>
-        <a className='button has-text-info' onClick={this.handleClick}>
-          <i className="fa fa-heart is-info"></i>
+        <a className={this.state.style}
+          onMouseDown={this.handleMouseDown} 
+          onMouseUp={this.handleMouseUp}
+          onMouseLeave={this.handleMouseLeave}>
+          <i className="fa fa-heart"></i>
           <span> {likes} </span>
         </a>
       </React.Fragment>
