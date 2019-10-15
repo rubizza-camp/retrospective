@@ -10,7 +10,7 @@ module API
     include ActionPolicy::Policy::Scoping
     include ActionPolicy::Policy::Cache
     include ActionPolicy::Policy::CachedApply
-    #include ActionPolicy::Policy::Defaults
+    # include ActionPolicy::Policy::Defaults
 
     authorize :membership, allow_nil: true
 
