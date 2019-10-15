@@ -24,7 +24,7 @@ module API
     end
 
     def like
-      if @card.update(likes: @card.likes+1)
+      if @card.like!
         render json: { likes: @card.likes }, status: :ok
       else
         render json: { error: @card.errors.full_messages.join(',') }, status: :bad_request

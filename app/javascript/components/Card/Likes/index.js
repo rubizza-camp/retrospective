@@ -9,6 +9,10 @@ class Likes extends React.Component {
   }
   
   handleClick = () => {
+    this.addLike()
+  }
+
+  addLike () {
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}/like`, {
       method: 'PUT',
       headers: {
@@ -33,7 +37,6 @@ class Likes extends React.Component {
         })
     });
   }
-
   render () {
     const likes = this.state.likes
     return (

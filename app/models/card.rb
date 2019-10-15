@@ -14,4 +14,9 @@ class Card < ApplicationRecord
   def author?(user)
     author == user
   end
+
+  def like!
+    self.likes += 1
+    save
+  end
 end
