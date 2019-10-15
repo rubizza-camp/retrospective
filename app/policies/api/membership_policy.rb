@@ -4,13 +4,7 @@ module API
   class MembershipPolicy
     include ActionPolicy::Policy::Core
     include ActionPolicy::Policy::Authorization
-    include ActionPolicy::Policy::PreCheck
     include ActionPolicy::Policy::Reasons
-    include ActionPolicy::Policy::Aliases
-    include ActionPolicy::Policy::Scoping
-    include ActionPolicy::Policy::Cache
-    include ActionPolicy::Policy::CachedApply
-    # include ActionPolicy::Policy::Defaults
 
     authorize :membership, allow_nil: true
 

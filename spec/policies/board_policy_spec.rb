@@ -3,8 +3,8 @@
 RSpec.describe BoardPolicy do
   let_it_be(:creator) { create(:user) }
   let_it_be(:member) { create(:user) }
-  let_it_be(:not_member) { build_stubbed(:user) }
-  let_it_be(:guest) { build_stubbed(:user, guest: true) }
+  let(:not_member) { build_stubbed(:user) }
+  let(:guest) { build_stubbed(:user, guest: true) }
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { create(:membership, user: member, board: board) }
   let_it_be(:creatorship) { create(:membership, user: creator, board: board, role: 'creator') }
