@@ -6,7 +6,6 @@
   <% if allowed_to?(:invite?, @board, with: API::BoardPolicy) %>
     <%= javascript_pack_tag 'autocomplete' %>
   <% end %>
-  <%= javascript_include_tag('https://use.fontawesome.com/releases/v5.3.1/js/all.js') %>
 <% end %>
 
 <div class='box has-text-centered'>

@@ -16,7 +16,6 @@ class Card < ApplicationRecord
   end
 
   def like!
-    self.likes += 1
-    save
+    increment!(:likes)
   end
 end

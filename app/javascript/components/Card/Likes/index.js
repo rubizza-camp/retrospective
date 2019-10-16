@@ -37,22 +37,19 @@ class Likes extends React.Component {
   };
 
   handleMouseDown = () => {
-    console.log('mouse was down');
     this.setState({style: 'has-text-success is-size-4'});
-
+    this.addLike();
     this.state.timer = setInterval(() =>
       this.addLike()
     , 300);
   }
 
   handleMouseUp = () => {
-    console.log('mouse was up');
     this.setState({style: 'has-text-info'});
     clearInterval(this.state.timer);
   }
 
   handleMouseLeave = () => {
-    console.log('mouse was leave');
     this.setState({style: 'has-text-info'});
     clearInterval(this.state.timer);
   }
