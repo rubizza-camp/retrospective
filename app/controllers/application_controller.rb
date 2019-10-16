@@ -12,4 +12,8 @@ class ApplicationController < ActionController::Base
     Raven.user_context(id: current_user.id) if current_user
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
+
+  def current_or_guest_user
+    current_user || User.new
+  end
 end

@@ -5,7 +5,6 @@ require 'rails_helper'
 RSpec.describe API::BoardPolicy do
   let_it_be(:member) { create(:user) }
   let(:not_a_member) { build_stubbed(:user) }
-  let(:guest) { build_stubbed(:user, guest: true) }
   let_it_be(:board) { create(:board) }
   let_it_be(:membership) { create(:membership, user_id: member.id, board_id: board.id) }
   let(:policy) { described_class.new(board, user: test_user) }
@@ -48,11 +47,6 @@ RSpec.describe API::BoardPolicy do
 
     context 'when user is not a member' do
       let(:test_user) { not_a_member }
-      it { is_expected.to eq false }
-    end
-
-    context 'when user is a guest' do
-      let(:test_user) { guest }
       it { is_expected.to eq false }
     end
   end
