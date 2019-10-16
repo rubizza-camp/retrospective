@@ -1,11 +1,12 @@
 import React from "react"
+import Likes from "../Likes"
 
 class CardFooter extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  handleClick = () => {    
+  handleClick = () => {
     fetch(`/api/${window.location.pathname}/cards/${this.props.id}`, {
       method: 'DELETE',
       headers: {
@@ -26,13 +27,21 @@ class CardFooter extends React.Component {
   }
 
   render () {
-    const { author, deletable } = this.props;
+    const { author, deletable, avatar } = this.props;
     const confirmMessage = 'Are you sure you want to delete this card?';
 
     return (
       <div>
         <hr style={{margin: '0.5rem'}}/>
-        <span>by {author}</span>
+        <div className='columns'>
+          <div className='column'>
+            <Likes id={this.props.id} likes={this.props.likes}/>
+          </div>
+          <div className='column'>
+            <img src={avatar} className='avatar'/>
+            <span> by {author}</span>
+          </div>
+        </div>
         <div>
           <a onClick={() => {window.confirm(confirmMessage) && this.handleClick()}} hidden={!deletable}>
             delete
