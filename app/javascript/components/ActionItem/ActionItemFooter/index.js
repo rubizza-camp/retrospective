@@ -37,7 +37,7 @@ class ActionItemFooter extends React.Component {
         'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
       }
     }).then((result) => {
-      if (result.status == 204) {
+      if (result.status == 200) {
         window.location.reload();
       }
       else { throw result }
@@ -61,10 +61,8 @@ class ActionItemFooter extends React.Component {
 
   generateChevrons = () => {
     const times_moved = this.props.times_moved;
-    const icon = <i className={`fas fa-chevron-right ${this.pickColor(times_moved)}_font`}></i>; 
-
-    let chevrons = [];
-    for (let i = 0; i < times_moved; i++) chevrons.push(icon);
+    const icon = <i className={`fas fa-chevron-right ${this.pickColor(times_moved)}_font`}></i>;
+    const chevrons = Array.from({ length: times_moved }, () => icon )
     return chevrons
   };
 
