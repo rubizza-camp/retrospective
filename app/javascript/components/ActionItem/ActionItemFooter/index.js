@@ -62,7 +62,7 @@ class ActionItemFooter extends React.Component {
   generateChevrons = () => {
     const times_moved = this.props.times_moved;
     const icon = <i className={`fas fa-chevron-right ${this.pickColor(times_moved)}_font`}></i>;
-    const chevrons = Array.from({ length: times_moved }, () => icon )
+    const chevrons = Array.from({ length: times_moved }, () => icon)
     return chevrons
   };
 
