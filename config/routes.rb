@@ -3,8 +3,13 @@
 # rubocop:disable Metrics/BlockLength
 
 Rails.application.routes.draw do
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  end
+  post "/graphql", to: "graphql#execute"
   root to: 'home#index'
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  # get '/boardsql', to: 'boardsql#show'
 
   resources :boards, param: :slug do
     member do
@@ -56,6 +61,10 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resources :boardsql, param: :slug, only: :show
+
+  mount ActionCable.server, at: '/cable'
 end
 
 # rubocop:enable Metrics/BlockLength
