@@ -7,9 +7,9 @@ import Comment from './Comment';
 import {useMutation} from '@apollo/react-hooks';
 import {addCommentMutation} from './operations.gql';
 
-const CommentsDropdown = props => {
+const CommentsDropdown = ({id, comments}) => {
   const controlEl = useRef(null);
-  const {visible, id, comments} = props;
+  // Const {visible, id, comments} = props;
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isError, setIsError] = useState(false);
   const user = useContext(UserContext);
@@ -53,9 +53,9 @@ const CommentsDropdown = props => {
     setNewComment(comment => `${comment}${emoji.emoji}`);
   };
 
-  if (!visible) {
-    return null;
-  }
+  // If (!visible) {
+  //   return null;
+  // }
 
   return (
     <div className="column comments-column">
