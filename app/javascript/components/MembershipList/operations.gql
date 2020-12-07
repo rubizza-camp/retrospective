@@ -1,0 +1,24 @@
+#import '../../fragments/membership.graphql'
+subscription membershipUpdatedSubscription($boardSlug: String!) {
+  membershipUpdated(boardSlug: $boardSlug) {
+   ...Membership
+  }
+}
+
+subscription membershipListUpdatedSubscription($boardSlug: String!) {
+  membershipListUpdated(boardSlug: $boardSlug) {
+   ...Membership
+  }
+}
+
+subscription membershipDestroyedSubscription($boardSlug: String!) {
+  membershipDestroyed(boardSlug: $boardSlug) {
+   id
+  }
+}
+
+query getMembershipsQuery($boardSlug: String!){
+  memberships(boardSlug: $boardSlug) {
+    ...Membership
+  }
+}

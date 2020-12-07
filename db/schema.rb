@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_17_083034) do
+ActiveRecord::Schema.define(version: 2020_11_24_044926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 2019_10_17_083034) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "times_moved", default: 0, null: false
+    t.bigint "assignee_id"
+    t.index ["assignee_id"], name: "index_action_items_on_assignee_id"
     t.index ["board_id"], name: "index_action_items_on_board_id"
   end
 
@@ -31,6 +33,9 @@ ActiveRecord::Schema.define(version: 2019_10_17_083034) do
     t.datetime "updated_at", null: false
     t.bigint "previous_board_id"
     t.string "slug", null: false
+    t.boolean "private", default: false
+    t.text "column_names", default: ["mad", "sad", "glad"], array: true
+    t.integer "users_count", default: 0
     t.index ["previous_board_id"], name: "index_boards_on_previous_board_id", unique: true
     t.index ["slug"], name: "index_boards_on_slug", unique: true
   end
@@ -45,6 +50,17 @@ ActiveRecord::Schema.define(version: 2019_10_17_083034) do
     t.integer "likes", default: 0
     t.index ["author_id"], name: "index_cards_on_author_id"
     t.index ["board_id"], name: "index_cards_on_board_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.text "content", null: false
+    t.bigint "card_id", null: false
+    t.bigint "author_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "likes", default: 0
+    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["card_id"], name: "index_comments_on_card_id"
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -84,14 +100,20 @@ ActiveRecord::Schema.define(version: 2019_10_17_083034) do
     t.string "provider"
     t.string "uid"
     t.string "avatar"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "nickname"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "action_items", "boards"
+  add_foreign_key "action_items", "users", column: "assignee_id"
   add_foreign_key "boards", "boards", column: "previous_board_id"
   add_foreign_key "cards", "boards"
   add_foreign_key "cards", "users", column: "author_id"
+  add_foreign_key "comments", "cards"
+  add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "memberships", "boards"
   add_foreign_key "memberships", "users"
   add_foreign_key "teams_users", "teams"

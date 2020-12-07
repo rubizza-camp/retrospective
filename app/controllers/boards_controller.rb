@@ -1,34 +1,46 @@
 # frozen_string_literal: true
 
 class BoardsController < ApplicationController
+  layout 'board', only: :show
+
   before_action :set_board, only: %i[show continue edit update destroy]
   skip_before_action :authenticate_user!, only: :show
   skip_verify_authorized only: :show
 
-  rescue_from ActionPolicy::Unauthorized do |ex|
-    redirect_to boards_path, alert: ex.result.message
-  end
-
-  def index
+  def my
     authorize!
-    @boards = current_user.boards.order(created_at: :desc)
+
+    @boards_by_date = boards_by_role(:creator)
   end
 
-  # rubocop: disable Metrics/AbcSize
+  def participating
+    authorize!
+
+    @boards_by_date = boards_by_role(:member)
+  end
+
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/LineLength
   def show
-    @cards_by_type = {
-      mad: @board.cards.mad.includes(:author),
-      sad: @board.cards.sad.includes(:author),
-      glad: @board.cards.glad.includes(:author)
-    }
-    @action_items = @board.action_items
+    authorize! @board
+    @cards_by_type = @board.column_names.map do |column|
+      [[column, ActiveModelSerializers::SerializableResource.new(@board.cards.where(kind: column)
+        .includes(:author, comments: [:author]).order(created_at: :desc)).as_json]].to_h
+    end.reduce({}, :merge).as_json
+    @action_items = ActiveModelSerializers::SerializableResource.new(@board.action_items.order(created_at: :desc)).as_json
     @action_item = ActionItem.new(board_id: @board.id)
-
+    @board_creators = User.find(@board.memberships.where(role: 'creator').pluck(:user_id))
+                          .pluck(:email)
     @previous_action_items = if @board.previous_board&.action_items&.any?
-                               @board.previous_board.action_items
+                               ActiveModelSerializers::SerializableResource.new(@board.previous_board.action_items).as_json
                              end
+    @users = ActiveModelSerializers::SerializableResource.new(User.find(@board.memberships.pluck(:user_id))).as_json
+    # @data = RetrospectiveSchema.execute(INITIAL__QUERY)
   end
-  # rubocop: enable Metrics/AbcSize
+  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def new
     authorize!
@@ -53,8 +65,12 @@ class BoardsController < ApplicationController
 
   def update
     authorize! @board
+    old_column_names = @board.column_names
     if @board.update(board_params)
-      redirect_to boards_path, notice: 'Board was successfully updated.'
+      result = Boards::RenameColumns.new(@board).call(old_column_names, @board.column_names)
+      if result.success?
+        redirect_to edit_board_path(@board), notice: 'Board was successfully updated.'
+      end
     else
       render :edit
     end
@@ -63,9 +79,9 @@ class BoardsController < ApplicationController
   def destroy
     authorize! @board
     if @board.destroy
-      redirect_to boards_path, notice: 'Board was successfully deleted.'
+      redirect_to my_boards_path, notice: 'Board was successfully deleted.'
     else
-      redirect_to boards_path, alert: @board.errors.full_messages.join(', ')
+      redirect_to my_boards_path, alert: @board.errors.full_messages.join(', ')
     end
   end
 
@@ -75,17 +91,24 @@ class BoardsController < ApplicationController
     if result.success?
       redirect_to result.value!, notice: 'Board was successfully created.'
     else
-      redirect_to boards_path, alert: result.failure
+      redirect_to my_boards_path, alert: result.failure
     end
   end
 
   private
 
   def board_params
-    params.require(:board).permit(:title, :team_id, :email)
+    params.require(:board).permit(:title, :team_id, :email, :private, column_names: [])
   end
 
   def set_board
     @board = Board.find_by!(slug: params[:slug])
+  end
+
+  def boards_by_role(role)
+    Board.joins(:memberships).where(memberships: { user_id: current_user.id, role: role })
+         .includes(:users, :cards, :action_items)
+         .order(created_at: :desc)
+         .group_by { |record| record.created_at.strftime('%B, %Y') }
   end
 end

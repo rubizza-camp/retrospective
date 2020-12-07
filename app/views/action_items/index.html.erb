@@ -1,17 +1,15 @@
-<div class='box'>
-  <h1 class='title'>Action items</h1>
-</div>
-<table class='table is-fullwidth'>
-  <thead>
+<div class="column is-9">
+  <table class='table'>
+    <thead>
     <tr>
       <th>Item</th>
       <th></th>
       <th></th>
       <th>Created at</th>
     </tr>
-  </thead>
+    </thead>
 
-  <tbody>
+    <tbody>
     <% @action_items.each do |item| %>
       <tr>
         <td><%= item.body %></td>
@@ -26,9 +24,11 @@
             <%= link_to "reopen", reopen_action_item_path(item.id), method: :put, class: 'button is-small is-light' %>
           <% end %>
         </td>
-        <td><%= link_to "Board: #{item.board}", item.board %></td>
+        <td><%= link_to "Board: #{item.board.title}", item.board %></td>
         <th><%= item.created_at %></th>
       </tr>
     <% end %>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+</div>
+

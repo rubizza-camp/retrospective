@@ -12,8 +12,8 @@ RSpec.describe BoardsController do
 
   before { bypass_rescue }
 
-  describe 'GET #index' do
-    subject(:response) { get :index }
+  describe 'GET #my boards' do
+    subject(:response) { get :my }
 
     context 'when user is not logged in' do
       it_behaves_like :controllers_unauthenticated_action
@@ -21,7 +21,20 @@ RSpec.describe BoardsController do
 
     context 'when any user is logged in' do
       before { login_as not_member }
-      it_behaves_like :controllers_render, :index
+      it_behaves_like :controllers_render, :my
+    end
+  end
+
+  describe 'GET #participating boards' do
+    subject(:response) { get :participating }
+
+    context 'when user is not logged in' do
+      it_behaves_like :controllers_unauthenticated_action
+    end
+
+    context 'when any user is logged in' do
+      before { login_as not_member }
+      it_behaves_like :controllers_render, :participating
     end
   end
 
@@ -127,7 +140,8 @@ RSpec.describe BoardsController do
         context 'when params are valid' do
           let_it_be(:params) { params.merge board: { title: Faker::Books::Dune.planet } }
 
-          it_behaves_like :controllers_redirect, :boards_path
+          it { is_expected.to have_http_status(:redirect) }
+          it { is_expected.to redirect_to edit_board_path(board.slug) }
         end
 
         context 'when params are invalid' do
@@ -159,7 +173,7 @@ RSpec.describe BoardsController do
 
       context 'user is a board creator' do
         before { login_as creator }
-        it_behaves_like :controllers_redirect, :boards_path
+        it_behaves_like :controllers_redirect, :my_boards_path
       end
     end
   end

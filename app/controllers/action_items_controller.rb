@@ -9,12 +9,8 @@ class ActionItemsController < ApplicationController
 
   skip_verify_authorized only: :index
 
-  rescue_from ActionPolicy::Unauthorized do |ex|
-    redirect_to action_items_path, alert: ex.result.message
-  end
-
   def index
-    @action_items = ActionItem.eager_load(:board).order(created_at: :asc)
+    @action_items = user_action_items.eager_load(:board).order(created_at: :asc)
   end
 
   def close
@@ -35,9 +31,15 @@ class ActionItemsController < ApplicationController
 
   def reopen
     if @action_item.reopen!
-      redirect_to action_items_path, notice: 'Action Item was successfully reopend'
+      redirect_to action_items_path, notice: 'Action Item was successfully reopened'
     else
       redirect_to action_items_path, alert: @action_item.errors.full_messages.join(', ')
     end
+  end
+
+  private
+
+  def user_action_items
+    current_user&.action_items
   end
 end

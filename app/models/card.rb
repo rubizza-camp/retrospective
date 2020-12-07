@@ -4,12 +4,9 @@ class Card < ApplicationRecord
   belongs_to :author, class_name: 'User'
   belongs_to :board
 
-  validates_presence_of :kind, :body
-  validates :kind, inclusion: { in: %w[mad sad glad] }
+  has_many :comments, dependent: :destroy
 
-  scope :mad, -> { where(kind: :mad) }
-  scope :sad, -> { where(kind: :sad) }
-  scope :glad, -> { where(kind: :glad) }
+  validates_presence_of :kind, :body
 
   def author?(user)
     author == user

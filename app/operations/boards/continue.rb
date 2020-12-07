@@ -19,11 +19,12 @@ module Boards
 
       new_board = Board.new(
         title: default_board_name,
-        previous_board_id: prev_board.id
+        previous_board_id: prev_board.id,
+        column_names: prev_board.column_names,
+        private: prev_board.private
       )
 
       new_board.memberships = duplicate_memberships
-      new_board.memberships.build(user_id: current_user.id, role: 'creator')
       new_board.save!
 
       Success(new_board)
@@ -37,9 +38,7 @@ module Boards
     def duplicate_memberships
       prev_board.memberships
                 .map(&:dup)
-                .delete_if { |member| member.user == current_user }
                 .each do |member|
-                  member.role = 'member'
                   member.ready = false
                 end
     end

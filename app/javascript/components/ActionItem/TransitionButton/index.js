@@ -1,38 +1,68 @@
-import React from "react"
+import React, {useContext} from 'react';
+import {useMutation} from '@apollo/react-hooks';
+import BoardSlugContext from '../../../utils/board_slug_context';
+import {
+  closeActionItemMutation,
+  completeActionItemMutation,
+  reopenActionItemMutation
+} from './operations.gql';
 
-class TransitionButton extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+const TransitionButton = props => {
+  const {id, action} = props;
+  const boardSlug = useContext(BoardSlugContext);
 
-  handleClick = () => {    
-    fetch(`/api/${window.location.pathname}/action_items/${this.props.id}/${this.props.action}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-      }
-    }).then((result) => {
-      if (result.status == 200) {
-        window.location.reload();
-      }
-      else { throw result }
-    }).catch((error) => {
-      error.json().then( errorHash => {
-        console.log(errorHash.error)
-      })
-    });
-  }
-  
-  render () {
-    return (
-      <button onClick={() => {this.handleClick()}}>
-        {this.props.action}
-      </button>
-    );
-  }
-}
+  const [closeActionItem] = useMutation(closeActionItemMutation);
+  const [completeActionItem] = useMutation(completeActionItemMutation);
+  const [reopenActionItem] = useMutation(reopenActionItemMutation);
 
-export default TransitionButton
+  const handleClick = () => {
+    switch (action) {
+      case 'close':
+        closeActionItem({
+          variables: {
+            id,
+            boardSlug
+          }
+        }).then(({data}) => {
+          if (!data.closeActionItem.actionItem) {
+            console.log(data.closeActionItem.errors.fullMessages.join(' '));
+          }
+        });
+        break;
+
+      case 'complete':
+        completeActionItem({
+          variables: {
+            id,
+            boardSlug
+          }
+        }).then(({data}) => {
+          if (!data.completeActionItem.actionItem) {
+            console.log(data.completeActionItem.errors.fullMessages.join(' '));
+          }
+        });
+        break;
+
+      case 'reopen':
+        reopenActionItem({
+          variables: {
+            id,
+            boardSlug
+          }
+        }).then(({data}) => {
+          if (!data.reopenActionItem.actionItem) {
+            console.log(data.reopenActionItem.errors.fullMessages.join(' '));
+          }
+        });
+        break;
+    }
+  };
+
+  return (
+    <button type="button" onClick={handleClick}>
+      {action}
+    </button>
+  );
+};
+
+export default TransitionButton;

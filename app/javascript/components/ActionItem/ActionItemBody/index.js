@@ -1,80 +1,187 @@
-import React from "react"
-import Textarea from "react-textarea-autosize"
-import "./ActionItemBody.css"
+import React, {useState, useEffect} from 'react';
+import Textarea from 'react-textarea-autosize';
+import './ActionItemBody.css';
+import {
+  destroyActionItemMutation,
+  updateActionItemMutation
+} from './operations.gql';
+import {useMutation} from '@apollo/react-hooks';
 
-class ActionItemBody extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { 
-      dbValue: this.props.body,
-      inputValue: this.props.body,
-      editMode : false
-    };
-  }
+const ActionItemBody = props => {
+  const {assigneeId, editable, deletable, body, users} = props;
+  const [inputValue, setInputValue] = useState(body);
+  const [editMode, setEditMode] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [actionItemAssignee, setActionItemAssignee] = useState(assigneeId);
+  const [destroyActionItem] = useMutation(destroyActionItemMutation);
+  const [updateActionItem] = useMutation(updateActionItemMutation);
 
-  editModeToggle = () => {
-    this.setState({editMode: !this.state.editMode});
-  }
-
-  handleChange = (e) => {
-    this.setState({inputValue: e.target.value});
-  }
-
-  handleKeyPress = (e) => {
-    if(e.key === 'Enter'){
-      this.editModeToggle()
-      this.submitRequest()
-      e.preventDefault()
+  useEffect(() => {
+    const {body} = props;
+    if (!editMode) {
+      setInputValue(body);
     }
-  }
+  }, [props, editMode]);
 
-  submitRequest() {
-    fetch(`/api/${window.location.pathname}/action_items/${this.props.id}`, {
-      method: 'PATCH',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector("meta[name='csrf-token']").getAttribute('content')
-      },
-      body: JSON.stringify({
-        edited_body: this.state.inputValue
-      })
-    }).then((result) => {
-      if (result.status == 200) {
-        result.json()
-        .then((resultHash) => {
-          this.setState({dbValue: resultHash.updated_body});
-        })
+  const handleDeleteClick = () => {
+    const {id} = props;
+    hideDropdown();
+    destroyActionItem({
+      variables: {
+        id
       }
-      else { 
-        this.setState({inputValue: this.state.dbValue});
-        throw result
+    }).then(({data}) => {
+      if (!data.destroyActionItem.id) {
+        console.log(data.destroyActionItem.errors.fullMessages.join(' '));
       }
-    }).catch((error) => {
-        error.json()
-        .then((errorHash) => {
-          console.log(errorHash.error)
-        })
     });
-  }
+  };
 
-  render () {
-    const { inputValue, editMode } = this.state;
-    const { editable } = this.props;
+  const handleEditClick = () => {
+    editModeToggle();
+    hideDropdown();
+  };
 
-    return (
-      <div> 
-        <div className='text' onDoubleClick={editable && this.editModeToggle} hidden={editMode}>
-          {inputValue}
+  const editModeToggle = () => {
+    setEditMode(editMode => !editMode);
+  };
+
+  const handleChange = e => {
+    setInputValue(e.target.value);
+  };
+
+  const resetTextChanges = () => {
+    setInputValue(props.body);
+  };
+
+  const handleKeyPress = e => {
+    if (navigator.platform.includes('Mac')) {
+      if (e.key === 'Enter' && e.metaKey) {
+        editModeToggle();
+        handleItemEdit(props.id, inputValue);
+      }
+    } else if (e.key === 'Enter' && e.ctrlKey) {
+      editModeToggle();
+      handleItemEdit(props.id, inputValue);
+    }
+  };
+
+  const handleItemEdit = (id, body) => {
+    updateActionItem({
+      variables: {
+        id,
+        body,
+        assigneeId: actionItemAssignee
+      }
+    }).then(({data}) => {
+      if (!data.updateActionItem.actionItem) {
+        resetTextChanges();
+        console.log(data.updateActionItem.errors.fullMessages.join(' '));
+      }
+    });
+  };
+
+  const toggleDropdown = () => {
+    setShowDropdown(isShown => !isShown);
+  };
+
+  const hideDropdown = () => {
+    setShowDropdown(false);
+  };
+
+  const handleSaveClick = () => {
+    editModeToggle();
+    handleItemEdit(props.id, inputValue);
+  };
+
+  return (
+    <div>
+      {editable && deletable && (
+        <div className="dropdown">
+          <div
+            className="dropdown-btn"
+            tabIndex="1"
+            onClick={toggleDropdown}
+            onBlur={hideDropdown}
+          >
+            …
+          </div>
+          <div hidden={!showDropdown} className="dropdown-content">
+            {!editMode && (
+              <div>
+                <a
+                  onClick={handleEditClick}
+                  onMouseDown={event => {
+                    event.preventDefault();
+                  }}
+                >
+                  Edit
+                </a>
+                <hr style={{margin: '5px 0'}} />
+              </div>
+            )}
+            <a
+              onClick={() => {
+                window.confirm(
+                  'Are you sure you want to delete this ActionItem?'
+                ) && handleDeleteClick();
+              }}
+              onMouseDown={event => {
+                event.preventDefault();
+              }}
+            >
+              Delete
+            </a>
+          </div>
         </div>
-
-        <Textarea value={inputValue} 
-                  onChange={this.handleChange} 
-                  onKeyPress={this.handleKeyPress} 
-                  hidden={!editMode}/>
+      )}
+      <div
+        className="text"
+        hidden={editMode}
+        onDoubleClick={editable ? editModeToggle : undefined}
+      >
+        {body}
       </div>
-    );
-  }
-}
+      {editable && (
+        <div hidden={!editMode}>
+          <Textarea
+            autoFocus
+            className="input"
+            value={inputValue}
+            onChange={handleChange}
+            onKeyDown={handleKeyPress}
+          />
+          <div className="columns is-multiline columns-footer">
+            <div className="column column-select">
+              <select
+                className="select"
+                value={actionItemAssignee}
+                onChange={e => setActionItemAssignee(e.target.value)}
+              >
+                <option value=" ">Assigned to ...</option>
+                {users.map(user => {
+                  return (
+                    <option key={user.id} value={user.id}>
+                      {user.nickname}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="column column-btn-save">
+              <button
+                className="tag is-info button"
+                type="button"
+                onClick={handleSaveClick}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
-export default ActionItemBody
+export default ActionItemBody;
