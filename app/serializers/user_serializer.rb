@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
 class UserSerializer < ActiveModel::Serializer
-  attributes :email
+  attributes :id, :email, :avatar, :name
+
+  def name
+    object.email.split('@')[0]
+  end
 end

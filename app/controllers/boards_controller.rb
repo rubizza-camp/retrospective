@@ -11,24 +11,33 @@ class BoardsController < ApplicationController
 
   def index
     authorize!
-    @boards = current_user.boards.order(created_at: :desc)
+    @boards_by_date = current_user.boards
+                                  .includes(:users, :cards, :action_items)
+                                  .order(created_at: :desc)
+                                  .group_by { |record| record.created_at.strftime('%B, %Y') }
   end
 
-  # rubocop: disable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/LineLength
   def show
-    @cards_by_type = {
-      mad: @board.cards.mad.includes(:author),
-      sad: @board.cards.sad.includes(:author),
-      glad: @board.cards.glad.includes(:author)
-    }
-    @action_items = @board.action_items
+    authorize! @board
+    @cards_by_type = @board.column_names.map do |column|
+      [[column, ActiveModelSerializers::SerializableResource.new(@board.cards.where(kind: column)
+        .includes(:author, comments: [:author]).order(created_at: :asc)).as_json]].to_h
+    end.reduce({}, :merge).as_json
+    @action_items = ActiveModelSerializers::SerializableResource.new(@board.action_items).as_json
     @action_item = ActionItem.new(board_id: @board.id)
-
+    @board_creators = User.find(@board.memberships.where(role: 'creator').pluck(:user_id))
+                          .pluck(:email)
     @previous_action_items = if @board.previous_board&.action_items&.any?
-                               @board.previous_board.action_items
+                               ActiveModelSerializers::SerializableResource.new(@board.previous_board.action_items).as_json
                              end
+    @users = ActiveModelSerializers::SerializableResource.new(User.find(@board.memberships.pluck(:user_id))).as_json
   end
-  # rubocop: enable Metrics/AbcSize
+  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
 
   def new
     authorize!
@@ -53,8 +62,12 @@ class BoardsController < ApplicationController
 
   def update
     authorize! @board
+    old_column_names = @board.column_names
     if @board.update(board_params)
-      redirect_to boards_path, notice: 'Board was successfully updated.'
+      result = Boards::RenameColumns.new(@board).call(old_column_names, @board.column_names)
+      if result.success?
+        redirect_to edit_board_path(@board), notice: 'Board was successfully updated.'
+      end
     else
       render :edit
     end
@@ -82,7 +95,7 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.require(:board).permit(:title, :team_id, :email)
+    params.require(:board).permit(:title, :team_id, :email, :private, column_names: [])
   end
 
   def set_board

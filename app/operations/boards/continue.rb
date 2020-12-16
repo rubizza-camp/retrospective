@@ -11,6 +11,7 @@ module Boards
     end
 
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def call
       if prev_board_continued?
         raise StandardError,
@@ -19,7 +20,8 @@ module Boards
 
       new_board = Board.new(
         title: default_board_name,
-        previous_board_id: prev_board.id
+        previous_board_id: prev_board.id,
+        column_names: prev_board.column_names
       )
 
       new_board.memberships = duplicate_memberships
@@ -30,6 +32,7 @@ module Boards
     rescue StandardError => e
       Failure(e)
     end
+    # rubocop:enable Metrics/AbcSize
     # rubocop:enable Metrics/MethodLength
 
     private

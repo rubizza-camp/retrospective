@@ -6,6 +6,7 @@ SimpleCov.start 'rails'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
+require 'action_cable/testing/rspec'
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
@@ -15,7 +16,7 @@ require 'test_prof/recipes/rspec/let_it_be'
 require 'devise'
 require 'aasm/rspec'
 
-Dir['./spec/support/**/*.rb'].each { |f| require f }
+Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -74,7 +75,19 @@ RSpec.configure do |config|
 
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include LoginHelper, type: :controller
+  config.include Devise::Test::IntegrationHelpers, type: :request
   config.include JSONHelper
 
   config.filter_run_when_matching :focus
+
+  if Bullet.enable?
+    config.before(:each) do
+      Bullet.start_request
+    end
+
+    config.after(:each) do
+      Bullet.perform_out_of_channel_notifications if Bullet.notification?
+      Bullet.end_request
+    end
+  end
 end

@@ -1,20 +1,98 @@
 {
   "name": "retrospective",
   "private": true,
+  "engines": {
+    "yarn": "^1.16.0",
+    "node": "^10.0.0 || ^12.0.0 || ^13.0.0 || ^14.2.0"
+  },
+  "xo": {
+    "envs": [
+      "browser"
+    ],
+    "extends": "xo-react",
+    "parser": "babel-eslint",
+    "prettier": true,
+    "space": true,
+    "rules": {
+      "camelcase": 0,
+      "default-case": 0,
+      "import/no-unassigned-import": [
+        "error",
+        {
+          "allow": [
+            "**/*.css"
+          ]
+        }
+      ],
+      "no-alert": 0,
+      "no-unused-expressions": [
+        "error",
+        {
+          "allowShortCircuit": true
+        }
+      ],
+      "promise/prefer-await-to-then": 1,
+      "react/prop-types": 0,
+      "unicorn/filename-case": [
+        "error",
+        {
+          "case": "snakeCase"
+        }
+      ]
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "xo --fix"
+  },
   "dependencies": {
-    "@babel/preset-react": "^7.0.0",
-    "@rails/webpacker": "^4.0.7",
+    "@apollo/react-hooks": "^3.1.5",
+    "@babel/preset-react": "^7.8.3",
+    "@fortawesome/fontawesome-svg-core": "^1.2.28",
+    "@fortawesome/free-regular-svg-icons": "^5.13.0",
+    "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@fortawesome/react-fontawesome": "^0.1.10",
+    "@rails/actioncable": "^6.0.3-1",
+    "@rails/webpacker": "^4.2.2",
+    "actioncable": "^5.2.4-3",
+    "apollo-boost": "^0.4.7",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-error": "^1.1.13",
+    "apollo-link-http": "^1.5.17",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "emoji-picker-react": "^3.2.1",
+    "graphql": "^15.1.0",
+    "graphql-ruby-client": "^1.6.8",
+    "graphql-tag": "^2.10.3",
     "prop-types": "^15.7.2",
-    "react": "^16.8.6",
-    "react-bulma-components": "2.3.0",
-    "react-dom": "^16.8.6",
-    "react-select": "^3.0.4",
-    "react-textarea-autosize": "^7.1.0",
-    "react_ujs": "^2.6.0",
-    "yarn": "^1.17.3"
+    "react": "^16.12.0",
+    "react-apollo": "^3.1.5",
+    "react-bulma-components": "3.1.3",
+    "react-dom": "^16.12.0",
+    "react-select": "^3.0.8",
+    "react-textarea-autosize": "^7.1.2",
+    "react_ujs": "^2.6.1"
   },
   "devDependencies": {
-    "webpack-dev-server": "^3.7.2"
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-xo-react": "^0.22.0",
+    "eslint-plugin-react": "^7.18.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "husky": ">=4",
+    "lint-staged": ">=10.0.6",
+    "webpack-dev-server": "^3.10.1",
+    "xo": "^0.25.3"
+  },
+  "scripts": {
+    "lint": "xo app/javascript",
+    "lint:fix": "yarn lint --fix",
+    "test": "yarn lint"
   }
 }

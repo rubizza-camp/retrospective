@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.3'
+ruby '2.6.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0'
@@ -25,7 +25,7 @@ gem 'coffee-rails', '~> 4.2'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 4.0'
+gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -39,6 +39,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'dotenv-rails'
 gem 'sentry-raven'
+gem 'rake'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -76,7 +77,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'devise'
-gem 'omniauth-github'
+gem 'omniauth-alfred', git: 'https://github.com/cybergizer-hq/omniauth-alfred', branch: 'master'
 gem 'webpacker', '~> 4.x'
 gem 'rails-assets-bulma', source: 'https://rails-assets.org'
 gem 'fog-aws', require: false
@@ -87,3 +88,12 @@ gem 'react-rails'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'dry-monads'
 gem 'aasm'
+
+gem 'graphql', '~> 1.9'
+gem 'action_policy-graphql', '~> 0.3'
+gem 'graphiql-rails', group: :development
+group :test, :development do
+  gem 'action-cable-testing'
+end
+
+gem 'bullet', group: 'test'

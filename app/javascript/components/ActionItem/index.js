@@ -1,49 +1,61 @@
-import React from "react"
+import React from 'react';
 
-import ActionItemBody from "./ActionItemBody"
-import ActionItemFooter from "./ActionItemFooter"
-import "./ActionItem.css"
+import ActionItemBody from './ActionItemBody';
+import ActionItemFooter from './ActionItemFooter';
+import './ActionItem.css';
 
 class ActionItem extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
-  hideActionItem = () => {
-    this.setState({ActionItemStyle: {display: 'none'}});
-  }
-
   pickColor = () => {
-    switch(this.props.status) {
+    switch (this.props.status) {
       case 'done':
-        return 'green'; 
+        return 'green';
       case 'closed':
         return 'red';
       default:
         return null;
     }
-  }
-  
-  render () {
-    const { id, body, times_moved, deletable, editable, movable, transitionable } = this.props;
-    const footerNotEmpty = deletable || movable || transitionable || (times_moved != 0);
+  };
+
+  render() {
+    const {
+      id,
+      body,
+      timesMoved,
+      deletable,
+      editable,
+      movable,
+      transitionable,
+      assignee,
+      assigneeId,
+      avatar,
+      users
+    } = this.props;
+    const footerNotEmpty =
+      movable || transitionable || timesMoved !== 0 || assignee !== null;
 
     return (
-      <div className={`box ${this.pickColor()}_bg`} style={this.state.ActionItemStyle}>
-        <ActionItemBody id={id} 
-                        editable={editable}
-                        body={body}/>
-        {footerNotEmpty && <ActionItemFooter id={id} 
-                                             deletable={deletable}
-                                             times_moved={times_moved} 
-                                             movable={movable}
-                                             transitionable={transitionable}
-                                             hideActionItem={this.hideActionItem}
-                                             paintActionItem={this.paintActionItem}/>}
+      <div className={`box ${this.pickColor()}_bg`}>
+        <ActionItemBody
+          id={id}
+          assigneeId={assigneeId}
+          editable={editable}
+          deletable={deletable}
+          body={body}
+          users={users}
+        />
+        {footerNotEmpty && (
+          <ActionItemFooter
+            id={id}
+            timesMoved={timesMoved}
+            movable={movable}
+            transitionable={transitionable}
+            assignee={assignee}
+            avatar={avatar}
+          />
+        )}
       </div>
     );
   }
 }
 
-export default ActionItem
+export default ActionItem;

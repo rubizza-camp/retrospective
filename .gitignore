@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+/.dockerdev/bundle
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -22,6 +23,7 @@
 
 /public/assets
 .byebug_history
+.ruby-gemset
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
@@ -29,7 +31,9 @@
 /vendor/*
 
 .env
-
+.generators
+.rakeTasks
+.idea/
 /public/packs
 /public/packs-test
 /node_modules
@@ -38,3 +42,4 @@ yarn-debug.log*
 .yarn-integrity
 coverage
 **/uploads
+**/.DS_Store
