@@ -11,7 +11,7 @@ module API
         {
           data:
             ActiveModelSerializers::SerializableResource.new(
-              resource, { adapter: adapter, key_transform: key_transform }
+              resource, adapter: adapter, key_transform: key_transform
             ).as_json
         }.to_json
       end

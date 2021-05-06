@@ -15,9 +15,8 @@ module API
       # app/graphql/mutations/add_card_mutation.rb
       def create
         board = Board.find_by!(slug: params[:board_slug])
+        authorize! board, to: :create_cards?
         @card = Card.new(card_params.merge(board: board, author: current_user))
-
-        authorize! @card
 
         if @card.save
           prepare_and_make_response(@card)

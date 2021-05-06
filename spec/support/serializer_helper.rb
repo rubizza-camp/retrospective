@@ -5,7 +5,7 @@ module SerializerHelper
     {
       data:
         ActiveModelSerializers::SerializableResource.new(
-          resource, { adapter: :json, key_transform: :camel_lower }
+          resource, adapter: :json, key_transform: :camel_lower
         ).as_json
     }.to_json
   end

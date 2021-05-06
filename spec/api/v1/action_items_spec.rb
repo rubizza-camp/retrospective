@@ -9,7 +9,15 @@ describe 'Action Item API', type: :request do
     create(:membership, board: board, user: author, role: 'creator')
   end
 
-  before { login_as author }
+  before do
+    login_as author
+    allow(author).to receive(:allowed?).with('create_action_items', board).and_return(true)
+    allow(author).to receive(:allowed?).with('update_action_items', board).and_return(true)
+    allow(author).to receive(:allowed?).with('destroy_action_items', board).and_return(true)
+    allow(author).to receive(:allowed?).with('close_action_items', board).and_return(true)
+    allow(author).to receive(:allowed?).with('complete_action_items', board).and_return(true)
+    allow(author).to receive(:allowed?).with('reopen_action_items', board).and_return(true)
+  end
 
   describe 'POST /api/v1/action_items' do
     let(:request) do
@@ -216,6 +224,10 @@ describe 'Action Item API', type: :request do
 
     let(:request) do
       put "/api/v1/action_items/#{action_item.id}/move", params: { board_slug: new_board.slug }
+    end
+    before do
+      login_as author
+      allow(author).to receive(:allowed?).with('move_action_items', new_board).and_return(true)
     end
 
     # before do

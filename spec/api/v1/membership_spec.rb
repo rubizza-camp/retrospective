@@ -52,8 +52,9 @@ describe 'Membership API', type: :request do
       let(:request) { delete "/api/v1/memberships/#{membership.id}" }
 
       before do
-        create(:permissions_user, permission: member_permission, user: non_author, board: board)
-        create(:permissions_user, permission: destroy_permission, user: author, board: board)
+        create(:board_permissions_user, permission: member_permission, user: non_author,
+                                        board: board)
+        create(:board_permissions_user, permission: destroy_permission, user: author, board: board)
       end
 
       it 'return 200' do
@@ -74,7 +75,7 @@ describe 'Membership API', type: :request do
       end
 
       it 'delete permissions in db' do
-        expect { request }.to change { non_author.permissions.count }.by(-1)
+        expect { request }.to change { non_author.board_permissions_users.count }.by(-1)
       end
 
       it 'broadcast deleted membership' do
@@ -88,8 +89,8 @@ describe 'Membership API', type: :request do
 
   describe 'POST /api/v1/memberships' do
     let_it_be(:invite_permission) { create(:permission, identifier: 'invite_members') }
-    let_it_be(:permissions_user) do
-      create(:permissions_user, permission: invite_permission, user: author, board: board)
+    let_it_be(:board_permissions_user) do
+      create(:board_permissions_user, permission: invite_permission, user: author, board: board)
     end
 
     let(:invitee1) { build_stubbed(:user) }
@@ -139,7 +140,7 @@ describe 'Membership API', type: :request do
     let(:request) { put "/api/v1/memberships/#{creatorship.id}/toggle_ready_status" }
 
     before do
-      create(:permissions_user, permission: permission, board: board, user: author)
+      create(:board_permissions_user, permission: permission, board: board, user: author)
     end
 
     it 'return 200' do

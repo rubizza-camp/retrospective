@@ -5,12 +5,18 @@ require 'rails_helper'
 describe 'Cards API', type: :request do
   let_it_be(:author) { create(:user) }
   let_it_be(:board) { create(:board) }
+  let_it_be(:card) { create(:card) }
   let_it_be(:creatorship) do
     create(:membership, board: board, user: author, role: 'creator')
   end
 
-  before { login_as author }
-
+  before do
+    login_as author
+    allow(author).to receive(:allowed?).with('create_cards', board).and_return(true)
+    allow(author).to receive(:allowed?).with('update_card', card).and_return(true)
+    allow(author).to receive(:allowed?).with('destroy_card', card).and_return(true)
+    allow(author).to receive(:allowed?).with('destroy_any_card', card).and_return(true)
+  end
   describe 'POST /api/v1/cards' do
     let(:request) do
       post '/api/v1/cards', params: { body: 'my test card', kind: 'mad',
@@ -102,7 +108,10 @@ describe 'Cards API', type: :request do
 
       let(:request) { put "/api/v1/cards/#{card.id}/like" }
 
-      before { login_as not_author }
+      before do
+        login_as not_author
+        allow(not_author).to receive(:allowed?).with('like_card', card).and_return(true)
+      end
 
       it 'return 200' do
         request

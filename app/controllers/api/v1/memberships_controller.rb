@@ -11,6 +11,10 @@ module API
         @current_membership = Membership.find_by!(user_id: current_user.id, board_id: @board.id)
       end
 
+      before_action only: %i[destroy toggle_ready_status] do
+        @membership = Membership.find(params[:id])
+      end
+
       skip_verify_authorized only: %i[index current]
 
       # app/graphql/queries/memberships.rb
@@ -41,16 +45,13 @@ module API
 
       # app/graphql/mutations/destroy_membership_mutation.rb
       # rubocop:disable Metrics/MethodLength
-      # rubocop:disable Metrics/AbcSize
       def destroy
-        @membership = Membership.find(params[:id])
-
         authorize! @membership,
                    context: { membership: Membership.find_by(user: current_user,
                                                              board: @membership.board) }
 
         @membership.transaction do
-          @membership.board.permissions_users.where(user: @membership.user).destroy_all
+          @membership.board.board_permissions_users.where(user: @membership.user).destroy_all
           @membership.destroy
         end
 
@@ -60,13 +61,10 @@ module API
           render_json_error(@membership.errors.full_messages)
         end
       end
-      # rubocop:enable Metrics/AbcSize
       # rubocop:enable Metrics/MethodLength
 
       # app/graphql/mutations/toggle_ready_status_mutation.rb
       def toggle_ready_status
-        @membership = Membership.find(params[:id])
-
         authorize! @membership, to: :ready_toggle?,
                                 context: { membership: @membership }
 

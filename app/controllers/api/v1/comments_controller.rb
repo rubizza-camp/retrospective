@@ -14,9 +14,9 @@ module API
 
       # app/graphql/mutations/add_comment_mutation.rb
       def create
+        board = Board.find_by!(params[:id])
+        authorize! board, to: :create_comments?
         @comment = Comment.new(comment_params.merge(author: current_user))
-
-        authorize! @comment
 
         if @comment.save
           prepare_and_make_response(@comment)

@@ -10,11 +10,13 @@ describe 'Comments API', type: :request do
   end
   let_it_be(:card) { create(:card, board: board, author: author) }
 
-  before { login_as author }
-
   describe 'POST /api/v1/comments' do
     let(:request) do
       post '/api/v1/comments', params: { content: 'my test comment', card_id: card.id }
+    end
+    before do
+      login_as author
+      allow(author).to receive(:allowed?).with('create_comments', board).and_return(true)
     end
 
     it 'return 200' do
@@ -43,7 +45,11 @@ describe 'Comments API', type: :request do
     let_it_be(:comment) { create(:comment, card: card, author: author) }
 
     let(:request) { put "/api/v1/comments/#{comment.id}", params: { content: 'new text' } }
+    before do
+      login_as author
 
+      allow(author).to receive(:allowed?).with('update_comment', comment).and_return(true)
+    end
     it 'return 200' do
       request
 
@@ -69,6 +75,10 @@ describe 'Comments API', type: :request do
     let_it_be(:comment) { create(:comment, card: card, author: author) }
 
     let(:request) { delete "/api/v1/comments/#{comment.id}" }
+    before do
+      login_as author
+      allow(author).to receive(:allowed?).with('destroy_comment', comment).and_return(true)
+    end
 
     it 'return 200' do
       request
@@ -102,8 +112,10 @@ describe 'Comments API', type: :request do
 
       let(:request) { put "/api/v1/comments/#{comment.id}/like" }
 
-      before { login_as not_author }
-
+      before do
+        login_as not_author
+        allow(not_author).to receive(:allowed?)
+      end
       it 'return 200' do
         request
 
