@@ -16,7 +16,7 @@ module API
       def create
         board = Board.find_by!(params[:id])
         authorize! board, to: :create_comments?
-        @comment = Comment.new(comment_params.merge(author: current_user))
+        @comment = Comment.new(comment_params.merge!(author: current_user))
 
         if @comment.save
           prepare_and_make_response(@comment)

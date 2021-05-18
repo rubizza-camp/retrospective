@@ -16,12 +16,12 @@ module API
       def create
         board = Board.find_by!(slug: params[:board_slug])
         authorize! board, to: :create_cards?
-        @card = Card.new(card_params.merge(board: board, author: current_user))
+        card = Card.new(card_params.merge!(board: board, author: current_user))
 
-        if @card.save
-          prepare_and_make_response(@card)
+        if card.save
+          prepare_and_make_response(card)
         else
-          render_json_error(@card.errors.full_messages)
+          render_json_error(card.errors.full_messages)
         end
       end
 
