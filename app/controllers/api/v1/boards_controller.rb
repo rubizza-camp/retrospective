@@ -7,18 +7,18 @@ module API
       def index
         authorize!
 
-        @boards = Board.includes(:cards).limit(10)
+        boards = Board.includes(:cards).limit(10)
 
-        render json: serialize_resource(@boards)
+        render json: serialize_resource(boards)
       end
 
       # app/graphql/queries/board.rb
       def show
-        @board = Board.find(params[:id])
+        board = Board.find(params[:id])
 
-        authorize! @board
+        authorize! board
 
-        render json: serialize_resource(@board)
+        render json: serialize_resource(board)
       end
     end
   end

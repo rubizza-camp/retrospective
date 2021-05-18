@@ -17,15 +17,15 @@ module API
 
       # app/graphql/mutations/add_action_item_mutation.rb
       def create
-        @action_item = ActionItem.new(action_item_params.merge!(board: @board,
-                                                                author: current_user))
+        action_item = ActionItem.new(action_item_params.merge!(board: @board,
+                                                               author: current_user))
 
-        authorize! @action_item, context: { user: current_user, board: @board }
+        authorize! action_item, context: { user: current_user, board: @board }
 
-        if @action_item.save
-          prepare_and_make_response(@action_item, @board)
+        if action_item.save
+          prepare_and_make_response(action_item, @board)
         else
-          render_json_error(@action_item.errors.full_messages)
+          render_json_error(action_item.errors.full_messages)
         end
       end
 

@@ -19,14 +19,14 @@ module API
 
       # app/graphql/queries/memberships.rb
       def index
-        @memberships = @board.memberships.includes(:user)
-        render json: serialize_resource(@memberships)
+        memberships = @board.memberships.includes(:user)
+        render json: serialize_resource(memberships)
       end
 
       # app/graphql/queries/membership.rb
       def current
-        @membership = @board.memberships.find_by(user: current_user)
-        render json: serialize_resource(@membership)
+        membership = @board.memberships.find_by(user: current_user)
+        render json: serialize_resource(membership)
       end
 
       # app/graphql/mutations/invite_members_mutation.rb
