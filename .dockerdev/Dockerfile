@@ -2,7 +2,7 @@
 
 ARG RUBY_VERSION
 
-FROM ruby:$RUBY_VERSION-slim-buster
+FROM ruby:2.6.6
 
 ARG NODE_MAJOR
 ARG PG_MAJOR
