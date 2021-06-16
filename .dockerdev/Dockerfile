@@ -53,4 +53,12 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
+COPY Gemfile* ./
+
+RUN bundle config github.https true && \
+    bundle install \
+        --without development test \
+        --jobs=4 \ 
+        --deployment
+
 COPY . .
