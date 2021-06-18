@@ -53,7 +53,11 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
+COPY . .
+
 COPY Gemfile* ./
+
+ENV RAILS_ENV production
 
 RUN bundle config github.https true && \
     bundle install \
@@ -67,4 +71,3 @@ RUN yarn
 
 RUN bin/rake assets:precompile
 
-COPY . .
