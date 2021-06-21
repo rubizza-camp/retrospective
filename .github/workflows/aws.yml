@@ -33,7 +33,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg RUBY_VERSION=2.6.6 --build-arg NODE_MAJOR=12 --build-arg PG_MAJOR=11 --build-arg YARN_VERSION=1.19.1 --build-arg BUNDLER_VERSION=2.0.2 --build-arg KEY_BASE=${{ secrets.SECRET_KEY_BASE }} -f ./.dockerdev/Dockerfile .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg RUBY_VERSION=2.6.6 --build-arg NODE_MAJOR=12 --build-arg PG_MAJOR=11 --build-arg YARN_VERSION=1.19.1 --build-arg BUNDLER_VERSION=2.0.2 --build-arg SECRET_KEY_BASE=${{SECRET_KEY_BASE}} -f ./.dockerdev/Dockerfile .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
     - name: Execute SSH commmands on remote server
