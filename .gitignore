@@ -43,3 +43,5 @@ yarn-debug.log*
 coverage
 **/uploads
 **/.DS_Store
+
+/config/credentials/production.key
