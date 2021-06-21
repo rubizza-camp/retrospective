@@ -4,6 +4,7 @@ ARG RUBY_VERSION
 
 FROM ruby:$RUBY_VERSION
 
+ARG KEY_BASE
 ARG NODE_MAJOR
 ARG PG_MAJOR
 ARG BUNDLER_VERSION
@@ -55,7 +56,7 @@ WORKDIR /app
 
 COPY . .
 
-COPY Gemfile* ./
+# COPY Gemfile* ./
 
 ENV RAILS_ENV production
 
@@ -65,9 +66,9 @@ RUN bundle config github.https true && \
         --jobs=4 \ 
         --deployment
 
-COPY package.json yarn.lock ./
+#COPY package.json yarn.lock ./
 
 RUN yarn
 
-RUN bin/rake assets:precompile
+RUN KEY_BASE=${KEY_BASE} RAILS_ENV=production bundle exec rails assets:precompile
 
