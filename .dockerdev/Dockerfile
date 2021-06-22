@@ -56,8 +56,6 @@ WORKDIR /app
 
 COPY . .
 
-# COPY Gemfile* ./
-
 ENV RAILS_ENV production
 
 RUN bundle config github.https true && \
@@ -65,8 +63,6 @@ RUN bundle config github.https true && \
         --without development test \
         --jobs=4 \ 
         --deployment
-
-#COPY package.json yarn.lock ./
 
 RUN yarn
 
