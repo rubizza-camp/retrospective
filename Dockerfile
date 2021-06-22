@@ -4,6 +4,7 @@ ARG RUBY_VERSION
 
 FROM ruby:$RUBY_VERSION
 
+ARG SECRET_KEY_BASE
 ARG NODE_MAJOR
 ARG PG_MAJOR
 ARG BUNDLER_VERSION
@@ -22,7 +23,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
 
 # Install dependencies
 # We use an external Aptfile for that, stay tuned
-COPY Aptfile /tmp/Aptfile
+COPY .dockerdev/Aptfile /tmp/Aptfile
 RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrade && \
   DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
     build-essential \
@@ -52,3 +53,18 @@ RUN gem update --system && \
 RUN mkdir -p /app
 
 WORKDIR /app
+
+COPY . .
+
+ENV RAILS_ENV production
+
+RUN bundle config github.https true && \
+    bundle install \
+        --without development test \
+        --jobs=4 \ 
+        --deployment
+
+RUN yarn
+
+RUN SECRET_KEY_BASE=$SECRET_KEY_BASE RAILS_ENV=production bundle exec rails assets:precompile
+
