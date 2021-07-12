@@ -34,6 +34,7 @@ RUN apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrad
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     truncate -s 0 /var/log/*log
 RUN yarn
+
 # Configure bundler and PATH
 ENV LANG=C.UTF-8 \
   GEM_HOME=/bundle \
