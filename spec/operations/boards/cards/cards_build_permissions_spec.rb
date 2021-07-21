@@ -37,4 +37,21 @@ RSpec.describe Boards::Cards::BuildPermissions do
       expect(card.card_permissions_users).to be_empty
     end
   end
+
+  context 'like_card permission' do
+    let(:board) { create(:board) }
+    let(:other_user) { create(:user) }
+
+    before do
+      board.users << other_user
+    end
+
+    it 'builds permissions' do
+      like_permission = card.card_permissions_users.select do |permission|
+        permission.user_id == other_user.id
+      end
+
+      expect(like_permission).not_to be_nil
+    end
+  end
 end
