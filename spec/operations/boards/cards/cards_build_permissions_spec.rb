@@ -7,8 +7,8 @@ RSpec.describe Boards::Cards::BuildPermissions do
     described_class.new(card, user).call(identifiers_scope: identifiers_scope)
   end
 
-  let(:user) { create(:user) }
   let(:card) { create(:card) }
+  let(:user) { card.author }
   let!(:permission) { create(:permission, identifier: 'update_card') }
 
   context 'with valid identifiers scope' do
@@ -39,19 +39,38 @@ RSpec.describe Boards::Cards::BuildPermissions do
   end
 
   context 'like_card permission' do
-    let(:board) { create(:board) }
+    let(:identifiers_scope) { 'card' }
+
+    let(:board) { card.board }
     let(:other_user) { create(:user) }
+
+    let!(:like_permission) { create(:permission, identifier: 'like_card') }
 
     before do
       board.users << other_user
     end
 
-    it 'builds permissions' do
-      like_permission = card.card_permissions_users.select do |permission|
-        permission.user_id == other_user.id
-      end
+    it 'builds for others' do
+      expect { build_permissions }.to change { card.card_permissions_users.size }
 
-      expect(like_permission).not_to be_nil
+      card_permissions_users = select_card_permissions_users(card.card_permissions_users,
+                                                             like_permission.id)
+
+      expect(card_permissions_users).not_to be_empty
+      expect(card_permissions_users.map(&:user_id)).to include(other_user.id)
     end
+
+    it "doesn't builds for author" do
+      expect { build_permissions }.to change { card.card_permissions_users.size }
+
+      card_permissions_users = select_card_permissions_users(card.card_permissions_users,
+                                                             like_permission.id)
+
+      expect(card_permissions_users.map(&:user_id)).not_to include(user.id)
+    end
+  end
+
+  def select_card_permissions_users(card_permissions_users, permission_id)
+    card_permissions_users.select { |cpu| cpu.permission_id == permission_id }
   end
 end
