@@ -54,17 +54,19 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY . .
+COPY Gemfile .
+COPY Gemfile.lock .
 
 ENV RAILS_ENV production
 
 RUN bundle config github.https true && \
     bundle install \
         --without development test \
-        --jobs=4 \ 
+        --jobs=4 \
         --deployment
+
+COPY . .
 
 RUN yarn
 
 RUN SECRET_KEY_BASE=$SECRET_KEY_BASE RAILS_ENV=production bundle exec rails assets:precompile
-
