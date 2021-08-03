@@ -20,7 +20,7 @@ class User < ApplicationRecord
 
   validates :provider, presence: true
   validates :uid, presence: true, uniqueness: { scope: :provider }
-  validates :nickname, uniqueness: true, if: :nickname?
+  validates :nickname, presence: true, uniqueness: true
 
   mount_uploader :avatar, AvatarUploader
 
@@ -52,7 +52,7 @@ class User < ApplicationRecord
     return unless new_record?
 
     self.password = Devise.friendly_token[0, 20]
-    self.nickname = info[:nickname]
+    self.nickname = info[:nickname] || (email && email[/^[^@]+/])
     self.first_name = info[:first_name] if info[:first_name]
     self.last_name = info[:last_name] if info[:last_name]
   end
