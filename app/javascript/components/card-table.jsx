@@ -13,7 +13,8 @@ const CardTable = ({
   creators,
   initPrevItems,
   user,
-  users
+  users,
+  previousBoardSlug
 }) => {
   const EMOJIES = ['😡', '😔', '🤗'];
 
@@ -59,6 +60,7 @@ const CardTable = ({
             handleEmpty={previousActionsEmptyHandler}
             initItems={initPrevItems || []}
             users={users}
+            previousBoardSlug={previousBoardSlug}
             onClickToggle={togglePreviousItemsOpened}
           />
         </div>
