@@ -2,7 +2,7 @@
 
 class Board < ApplicationRecord
   has_many :action_items, dependent: :restrict_with_error
-  has_many :cards, dependent: :restrict_with_error
+  has_many :cards, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
   has_many :board_permissions_users, dependent: :destroy
