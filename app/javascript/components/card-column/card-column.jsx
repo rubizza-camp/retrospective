@@ -1,7 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {useSubscription} from '@apollo/react-hooks';
 import {Card} from '../card';
-// Import {CardPopup} from '../card-popup';
 import {
   cardAddedSubscription,
   cardDestroyedSubscription,
@@ -81,18 +80,15 @@ const CardColumn = ({kind, initCards, smile}) => {
     setSkip(false);
   }, []);
 
-  //
-  // const card = cards.find((it) => it.id === popupShownId);
-
   return (
     <>
       <NewCardBody
         kind={kind}
         smile={smile}
-        onCardAdded={(cardAdded) => {
+        handleCardAdd={(cardAdded) => {
           setCards((oldCards) => [cardAdded, ...oldCards]);
         }}
-        onGetNewCardID={(cardMockid, cardId) => {
+        handleGetNewCardID={(cardMockid, cardId) => {
           setCards((oldCards) => {
             oldCards[
               oldCards.findIndex((it) => it.id === cardMockid)
@@ -114,15 +110,6 @@ const CardColumn = ({kind, initCards, smile}) => {
           />
         );
       })}
-
-      {/* {popupShownId && (
-        <CardPopup
-          type={kind}
-          card={card}
-          onCommentButtonClick={() => {}}
-          onClickClosed={handlePopupClose}
-        />
-      )} */}
     </>
   );
 };

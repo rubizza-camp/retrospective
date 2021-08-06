@@ -1,14 +1,14 @@
 import {nanoid} from 'nanoid';
 import React, {useState, useContext, useEffect, useRef} from 'react';
 import {useMutation} from '@apollo/react-hooks';
-// ! import Textarea from 'react-textarea-autosize';
 import {addCardMutation} from './operations.gql';
 import BoardSlugContext from '../../utils/board-slug-context';
 import UserContext from '../../utils/user-context';
+import {handleKeyPress} from '../../utils/helpers';
 import style from './style.module.less';
 import styleButton from '../../less/button.module.less';
 
-const NewCardBody = ({kind, smile, onCardAdded, onGetNewCardID}) => {
+const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
   const textInput = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const [newCard, setNewCard] = useState('');
@@ -44,7 +44,7 @@ const NewCardBody = ({kind, smile, onCardAdded, onGetNewCardID}) => {
     const card = buildNewCard();
     evt.preventDefault();
 
-    onCardAdded(card);
+    handleCardAdd(card);
 
     const {data} = await addCard({
       variables: {
@@ -54,27 +54,17 @@ const NewCardBody = ({kind, smile, onCardAdded, onGetNewCardID}) => {
       }
     });
     if (data.addCard.card) {
-      onGetNewCardID(card.id, data.addCard.card.id);
+      handleGetNewCardID(card.id, data.addCard.card.id);
       setNewCard('');
     } else {
       console.log(data.addCard.errors.fullMessages.join(' '));
     }
   };
 
-  const handleKeyPress = (evt) => {
-    if (navigator.platform.includes('Mac')) {
-      if (evt.key === 'Enter' && evt.metaKey) {
-        submitHandler(evt);
-      }
-    } else if (evt.key === 'Enter' && evt.ctrlKey) {
-      submitHandler(evt);
-    }
-
-    if (evt.key === 'Escape') {
-      cancelHandler(evt);
-      setIsEdit(!isEdit);
-      setNewCard('');
-    }
+  const handleEscapeClick = (evt) => {
+    cancelHandler(evt);
+    setIsEdit(!isEdit);
+    setNewCard('');
   };
 
   return (
@@ -90,9 +80,10 @@ const NewCardBody = ({kind, smile, onCardAdded, onGetNewCardID}) => {
               id={`card_${kind}_body`}
               value={newCard}
               placeholder="Express yourself"
-              // ! maxRows={2}
               onChange={(evt) => setNewCard(evt.target.value)}
-              onKeyDown={handleKeyPress}
+              onKeyDown={(evt) =>
+                handleKeyPress(evt, submitHandler, handleEscapeClick)
+              }
             />
             <div className={styleButton.buttons}>
               <button

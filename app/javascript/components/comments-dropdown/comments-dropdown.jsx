@@ -1,5 +1,5 @@
 import React, {useRef, useState, useContext, useEffect} from 'react';
-import Picker from 'emoji-picker-react';
+import EmojiPicker from 'emoji-picker-react';
 import Textarea from 'react-textarea-autosize';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSmile} from '@fortawesome/free-regular-svg-icons';
@@ -7,6 +7,7 @@ import UserContext from '../../utils/user-context';
 import {Comment} from '../comment';
 import {useMutation} from '@apollo/react-hooks';
 import {addCommentMutation} from './operations.gql';
+import {handleKeyPress} from '../../utils/helpers';
 import './style.less';
 
 const CommentsDropdown = ({id, comments, onClickClosed}) => {
@@ -32,21 +33,22 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
     setIsError(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     controlElement.current.disabled = true;
-    addComment({
+    const {data} = await addComment({
       variables: {
         cardId: id,
         content: newComment
       }
-    }).then(({data}) => {
-      if (data.addComment.comment) {
-        handleSuccessSubmit();
-      } else {
-        console.log(data.addComment.errors.fullMessages.join(' '));
-        handleErrorSubmit();
-      }
     });
+
+    if (data.addComment.comment) {
+      handleSuccessSubmit();
+    } else {
+      console.log(data.addComment.errors.fullMessages.join(' '));
+      handleErrorSubmit();
+    }
+
     controlElement.current.disabled = false;
     setShowEmojiPicker(false);
   };
@@ -59,20 +61,6 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
     setNewComment((comment) => `${comment}${emoji.emoji}`);
   };
 
-  const handleKeyPress = (evt) => {
-    if (navigator.platform.includes('Mac')) {
-      if (evt.key === 'Enter' && evt.metaKey) {
-        handleSubmit(evt);
-      }
-    } else if (evt.key === 'Enter' && evt.ctrlKey) {
-      handleSubmit(evt);
-    }
-
-    if (evt.key === 'Escape') {
-      onClickClosed();
-    }
-  };
-
   return (
     <div className="comments">
       <div className="comments__wrapper">
@@ -81,7 +69,6 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
             key={item.id}
             id={item.id}
             comment={item}
-            deletable={user === item.author.email}
             editable={user === item.author.email}
           />
         ))}
@@ -89,11 +76,12 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
       <div className="new-comment">
         <Textarea
           ref={textInput}
-          className="new-comment__textarea"
+          className={`new-comment__textarea ${
+            isError && 'new-comment__textarea--error'
+          }`}
           value={newComment}
-          style={isError ? {outline: 'solid 1px red'} : {}}
           onChange={(evt) => setNewComment(evt.target.value)}
-          onKeyDown={handleKeyPress}
+          onKeyDown={(evt) => handleKeyPress(evt, handleSubmit, onClickClosed)}
         />
         <a className="new-comment__smile" onClick={handleSmileClick}>
           <FontAwesomeIcon icon={faSmile} />
@@ -116,9 +104,7 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
           post
         </button>
       </div>
-      {showEmojiPicker && (
-        <Picker style={{width: 'auto'}} onEmojiClick={handleEmojiPickerClick} />
-      )}
+      {showEmojiPicker && <EmojiPicker onEmojiClick={handleEmojiPickerClick} />}
     </div>
   );
 };

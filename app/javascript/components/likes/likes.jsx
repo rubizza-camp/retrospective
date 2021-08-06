@@ -19,16 +19,16 @@ const Likes = ({type, likes, id}) => {
     };
   }, [timer]);
 
-  const addLike = () => {
-    likeCard({
+  const addLike = async () => {
+    const {data} = await likeCard({
       variables: {
         id
       }
-    }).then(({data}) => {
-      if (!data.likeCard.card) {
-        console.log(data.likeCard.errors.fullMessages.join(' '));
-      }
     });
+
+    if (!data.likeCard.card) {
+      console.log(data.likeCard.errors.fullMessages.join(' '));
+    }
   };
 
   const handleMouseDown = () => {

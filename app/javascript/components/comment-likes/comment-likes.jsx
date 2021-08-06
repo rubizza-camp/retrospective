@@ -14,16 +14,16 @@ const CommentLikes = ({likes, id}) => {
     };
   }, [timer]);
 
-  const addLike = () => {
-    likeComment({
+  const addLike = async () => {
+    const {data} = await likeComment({
       variables: {
         id
       }
-    }).then(({data}) => {
-      if (!data.likeComment.comment) {
-        console.log(data.likeComment.errors.fullMessages.join(' '));
-      }
     });
+
+    if (!data.likeComment.comment) {
+      console.log(data.likeComment.errors.fullMessages.join(' '));
+    }
   };
 
   const handleMouseDown = () => {

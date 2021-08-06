@@ -12,7 +12,7 @@ const PreviousActionItemColumn = ({
   users,
   handleEmpty,
   initItems,
-  onClickToggle,
+  handleToggleClick,
   previousBoardSlug
 }) => {
   const [actionItems, setActionItems] = useState(initItems);
@@ -78,7 +78,7 @@ const PreviousActionItemColumn = ({
           <a href={`/boards/${previousBoardSlug}`}>See more</a>
         )}
 
-        <span className={style.hide} onClick={onClickToggle}>
+        <span className={style.hide} onClick={handleToggleClick}>
           hide
         </span>
       </div>

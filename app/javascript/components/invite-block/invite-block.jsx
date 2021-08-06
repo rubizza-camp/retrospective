@@ -48,25 +48,25 @@ const InviteBlock = () => {
 
   const [inviteMembers] = useMutation(inviteMembersMutation);
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
-    inviteMembers({
+    const {data} = await inviteMembers({
       variables: {
         email: selectedOption.map((a) => a.value).toString(),
         boardSlug
       }
-    }).then(({data}) => {
-      if (data.inviteMembers.memberships) {
-        const {memberships} = data.inviteMembers;
-        setMemberships((oldMemberships) => [
-          ...new Set(oldMemberships.concat(memberships))
-        ]);
-        setSelectedOption(null);
-      } else {
-        console.log(data.inviteMembers.errors.fullMessages.join(' '));
-        setSelectedOption(null);
-      }
     });
+
+    if (data.inviteMembers.memberships) {
+      const {memberships} = data.inviteMembers;
+      setMemberships((oldMemberships) => [
+        ...new Set(oldMemberships.concat(memberships))
+      ]);
+      setSelectedOption(null);
+    } else {
+      console.log(data.inviteMembers.errors.fullMessages.join(' '));
+      setSelectedOption(null);
+    }
   };
 
   const handleChange = (selectedOption) => {

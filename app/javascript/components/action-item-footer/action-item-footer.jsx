@@ -7,17 +7,18 @@ import './style.less';
 const ActionItemFooter = ({id, isReopanable, isCompletable}) => {
   const boardSlug = useContext(BoardSlugContext);
   const [moveActionItem] = useMutation(moveActionItemMutation);
-  const handleMoveClick = () => {
-    moveActionItem({
+
+  const handleMoveClick = async () => {
+    const {data} = await moveActionItem({
       variables: {
         id,
         boardSlug
       }
-    }).then(({data}) => {
-      if (!data.moveActionItem.actionItem) {
-        console.log(data.moveActionItem.errors.fullMessages.join(' '));
-      }
     });
+
+    if (!data.moveActionItem.actionItem) {
+      console.log(data.moveActionItem.errors.fullMessages.join(' '));
+    }
   };
 
   return (

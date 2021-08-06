@@ -20,24 +20,6 @@ const MembershipList = () => {
     skip: skipQuery
   });
 
-  //
-  // const calcMembersReady = (users) => {
-  //   let readyAmount = 0;
-  //   for (const user of users) {
-  //     if (user.ready) {
-  //       readyAmount++;
-  //     }
-  //   }
-
-  //   return readyAmount;
-  // };
-  // const readyMembers = fillerReadyMembers();
-  // const notReadyMembers = fillerReadyMembers(false);
-
-  // ! const filterNotReadyUsers = (users) => {
-  //   return users.filter((it) => it.ready === false);
-  // }
-
   useEffect(() => {
     if (!loading && Boolean(data)) {
       const {memberships} = data;
@@ -96,18 +78,6 @@ const MembershipList = () => {
   useEffect(() => {
     setSkipMutation(false);
   }, []);
-
-  // !
-  // const usersListComponent = memberships.map((membership) => {
-  //   return (
-  //     <User
-  //       key={membership.id}
-  //       shouldDisplayReady
-  //       membership={membership}
-  //       shouldHandleDelete={false}
-  //     />
-  //   );
-  // });
 
   const renderMembersList = (users) => {
     const fillerReadyMembers = (isReady = true) => {

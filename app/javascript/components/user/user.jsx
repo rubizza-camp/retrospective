@@ -13,24 +13,17 @@ const User = ({
   shouldDisplayReady,
   shouldHandleDelete
 }) => {
-  //
-  // const [style, setStyle] = useState({});
   const [destroyMember] = useMutation(destroyMembershipMutation);
-  const deleteUser = () => {
-    destroyMember({
+  const deleteUser = async () => {
+    const {data} = await destroyMember({
       variables: {
         id
       }
-    }).then(({data}) => {
-      if (data.destroyMembership.id) {
-        //
-        // if (shouldHandleDelete) {
-        // setStyle({display: 'none'});
-        // }
-        // } else {
-        console.log(data.destroyMembership.errors.fullMessages.join(' '));
-      }
     });
+
+    if (data.destroyMembership.id) {
+      console.log(data.destroyMembership.errors.fullMessages.join(' '));
+    }
   };
 
   const renderBoardAvatar = (userAvatar, userName, userSurname) => {

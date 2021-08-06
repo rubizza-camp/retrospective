@@ -6,6 +6,8 @@ import {CardUser} from '../card-user';
 import style from './style.module.less';
 import styleButton from '../../less/button.module.less';
 import {Linkify, linkifyOptions} from '../../utils/linkify';
+import {handleKeyPress} from '../../utils/helpers';
+import {CardEditDropdown} from '../card-edit-dropdown';
 
 const CardBody = ({author, id, editable, body, deletable}) => {
   const [inputValue, setInputValue] = useState(body);
@@ -31,28 +33,18 @@ const CardBody = ({author, id, editable, body, deletable}) => {
     setInputValue(evt.target.value);
   };
 
-  const handleKeyPress = (evt) => {
-    if (navigator.platform.includes('Mac')) {
-      if (evt.key === 'Enter' && evt.metaKey) {
-        handleSaveClick();
-      }
-    } else if (evt.key === 'Enter' && evt.ctrlKey) {
-      handleSaveClick();
-    }
-  };
-
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     editModeToggle();
-    editCard({
+    const {data} = await editCard({
       variables: {
         id,
         body: inputValue
       }
-    }).then(({data}) => {
-      if (!data.updateCard.card) {
-        console.log(data.updateCard.errors.fullMessages.join(' '));
-      }
     });
+
+    if (!data.updateCard.card) {
+      console.log(data.updateCard.errors.fullMessages.join(' '));
+    }
   };
 
   const handleCancel = (evt) => {
@@ -61,59 +53,32 @@ const CardBody = ({author, id, editable, body, deletable}) => {
     setInputValue(body);
   };
 
+  const handleDelete = async () => {
+    const {data} = await destroyCard({
+      variables: {
+        id
+      }
+    });
+
+    if (!data.destroyCard.id) {
+      console.log(data.destroyCard.errors.fullMessages.join(' '));
+    }
+  };
+
   return (
     <div className={style.cardBody}>
       <div className={style.top}>
         <CardUser {...author} />
 
         {deletable && (
-          <div className={style.dropdown}>
-            <div
-              className={style.dropdownButton}
-              tabIndex="1"
-              onClick={() => setShowDropdown(!showDropdown)}
-              onBlur={() => setShowDropdown(false)}
-            >
-              …
-            </div>
-            <div hidden={!showDropdown} className={style.dropdownContent}>
-              {!editMode && editable && (
-                <div
-                  className={style.dropdownItem}
-                  onClick={handleEditClick}
-                  onMouseDown={(event) => {
-                    event.preventDefault();
-                  }}
-                >
-                  Edit
-                </div>
-              )}
-              <div
-                className={style.dropdownItem}
-                onClick={() =>
-                  window.confirm(
-                    'Are you sure you want to delete this card?'
-                  ) &&
-                  destroyCard({
-                    variables: {
-                      id
-                    }
-                  }).then(({data}) => {
-                    if (!data.destroyCard.id) {
-                      console.log(
-                        data.destroyCard.errors.fullMessages.join(' ')
-                      );
-                    }
-                  })
-                }
-                onMouseDown={(event) => {
-                  event.preventDefault();
-                }}
-              >
-                Delete
-              </div>
-            </div>
-          </div>
+          <CardEditDropdown
+            setShowDropdown={setShowDropdown}
+            showDropdown={showDropdown}
+            editMode={editMode}
+            editable={editable}
+            handleEditClick={handleEditClick}
+            handleDelete={handleDelete}
+          />
         )}
       </div>
       <div
@@ -130,7 +95,7 @@ const CardBody = ({author, id, editable, body, deletable}) => {
             className={style.textarea}
             value={inputValue}
             onChange={handleChange}
-            onKeyDown={handleKeyPress}
+            onKeyDown={(evt) => handleKeyPress(evt, handleSaveClick)}
           />
           <div className={styleButton.buttons}>
             <button

@@ -7,53 +7,62 @@ import {
   reopenActionItemMutation
 } from './operations.gql';
 
-const TransitionButton = (props) => {
-  const {id, action} = props;
+const TransitionButton = ({id, action}) => {
   const boardSlug = useContext(BoardSlugContext);
 
   const [closeActionItem] = useMutation(closeActionItemMutation);
   const [completeActionItem] = useMutation(completeActionItemMutation);
   const [reopenActionItem] = useMutation(reopenActionItemMutation);
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    let response;
     switch (action) {
       case 'close':
-        closeActionItem({
+        response = await closeActionItem({
           variables: {
             id,
             boardSlug
           }
-        }).then(({data}) => {
-          if (!data.closeActionItem.actionItem) {
-            console.log(data.closeActionItem.errors.fullMessages.join(' '));
-          }
         });
+
+        if (!response.data.closeActionItem.actionItem) {
+          console.log(
+            response.data.closeActionItem.errors.fullMessages.join(' ')
+          );
+        }
+
         break;
 
       case 'complete':
-        completeActionItem({
+        response = await completeActionItem({
           variables: {
             id,
             boardSlug
           }
-        }).then(({data}) => {
-          if (!data.completeActionItem.actionItem) {
-            console.log(data.completeActionItem.errors.fullMessages.join(' '));
-          }
         });
+
+        if (!response.data.completeActionItem.actionItem) {
+          console.log(
+            response.data.completeActionItem.errors.fullMessages.join(' ')
+          );
+        }
+
         break;
 
       case 'reopen':
-        reopenActionItem({
+        response = reopenActionItem({
           variables: {
             id,
             boardSlug
           }
-        }).then(({data}) => {
-          if (!data.reopenActionItem.actionItem) {
-            console.log(data.reopenActionItem.errors.fullMessages.join(' '));
-          }
         });
+
+        if (!response.data.reopenActionItem.actionItem) {
+          console.log(
+            response.data.reopenActionItem.errors.fullMessages.join(' ')
+          );
+        }
+
         break;
     }
   };

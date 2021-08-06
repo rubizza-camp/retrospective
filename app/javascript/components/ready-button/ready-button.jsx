@@ -45,21 +45,23 @@ const ReadyButton = () => {
     setSkipSubscription(false);
   }, []);
 
+  const handleReadyButtonCLick = async () => {
+    const {data} = toggleReadyStatus({
+      variables: {
+        id
+      }
+    });
+
+    if (!data.toggleReadyStatus.membership) {
+      console.log(data.toggleReadyStatus.errors.fullMessages.join(' '));
+    }
+  };
+
   return (
     <button
       className={style.readyButton}
       type="button"
-      onClick={() => {
-        toggleReadyStatus({
-          variables: {
-            id
-          }
-        }).then(({data}) => {
-          if (!data.toggleReadyStatus.membership) {
-            console.log(data.toggleReadyStatus.errors.fullMessages.join(' '));
-          }
-        });
-      }}
+      onClick={handleReadyButtonCLick}
     >
       {isReady ? 'Not ready' : 'Click when ready'}
     </button>
