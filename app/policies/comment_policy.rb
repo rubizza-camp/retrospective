@@ -10,10 +10,6 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def like?
-    check?(:user_not_author?)
-  end
-
-  def user_not_author?
-    !record.author?(user)
+    user.allowed?('like_comment', record)
   end
 end

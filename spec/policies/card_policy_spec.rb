@@ -63,32 +63,19 @@ RSpec.describe CardPolicy do
     subject { policy.apply(:like?) }
 
     context 'with permission' do
-      let_it_be(:like_card_permission) { create(:permission, identifier: 'like_card') }
-
-      context 'as an author of card' do
-        let(:card_with_author) { create(:card, author: user) }
-        let(:policy) { described_class.new(card_with_author, user: user) }
-        before do
-          create(:card_permissions_user, card: card_with_author,
-                                         user: user,
-                                         permission: like_card_permission)
-        end
-        it { is_expected.to eq false }
+      let(:like_card_permission) { create(:permission, identifier: 'like_card') }
+      let(:card_with_author) { create(:card, author: user) }
+      let(:policy) { described_class.new(card_with_author, user: user) }
+      before do
+        create(:card_permissions_user, card: card_with_author,
+                                       user: user,
+                                       permission: like_card_permission)
       end
-
-      context 'not author of card' do
-        before do
-          create(:card_permissions_user, card: card,
-                                         user: user,
-                                         permission: like_card_permission)
-        end
-
-        it { is_expected.to eq true }
-      end
+      it { is_expected.to be true }
     end
 
     context 'without permission' do
-      it { is_expected.to eq false }
+      it { is_expected.to be false }
     end
   end
 end

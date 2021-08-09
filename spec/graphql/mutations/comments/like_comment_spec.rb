@@ -10,6 +10,17 @@ RSpec.describe Mutations::LikeCommentMutation, type: :request do
     let(:non_author) { create(:user) }
     let(:request) { post '/graphql', params: { query: query(id: comment.id) } }
 
+    let_it_be(:like_permission) { create(:permission, identifier: 'like_comment') }
+
+    before do
+      create(:comment_permissions_user, permission: like_permission,
+                                        user: author,
+                                        comment: comment)
+      create(:comment_permissions_user, permission: like_permission,
+                                        user: non_author,
+                                        comment: comment)
+    end
+
     context 'when logged as not comment author' do
       before { sign_in non_author }
       it 'updates a comment' do

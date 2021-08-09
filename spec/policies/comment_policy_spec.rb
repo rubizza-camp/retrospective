@@ -50,29 +50,18 @@ RSpec.describe CommentPolicy do
   describe '#like?' do
     subject { policy.apply(:like?) }
 
-    context 'when user is not a comment author' do
-      it { is_expected.to eq true }
+    context 'with permission' do
+      let_it_be(:like_comment_permission) { create(:permission, identifier: 'like_comment') }
+      before do
+        create(:comment_permissions_user, comment: comment,
+                                          user: user,
+                                          permission: like_comment_permission)
+      end
+      it { is_expected.to be true }
     end
 
-    context 'when user is a comment author' do
-      before { comment.update!(author: user) }
-
-      it { is_expected.to eq false }
-    end
-  end
-
-  describe '#user_not_author?' do
-    subject { policy.apply(:user_not_author?) }
-
-    context 'when user is not comment author' do
-      let(:not_author) { create(:user) }
-      let(:policy) { described_class.new(comment, user: not_author) }
-
-      it { is_expected.to eq true }
-    end
-
-    context 'when user is a comment author' do
-      it { is_expected.to eq false }
+    context 'without permission' do
+      it { is_expected.to be false }
     end
   end
 end
