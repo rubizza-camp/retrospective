@@ -69,7 +69,7 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
             key={item.id}
             id={item.id}
             comment={item}
-            editable={user === item.author.email}
+            editable={user.id === item.author.id}
           />
         ))}
       </div>
