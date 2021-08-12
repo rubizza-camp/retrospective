@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import {CommentLikes} from '../comment-likes';
 import {CardUser} from '../card-user';
 import {Linkify, linkifyOptions} from '../../utils/linkify';
 import style from './style.module.less';
@@ -63,7 +64,7 @@ const Comment = ({id, comment, editable}) => {
       <div className="comment-user">
         <CardUser {...comment.author} />
       </div>
-      <div className={style.commentText}>
+      <div className={style.commentBlock}>
         {editMode ? (
           <>
             <TextareaAutosize
@@ -82,7 +83,12 @@ const Comment = ({id, comment, editable}) => {
           </>
         ) : (
           <>
-            <Linkify options={linkifyOptions}>{comment.content}</Linkify>
+            <div className={style.commentText}>
+              <Linkify options={linkifyOptions}>{comment.content}</Linkify>
+              <div className={style.commentLike}>
+                <CommentLikes id={comment.id} likes={comment.likes} />
+              </div>
+            </div>
             {editable && (
               <div className={style.commentButtons}>
                 <button type="button" onClick={handleEditClick}>

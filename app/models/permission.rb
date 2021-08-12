@@ -6,9 +6,9 @@ class Permission < ApplicationRecord
                            toggle_ready_status destroy_membership destroy_any_card
                            like_card create_comments create_action_items update_action_items
                            destroy_action_items move_action_items close_action_items
-                           complete_action_items reopen_action_items].freeze
+                           complete_action_items reopen_action_items like_comment].freeze
   MEMBER_IDENTIFIERS = %w[view_private_board create_cards toggle_ready_status like_card
-                          create_comments create_action_items].freeze
+                          create_comments create_action_items like_comment].freeze
   CARD_IDENTIFIERS = %w[update_card destroy_card].freeze
   COMMENT_IDENTIFIERS = %w[update_comment destroy_comment].freeze
 
