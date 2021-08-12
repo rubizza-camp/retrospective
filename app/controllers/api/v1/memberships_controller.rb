@@ -55,10 +55,10 @@ module API
           @membership.destroy
         end
 
-        if !@membership.persisted?
-          prepare_and_make_response(@membership, @membership.board)
-        else
+        if @membership.persisted?
           render_json_error(@membership.errors.full_messages)
+        else
+          prepare_and_make_response(@membership, @membership.board)
         end
       end
       # rubocop:enable Metrics/MethodLength

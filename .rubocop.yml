@@ -6,8 +6,10 @@ AllCops:
     - db/schema.rb
     - node_modules/**/*
     - vendor/bundle/**/*
+  NewCops: enable
+  SuggestExtensions: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 100
   Exclude:
     - ./db/seeds.rb

@@ -2,14 +2,14 @@
 
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/graphql' if Rails.env.development?
   post '/graphql', to: 'graphql#execute'
   root to: 'home#index'
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }, only: :omniauth_callbacks
   as :user do
     delete '/sign_out' => 'devise/sessions#destroy', :as => :destroy_user_session
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
   end
 
   direct :new_user_session do

@@ -19,13 +19,13 @@ module Mutations
         membership.destroy
       end
 
-      if !membership.persisted?
+      if membership.persisted?
+        { errors: { full_messages: membership.errors.full_messages } }
+      else
         RetrospectiveSchema.subscriptions.trigger('membership_destroyed',
                                                   { board_slug: membership.board.slug },
                                                   id: id)
         { id: id }
-      else
-        { errors: { full_messages: membership.errors.full_messages } }
       end
     end
     # rubocop:enable Metrics/MethodLength
