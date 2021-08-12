@@ -11,7 +11,8 @@ const User = ({
     user: {email, avatar, lastName, firstName}
   },
   shouldDisplayReady,
-  shouldHandleDelete
+  shouldHandleDelete,
+  amount
 }) => {
   const [destroyMember] = useMutation(destroyMembershipMutation);
   const deleteUser = async () => {
@@ -27,23 +28,29 @@ const User = ({
   };
 
   const renderBoardAvatar = (userAvatar, userName, userSurname) => {
+    let avatarClasses = `${
+      shouldDisplayReady && ready && avatarStyle.isReady
+    } ${avatarStyle.avatar} ${amount > 5 && avatarStyle.avatarHugePeople}`;
+
     if (userAvatar) {
       return (
         <img
           src={avatar.thumb.url}
-          className={`${shouldDisplayReady && ready ? 'isReady' : ''} avatar`}
+          className={avatarClasses}
           alt={email}
           title={email}
         />
       );
     }
 
-    let classes = `${avatarStyle.avatar} ${avatarStyle.avatarText}
-      ${avatarStyle[`avatar-${id % 10}`]}`;
-    shouldDisplayReady && ready && (classes += avatarStyle.isReady);
+    avatarClasses += ` ${avatarStyle.avatarText} ${
+      avatarStyle[`avatar-${id % 10}`]
+    }`;
 
     return (
-      <div className={classes}>{getUserInitials(userName, userSurname)}</div>
+      <div className={avatarClasses}>
+        {getUserInitials(userName, userSurname)}
+      </div>
     );
   };
 
@@ -51,7 +58,10 @@ const User = ({
     <div key={email} className={avatarStyle.avatarWrapper}>
       {renderBoardAvatar(avatar.thumb.url, firstName, lastName)}
       <div className={avatarStyle.avatarTooltip}>
-        {firstName} {lastName}
+        <span> ^ </span>
+        <span>
+          {firstName} {lastName}
+        </span>
       </div>
       {shouldHandleDelete && (
         <a className="delete is-small" onClick={deleteUser} />

@@ -6,7 +6,7 @@ import {
   membershipListUpdatedSubscription,
   membershipDestroyedSubscription
 } from './operations.gql';
-import User from '../user/user';
+import {User} from '../user';
 import BoardSlugContext from '../../utils/board-slug-context';
 import './style.less';
 
@@ -101,6 +101,7 @@ const MembershipList = () => {
                   shouldDisplayReady
                   membership={user}
                   shouldHandleDelete={false}
+                  amount={notReadyMembers.length}
                 />
               );
             })}
@@ -123,6 +124,7 @@ const MembershipList = () => {
                   shouldDisplayReady
                   membership={user}
                   shouldHandleDelete={false}
+                  amount={readyMembers.length}
                 />
               );
             })}
@@ -141,6 +143,7 @@ const MembershipList = () => {
                 shouldDisplayReady
                 membership={user}
                 shouldHandleDelete={false}
+                amount={readyMembers.length}
               />
             );
           })}
@@ -159,6 +162,7 @@ const MembershipList = () => {
                 shouldDisplayReady
                 membership={user}
                 shouldHandleDelete={false}
+                amount={notReadyMembers.length}
               />
             );
           })}

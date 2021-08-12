@@ -8,7 +8,7 @@ import {
 import style from './style.module.less';
 import BoardSlugContext from '../../utils/board-slug-context';
 
-const ReadyButton = () => {
+const ReadyButton = ({user}) => {
   const boardSlug = useContext(BoardSlugContext);
   const [isReady, setIsReady] = useState(false);
   const [id, setId] = useState(0);
@@ -19,7 +19,6 @@ const ReadyButton = () => {
     skip: skipQuery
   });
   const [toggleReadyStatus] = useMutation(toggleReadyStatusMutation);
-
   useSubscription(membershipUpdatedSubscription, {
     skip: skipSubscription,
     onSubscriptionData: (options) => {
@@ -63,7 +62,9 @@ const ReadyButton = () => {
       type="button"
       onClick={handleReadyButtonCLick}
     >
-      {isReady ? 'Not ready' : 'Click when ready'}
+      {isReady
+        ? 'Not ready'
+        : `Ready, ${user.first_name ? user.first_name : user.nickname}?`}
     </button>
   );
 };
