@@ -29,7 +29,7 @@ class BoardsController < ApplicationController
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   def show
     authorize! @board
     @cards_by_type = @board.column_names.map do |column|
@@ -46,7 +46,7 @@ class BoardsController < ApplicationController
     @users = ActiveModelSerializers::SerializableResource.new(User.find(@board.memberships.pluck(:user_id))).as_json
     # @data = RetrospectiveSchema.execute(INITIAL__QUERY)
   end
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 

@@ -2,7 +2,7 @@
 
 module Types
   class SubscriptionType < BaseObject
-    # rubocop:disable Metrics/LineLength
+    # rubocop:disable Layout/LineLength
     field :action_item_added, Types::ActionItemType, null: false, description: 'An action item was added' do
       argument :boardSlug, String, required: true
     end
@@ -42,7 +42,7 @@ module Types
       argument :boardSlug, String, required: true
     end
 
-    # rubocop:enable Metrics/LineLength
+    # rubocop:enable Layout/LineLength
 
     def action_item_added(*); end
 
