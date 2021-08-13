@@ -1,7 +1,7 @@
 import React from 'react';
 import {useMutation} from '@apollo/react-hooks';
 import {destroyMembershipMutation} from './operations.gql';
-import {getUserInitials, getFullnameOrNickname} from '../../utils/helpers';
+import {getInitials, getFullnameOrNickname} from '../../utils/helpers';
 import avatarStyle from './style.module.less';
 
 const User = ({
@@ -49,7 +49,7 @@ const User = ({
 
     return (
       <div className={avatarClasses}>
-        {getUserInitials(userName, userSurname)}
+        {getInitials(userName, userSurname)}
       </div>
     );
   };
