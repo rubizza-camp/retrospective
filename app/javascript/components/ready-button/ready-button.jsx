@@ -64,7 +64,7 @@ const ReadyButton = ({user}) => {
     >
       {isReady
         ? 'Not ready'
-        : `Ready, ${user.first_name ? user.first_name : user.nickname}?`}
+        : `Ready, ${user.firstName ? user.firstName : user.nickname}?`}
     </button>
   );
 };

@@ -50,12 +50,12 @@ const ActionItemEdit = ({
                   }}
                 >
                   <span>
-                    {user.first_name} {user.last_name}
+                    {user.firstName} {user.lastName}
                   </span>
                   <CardUserAvatar
                     avatar={user.avatar?.thumb?.url}
-                    firstName={user.first_name}
-                    lastName={user.last_name}
+                    firstName={user.firstName}
+                    lastName={user.lastName}
                   />
                 </li>
               );
@@ -74,8 +74,8 @@ const ActionItemEdit = ({
 
       {newActionItemAssigneeId && (
         <ActionItemAssignee
-          firstName={currentAssignee.first_name}
-          lastName={currentAssignee.last_name}
+          firstName={currentAssignee.firstName}
+          lastName={currentAssignee.lastName}
           avatar={currentAssignee.avatar?.thumb?.url}
         />
       )}

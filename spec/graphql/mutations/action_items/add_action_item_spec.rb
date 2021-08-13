@@ -54,7 +54,7 @@ RSpec.describe Mutations::AddActionItemMutation, type: :request do
           actionItem {
             id
             body
-            times_moved
+            timesMoved
             author {
               id
             }
