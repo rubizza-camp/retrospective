@@ -1,10 +1,18 @@
 export const getBigFirstLetter = (string) => string.toUpperCase().charAt(0);
 
-export const getUserInitials = (name, surname) => {
+export const getInitials = (name, surname) => {
   return (
     (name ? getBigFirstLetter(name) : '') +
     (surname ? getBigFirstLetter(surname) : '')
   );
+};
+
+export const getBigFirstLettersBoard = (string) => {
+  return string.toUpperCase().charAt(0) + string.toUpperCase().charAt(1);
+};
+
+export const getInitialsTitleBoard = (title) => {
+  return title ? getBigFirstLettersBoard(title) : '';
 };
 
 export const handleKeyPress = (evt, handleEnter, handleEscape) => {

@@ -80,6 +80,7 @@
     "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "date-fns": "^2.23.0",
     "emoji-picker-react": "^3.2.4",
     "graphql": "^15.4.0",
     "graphql-ruby-client": "^1.8.1",

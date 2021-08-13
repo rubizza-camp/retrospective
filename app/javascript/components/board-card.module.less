@@ -1,4 +1,4 @@
-.app{
+.board{
   margin: 35px;
   padding: 16px;
   width: 436px;
@@ -6,6 +6,23 @@
   border-radius: 8px;
   box-shadow: 0px 8px 16px 0px #757D5C40;
 
+}
+.header{
+  display: flex;
+  width: 100%;
+  height: 80%;
+}
+
+.ellipsisIcon{
+  height: 30%;
+  display: flex;
+}
+
+.footer{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 5%;
 }
 
 .ava{
@@ -19,7 +36,7 @@
   justify-content: center;
   align-items: center;
   margin-right: 8px;
-
+  cursor:default;
 }
 .avatarText {
   border-radius: 4px;
@@ -62,43 +79,43 @@ text-align: left;
 }
 
 
-.avatar-1 {
+.avatar1 {
   background-color: #DB6622;
 }
 
-.avatar-2 {
+.avatar2 {
   background-color: #DBAA22;
 }
 
-.avatar-3 {
+.avatar3 {
   background-color: #85DB22;
 }
 
-.avatar-4 {
+.avatar4 {
   background-color: #22DB8B;
 }
 
-.avatar-5 {
+.avatar5 {
   background-color: #22DBCF;
 }
 
-.avatar-6 {
+.avatar6 {
   background-color: #22A3DB;
 }
 
-.avatar-7 {
+.avatar7 {
   background-color: #6C22DB;
 }
 
-.avatar-8 {
+.avatar8 {
   background-color: #B022DB;
 }
 
-.avatar-9 {
+.avatar9 {
   background-color: #DB22C2;
 }
 
-.avatar-0 {
+.avatar0 {
   background-color: #DB229D;
 }
 
@@ -130,23 +147,8 @@ text-align: left;
   transition: all ease 0.2s;
 }
 
-// .open {
-//   display: flex;
-//   align-items: center;
-//   justify-content: flex-end;
-//   color: #616161;
-//   transition: all ease 0.2s;
-//   position: absolute;
-//   right: -40px;
-//   flex-direction: column-reverse;
-//   flex-wrap: wrap;
-//   max-width: 96px;
-//   top: -20px;
-//   max-height: 200px;
-// }
 
 .avaContainer {
-  // margin: 5px 0;
   width: 50%;
 }
 .avaContainer:nth-last-child(n+5) {
@@ -162,21 +164,24 @@ text-align: left;
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  color: white;
+  // color: white;
   font: 10px sans-serif;
   line-height: 1;
   text-transform: uppercase;
   font-weight: 500;
+  color: white;
+  letter-spacing: -0.1em;
+  cursor:default;
 }
 
 .avaAddCount {
   width: 20%;
-  cursor: pointer;
+  cursor:default;
+}
+
+.userCount{
+  font-size: 20px;
+  color:gray; 
 }
 
 
-.combatant {
-  background-color: #fff;
-  color: gray;
-  letter-spacing: -0.1em;
-}
