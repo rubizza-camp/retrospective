@@ -114,8 +114,9 @@ describe 'Comments API', type: :request do
 
       before do
         login_as not_author
-        allow(not_author).to receive(:allowed?)
+        allow(not_author).to receive(:allowed?).with('like_comment', comment).and_return(true)
       end
+
       it 'return 200' do
         request
 

@@ -5,10 +5,10 @@ module Mutations
     argument :id, ID, required: true
 
     field :card, Types::CardType, null: true
+
     def resolve(id:)
       card = Card.find(id)
       authorize! card, to: :like?, context: { user: context[:current_user] }
-
       if card.like!
         RetrospectiveSchema.subscriptions.trigger('card_updated',
                                                   { board_slug: card.board.slug },

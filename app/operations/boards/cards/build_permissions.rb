@@ -4,6 +4,7 @@ module Boards
   module Cards
     class BuildPermissions
       IDENTIFIERS_SCOPES = %w[card].freeze
+      LIKE_CARD_IDENTIFIER = :like_card
 
       include Dry::Monads[:result]
       attr_reader :card, :user
@@ -18,23 +19,25 @@ module Boards
           return Failure('Unknown permissions identifiers scope provided')
         end
 
-        permissions_data = build_author_permissions(user.id, identifiers_scope: identifiers_scope)
+        permissions_data = build_author_permissions(identifiers_scope: identifiers_scope)
         like_permissions_data = build_like_permission(card.board.users.where.not(id: user.id))
 
         card.card_permissions_users.build(permissions_data + like_permissions_data)
         Success()
       end
 
-      def build_author_permissions(user_id, identifiers_scope:)
+      private
+
+      def build_author_permissions(identifiers_scope:)
         Permission.public_send(
           "#{identifiers_scope}_permissions"
         ).map do |permission|
-          { permission_id: permission.id, user_id: user_id }
+          { permission_id: permission.id, user_id: user.id }
         end
       end
 
       def build_like_permission(users)
-        like_permission = Permission.find_by(identifier: 'like_card')
+        like_permission = Permission.find_by(identifier: LIKE_CARD_IDENTIFIER)
 
         users.map do |user|
           { permission_id: like_permission.id, user_id: user.id }

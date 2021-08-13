@@ -74,7 +74,7 @@ permissions_data = {
 
 errors = []
 
-(Permission::CREATOR_IDENTIFIERS | Permission::MEMBER_IDENTIFIERS | Permission::CARD_IDENTIFIERS | Permission::COMMENT_IDENTIFIERS).each do |identifier|
+(Permission::CREATOR_IDENTIFIERS | Permission::MEMBER_IDENTIFIERS | Permission::CARD_IDENTIFIERS | Permission::COMMENT_IDENTIFIERS | Permission::LIKE_IDENTIFIERS).each do |identifier|
   next if Permission.exists?(identifier: identifier)
 
   begin
