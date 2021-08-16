@@ -1,7 +1,7 @@
 import React from 'react';
 import {useMutation} from '@apollo/react-hooks';
 import {destroyMembershipMutation} from './operations.gql';
-import {getInitials} from '../../utils/helpers';
+import {getUserInitials} from '../../utils/helpers';
 import avatarStyle from './style.module.less';
 
 const User = ({
