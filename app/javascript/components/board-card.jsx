@@ -5,8 +5,9 @@ import React from 'react';
 import {getInitialsTitleBoard} from '../utils/helpers';
 import style from './board-card.module.less';
 import {GroupIcons} from './group-icons/group-icons';
+import arrow from '../../assets/images/undo_13';
 
-const BoardCard = ({board}) => {
+const BoardCard = ({board, boards}) => {
   const renderBoardAvatar = (boardAvatar, title) => {
     if (boardAvatar) {
       return (
@@ -14,11 +15,17 @@ const BoardCard = ({board}) => {
       );
     }
 
+    console.log(boards);
+
     const classes = `${style.ava} ${style.avatarText} ${
       style[`avatar${board.id % 10}`]
     }`;
 
     return <div className={classes}>{getInitialsTitleBoard(title)}</div>;
+  };
+
+  const ar = {
+    backgroundImage: `url(${arrow})`
   };
 
   return (
@@ -34,6 +41,9 @@ const BoardCard = ({board}) => {
       </div>
       <div className={style.footer}>
         <span className={style.textDate}>
+          <div style={ar} className={style.arrowIcon}>
+            <span>9</span>
+          </div>
           {formatRelative(subDays(new Date(board.updated_at), 0), new Date())}
         </span>
         <GroupIcons board={board} />

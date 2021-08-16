@@ -18,7 +18,7 @@
       <div class="columns is-3 is-variable is-multiline <%= 'animated-board' if index > 2%>">
         <% records.each do |board|%>
           <%# <%= render 'board_card', board: board%>
-          <%= react_component('board-card', { board: board })%>
+          <%= react_component('board-card', { board: board, boards: records })%>
          <%# <div id="board-card"/> %>
         <% end%>
       </div>
