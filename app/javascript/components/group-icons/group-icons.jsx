@@ -3,7 +3,6 @@ import {getUserInitials} from '../../utils/helpers';
 import style from '../board-card.module.less';
 
 export const GroupIcons = ({users}) => {
-  console.log(users);
   const userIcon = users.map((user) => {
     const stylesForAvatarIcon = `${style.combatant} ${
       style[`avatar${user.id % 10}`]
@@ -11,7 +10,12 @@ export const GroupIcons = ({users}) => {
 
     if (user.avatar.url) {
       return (
-        <img src={user.avatar.url} className={style.combatant} alt="ava" />
+        <img
+          key={user.id}
+          src={user.avatar.url}
+          className={style.combatant}
+          alt="ava"
+        />
       );
     }
 
