@@ -5,10 +5,9 @@ import React from 'react';
 import {getInitialsTitleBoard} from '../utils/helpers';
 import style from './board-card.module.less';
 import {GroupIcons} from './group-icons/group-icons';
-import arrow from '../../assets/images/undo_13';
+import arrow from '../images/undo_13';
 
 const BoardCard = ({board, users}) => {
-  console.log(board);
   const renderBoardAvatar = (boardAvatar, title) => {
     if (boardAvatar) {
       return (
