@@ -2,16 +2,23 @@ import React from 'react';
 import {getUserInitials} from '../../utils/helpers';
 import style from '../board-card.module.less';
 
-export const GroupIcons = ({board}) => {
-  const userIcon = [...new Array(board.users_count)].map((index) => {
+export const GroupIcons = ({users}) => {
+  console.log(users);
+  const userIcon = users.map((user) => {
     const stylesForAvatarIcon = `${style.combatant} ${
-      style[`avatar${index % 10}`]
+      style[`avatar${user.id % 10}`]
     }`;
 
+    if (user.avatar.url) {
+      return (
+        <img src={user.avatar.url} className={style.combatant} alt="ava" />
+      );
+    }
+
     return (
-      <span key={index} className={style.avaContainer}>
+      <span key={user.id} className={style.avaContainer}>
         <span className={stylesForAvatarIcon}>
-          {getUserInitials(board.title)}
+          {getUserInitials(user.first_name, user.last_name)}
         </span>
       </span>
     );
@@ -25,7 +32,7 @@ export const GroupIcons = ({board}) => {
         <div className={style.avatarGroup}>
           {userIcon}
           <span className={style.avaAddCount}>
-            <span className={stylesForUsersCount}>{board.users_count}</span>
+            <span className={stylesForUsersCount}>{users.length}</span>
           </span>
         </div>
       </div>
