@@ -7,7 +7,7 @@ import style from './board-card.module.less';
 import {GroupIcons} from './group-icons/group-icons';
 import arrow from '../../assets/images/undo_13';
 
-const BoardCard = ({board, boards}) => {
+const BoardCard = ({board, users}) => {
   const renderBoardAvatar = (boardAvatar, title) => {
     if (boardAvatar) {
       return (
@@ -15,7 +15,7 @@ const BoardCard = ({board, boards}) => {
       );
     }
 
-    console.log(boards);
+    console.log(users);
 
     const classes = `${style.ava} ${style.avatarText} ${
       style[`avatar${board.id % 10}`]
