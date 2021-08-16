@@ -8,14 +8,13 @@ import {GroupIcons} from './group-icons/group-icons';
 import arrow from '../../assets/images/undo_13';
 
 const BoardCard = ({board, users}) => {
+  console.log(board);
   const renderBoardAvatar = (boardAvatar, title) => {
     if (boardAvatar) {
       return (
         <img src={boardAvatar} className={style.ava} alt="ava" title={title} />
       );
     }
-
-    console.log(users);
 
     const classes = `${style.ava} ${style.avatarText} ${
       style[`avatar${board.id % 10}`]
@@ -42,11 +41,11 @@ const BoardCard = ({board, users}) => {
       <div className={style.footer}>
         <span className={style.textDate}>
           <div style={ar} className={style.arrowIcon}>
-            <span>9</span>
+            <span>?</span>
           </div>
           {formatRelative(subDays(new Date(board.updated_at), 0), new Date())}
         </span>
-        <GroupIcons board={board} />
+        <GroupIcons users={users} />
       </div>
     </div>
   );
