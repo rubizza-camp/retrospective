@@ -1,5 +1,5 @@
 import React from 'react';
-import {getInitials} from '../../utils/helpers';
+import {getUserInitials} from '../../utils/helpers';
 import style from '../board-card.module.less';
 
 export const GroupIcons = ({board}) => {
@@ -10,7 +10,9 @@ export const GroupIcons = ({board}) => {
 
     return (
       <span key={index} className={style.avaContainer}>
-        <span className={stylesForAvatarIcon}>{getInitials(board.title)}</span>
+        <span className={stylesForAvatarIcon}>
+          {getUserInitials(board.title)}
+        </span>
       </span>
     );
   });
