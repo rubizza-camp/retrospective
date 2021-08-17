@@ -2,12 +2,16 @@ import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {formatRelative, subDays} from 'date-fns';
 import React from 'react';
-import {getInitialsTitleBoard} from '../utils/helpers';
-import style from './board-card.module.less';
+// Import { useMutation } from 'react-apollo';
+import arrow from '../../images/undo_13';
+import {getInitialsTitleBoard} from '../../utils/helpers';
 import {GroupIcons} from './group-icons/group-icons';
-import arrow from '../images/undo_13';
+import style from './board-card.module.less';
+// Import { destroyBoardMutation } from './operations.gql';
 
 const BoardCard = ({board, users}) => {
+  // Const [destroyBoard] = useMutation(destroyBoardMutation)
+
   const renderBoardAvatar = (boardAvatar, title) => {
     if (boardAvatar) {
       return (
@@ -22,7 +26,7 @@ const BoardCard = ({board, users}) => {
     return <div className={classes}>{getInitialsTitleBoard(title)}</div>;
   };
 
-  const ar = {
+  const backGroundArrow = {
     backgroundImage: `url(${arrow})`
   };
 
@@ -39,7 +43,7 @@ const BoardCard = ({board, users}) => {
       </div>
       <div className={style.footer}>
         <span className={style.textDate}>
-          <div style={ar} className={style.arrowIcon}>
+          <div style={backGroundArrow} className={style.arrowIcon}>
             <span>?</span>
           </div>
           {formatRelative(subDays(new Date(board.updated_at), 0), new Date())}
