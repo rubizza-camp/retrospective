@@ -22,11 +22,12 @@ module Types
     field :card_added, Types::CardType, null: false, description: 'A card was added' do
       argument :boardSlug, String, required: true
     end
-    field :card_updated, Types::CardType, null: false, description: 'A card wad updated' do
+
+    field :card_updated, Types::CardType, null: false, description: 'A card was updated' do
       argument :boardSlug, String, required: true
     end
 
-    field :card_destroyed, Types::DeletedCardType, null: false, description: 'A card wad destroyed' do
+    field :card_destroyed, Types::DeletedCardType, null: false, description: 'A card was destroyed' do
       argument :boardSlug, String, required: true
     end
 
@@ -42,6 +43,13 @@ module Types
       argument :boardSlug, String, required: true
     end
 
+    field :board_continued, Types::DeletedBoardType, null: false, description: 'A board was continued' do
+      argument :boardSlug, String, required: true
+    end
+
+    field :board_destroyed, Types::DeletedBoardType, null: false, description: 'A board was destroyed' do
+      argument :boardSlug, String, required: true
+    end
     # rubocop:enable Layout/LineLength
 
     def action_item_added(*); end
@@ -63,5 +71,9 @@ module Types
     def membership_list_updated(*); end
 
     def membership_updated(*); end
+
+    def board_continued(*); end
+
+    def board_destroyed(*); end
   end
 end
