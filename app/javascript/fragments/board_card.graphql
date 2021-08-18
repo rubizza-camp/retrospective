@@ -11,3 +11,10 @@ title
 updated_at
 users_count
 }
+
+
+fragment Boards on Boards {
+  boards {
+    ...BoardCard
+  }
+}
