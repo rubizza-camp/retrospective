@@ -7,20 +7,39 @@ const CardFooter = ({
   likes,
   type,
   commentsNumber,
-  onCommentButtonClick
+  onCommentButtonClick,
+  onClickClosed,
+  isOpen,
+  setIsOpen
 }) => {
+  const handleOpenComments = () => {
+    onCommentButtonClick();
+    setIsOpen(!isOpen);
+  };
+
+  const handleCloseComments = () => {
+    onClickClosed();
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="card-footer">
       <div className="card-footer__likes">
         <Likes id={id} likes={likes} type={type} />
       </div>
-      <div className="card-footer__comments">
-        <a onClick={onCommentButtonClick}>
-          {commentsNumber > 0
-            ? `see ${commentsNumber} comments`
-            : `add a comment`}
-        </a>
-      </div>
+      {isOpen ? (
+        <div className="card-footer__comments">
+          <a onClick={handleOpenComments}>
+            {commentsNumber > 0
+              ? `see ${commentsNumber} comments`
+              : `add a comment`}
+          </a>
+        </div>
+      ) : (
+        <div className="card-footer__comments">
+          <a onClick={handleCloseComments}>hide comments</a>
+        </div>
+      )}
     </div>
   );
 };

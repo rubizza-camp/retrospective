@@ -10,7 +10,7 @@ import {addCommentMutation} from './operations.gql';
 import {handleKeyPress} from '../../utils/helpers';
 import './style.less';
 
-const CommentsDropdown = ({id, comments, onClickClosed}) => {
+const CommentsDropdown = ({id, comments, onClickClosed, setIsOpen}) => {
   const controlElement = useRef(null);
   const textInput = useRef();
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
@@ -61,6 +61,11 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
     setNewComment((comment) => `${comment}${emoji.emoji}`);
   };
 
+  const handleCloseComments = () => {
+    onClickClosed();
+    setIsOpen(true);
+  };
+
   return (
     <div className="comments">
       <div className="comments__wrapper">
@@ -91,7 +96,7 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
         <button
           type="button"
           className="new-comment__buttons__item new-comment__buttons__item--hide"
-          onClick={() => onClickClosed()}
+          onClick={handleCloseComments}
         >
           hide discussion
         </button>
