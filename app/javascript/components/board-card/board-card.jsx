@@ -1,17 +1,12 @@
-import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {formatRelative, subDays} from 'date-fns';
 import React from 'react';
-// Import { useMutation } from 'react-apollo';
 import arrow from '../../images/undo_13';
 import {getInitialsTitleBoard} from '../../utils/helpers';
-import {GroupIcons} from './group-icons/group-icons';
 import style from './board-card.module.less';
-// Import { destroyBoardMutation } from './operations.gql';
+import {GroupIcons} from './group-icons/group-icons';
+import {MenuIcon} from './menu-icon/menu-icon';
 
 const BoardCard = ({board, users}) => {
-  // Const [destroyBoard] = useMutation(destroyBoardMutation)
-
   const renderBoardAvatar = (boardAvatar, title) => {
     if (boardAvatar) {
       return (
@@ -30,21 +25,22 @@ const BoardCard = ({board, users}) => {
     backgroundImage: `url(${arrow})`
   };
 
+  let numberСhanges = board.title.split('#')[1];
+  if (!numberСhanges) numberСhanges = 1;
+
   return (
     <div className={style.board}>
       <div className={style.header}>
         {renderBoardAvatar('', board.title)}
-        <div className={style.title}>
+        <a href={`/boards/${board.slug}`} className={style.title}>
           <span>{board.title}</span>
-        </div>
-        <div className={style.ellipsisIcon}>
-          <FontAwesomeIcon icon={faEllipsisH} size="lg" color="#C6C6C4" />
-        </div>
+        </a>
+        <MenuIcon boardSlug={board.slug} />
       </div>
       <div className={style.footer}>
         <span className={style.textDate}>
           <div style={backGroundArrow} className={style.arrowIcon}>
-            <span>?</span>
+            <span>{numberСhanges}</span>
           </div>
           {formatRelative(subDays(new Date(board.updated_at), 0), new Date())}
         </span>

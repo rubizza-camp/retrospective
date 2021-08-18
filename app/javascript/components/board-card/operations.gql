@@ -1,12 +1,28 @@
 #import '../../fragments/board_card.graphql'
 
-mutation destroyBoardMutation($board_slug: board_slug!) {
+mutation destroyBoardMutation($boardSlug: String!) {
   destroyBoard(
-    input: { board_slug: $board_slug }
+    input: { boardSlug: $boardSlug }
   ) {
-    board_slug
+    boardSlug
     errors {
       fullMessages
     }
   }
 }
+
+mutation continueBoardMutation($boardSlug: String!) {
+  continueBoard(
+    input: { boardSlug: $boardSlug }
+  ) {
+    boardSlug
+    errors {
+      fullMessages
+    }
+  }
+}
+
+
+# query getBoardsQuery {
+
+# }
