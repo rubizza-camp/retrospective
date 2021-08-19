@@ -44,17 +44,15 @@ const CommentLikes = ({likes, id}) => {
   };
 
   return (
-    <>
-      <a
-        className={style}
-        onMouseDown={handleMouseDown}
-        onMouseUp={() => handleMouseUp(timer)}
-        onMouseLeave={() => handleMouseLeave(timer)}
-      >
-        {EMOJI}
-      </a>
+    <div
+      style={{cursor: 'pointer'}}
+      onMouseDown={handleMouseDown}
+      onMouseUp={() => handleMouseUp(timer)}
+      onMouseLeave={() => handleMouseLeave(timer)}
+    >
+      <a className={style}>{EMOJI}</a>
       <span> {likes} </span>
-    </>
+    </div>
   );
 };
 
