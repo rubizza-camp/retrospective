@@ -1,4 +1,4 @@
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useMemo} from 'react';
 import UserContext from '../../utils/user-context';
 import {CardBody} from '../card-body';
 import {CardFooter} from '../card-footer';
@@ -17,7 +17,6 @@ const Card = ({
   onCommentButtonClick
 }) => {
   const currentUser = useContext(UserContext);
-  const [isOpen, setIsOpen] = useState(true);
   const isTemporaryId = (id) => {
     return id.toString().startsWith('tmp-');
   };
@@ -48,8 +47,7 @@ const Card = ({
         id={id}
         likes={likes}
         type={type}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        isCommentsShown={isCommentsShown}
         commentsNumber={comments.length}
         onClickClosed={onClickClosed}
         onCommentButtonClick={onCommentButtonClick}
@@ -58,7 +56,6 @@ const Card = ({
       {isCommentsShown && (
         <CommentsDropdown
           id={id}
-          setIsOpen={setIsOpen}
           comments={comments}
           onClickClosed={onClickClosed}
         />
