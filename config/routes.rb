@@ -59,7 +59,12 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :boards, only: %i[index show]
+      resources :boards, param: :slug, only: %i[index show destroy] do
+        member do
+          post 'continue'
+          get 'history'
+        end
+      end
 
       resources :cards, only: %i[create update destroy] do
         put 'like', on: :member

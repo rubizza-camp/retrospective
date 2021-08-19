@@ -21,7 +21,7 @@
 
     <div class="header-middle">
     <%= react_component('membership-list-container', {
-       user: current_user,
+       user: current_user.as_json,
     })%>
     </div>
 
@@ -33,7 +33,7 @@
         <%= link_to 'Sign in with Github', user_github_omniauth_authorize_path, class: 'button' %>
       <% elsif allowed_to?(:create_cards?, @board) %>
         <%= react_component('ready-button-container', {
-          user: current_user,
+          user: current_user.as_json,
         })%>
       <% end %>
     </div>
@@ -41,13 +41,13 @@
 </div>
 
 <%= react_component('card-table', {
-  actionItems: @action_items,
-  board: @board,
-  cardsByType: @cards_by_type,
+  action_items: @action_items,
+  board: @board.as_json,
+  cards_by_type: @cards_by_type,
   creators: @board_creators,
-  initPrevItems: @previous_action_items || [],
-  user: current_user,
+  init_prev_items: @previous_action_items || [],
+  user: current_user.as_json,
   users: @users,
-  previousBoardSlug: @previous_board_slug
+  previous_board_slug: @previous_board_slug
 })
 %>

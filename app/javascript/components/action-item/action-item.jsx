@@ -20,7 +20,7 @@ const ActionItem = ({
   id,
   body,
   status,
-  times_moved,
+  timesMoved,
   assignee,
   users,
   isPrevious,
@@ -103,10 +103,10 @@ const ActionItem = ({
   };
 
   const generateChevrons = () => {
-    const chevrons = Array.from({length: times_moved}, (_, index) => (
+    const chevrons = Array.from({length: timesMoved}, (_, index) => (
       <i
         key={index}
-        className={`fas fa-chevron-right ${pickColorChevron(times_moved)}_font`}
+        className={`fas fa-chevron-right ${pickColorChevron(timesMoved)}_font`}
       />
     ));
     return chevrons;
@@ -140,7 +140,7 @@ const ActionItem = ({
   );
 
   return (
-    <div className={`${pickColor(times_moved, isPrevious)} ${styleCard.card}`}>
+    <div className={`${pickColor(timesMoved, isPrevious)} ${styleCard.card}`}>
       <div className={cardStyle.cardBody}>
         <div className={cardStyle.top}>
           {author && <CardUser {...author} />}
@@ -187,8 +187,8 @@ const ActionItem = ({
         {assignee && (
           <ActionItemAssignee
             avatar={assignee.avatar?.thumb?.url}
-            firstName={assignee.first_name}
-            lastName={assignee.last_name}
+            firstName={assignee.firstName}
+            lastName={assignee.lastName}
           />
         )}
       </div>

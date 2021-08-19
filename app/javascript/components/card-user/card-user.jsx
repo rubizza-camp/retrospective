@@ -2,17 +2,13 @@ import React from 'react';
 import {CardUserAvatar} from '../card-user-avatar';
 import './style.less';
 
-const CardUser = ({first_name, last_name, nickname, avatar}) => {
+const CardUser = ({firstName, lastName, nickname, avatar}) => {
   const url = avatar?.thumb?.url;
   return (
     <div className="avatar__container">
-      <CardUserAvatar
-        avatar={url}
-        firstName={first_name}
-        lastName={last_name}
-      />
+      <CardUserAvatar avatar={url} firstName={firstName} lastName={lastName} />
       <span className="avatar__nickname">
-        {first_name ? `${first_name} ${last_name}` : nickname}
+        {firstName ? `${firstName} ${lastName}` : nickname}
       </span>
     </div>
   );
