@@ -124,7 +124,7 @@ RSpec.describe BoardsController do
     end
   end
 
-  describe 'GET #create' do
+  describe 'POST #create' do
     subject(:response) { post :create, params: params }
     let_it_be(:params) { { board: FactoryBot.attributes_for(:board) } }
 
