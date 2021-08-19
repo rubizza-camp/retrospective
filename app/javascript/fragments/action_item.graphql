@@ -5,8 +5,11 @@ fragment ActionItem on ActionItem {
   assignee {
     ...User
   }
+  author {
+    ...User
+  }
   body
-  times_moved
-  assignee_avatar_url
+  timesMoved
+  assigneeAvatarUrl
   status
 }

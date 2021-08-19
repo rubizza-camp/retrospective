@@ -3,7 +3,7 @@ import {ReadyButton} from './ready-button';
 import {Provider} from './provider';
 import BoardSlugContext from '../utils/board-slug-context';
 
-const ReaduButtonContainer = ({user}) => {
+const ReadyButtonContainer = ({user}) => {
   return (
     <Provider>
       <BoardSlugContext.Provider value={window.location.pathname.split('/')[2]}>
@@ -13,4 +13,4 @@ const ReaduButtonContainer = ({user}) => {
   );
 };
 
-export default ReaduButtonContainer;
+export default ReadyButtonContainer;
