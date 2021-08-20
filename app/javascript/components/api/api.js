@@ -4,10 +4,20 @@ import applyCaseMiddleware from 'axios-case-converter';
 axios.defaults.withCredentials = true;
 
 const createAPI = () => {
+  let headers = {};
+  if (sessionStorage.user) {
+    headers = JSON.parse(sessionStorage.user);
+  }
+
+  headers['X-CSRF-Token'] = document
+    .querySelector(`meta[name='csrf-token']`)
+    .getAttribute('content');
+
   const api = applyCaseMiddleware(
     axios.create({
       baseURL: `http://localhost:3000/api/v1/`,
-      timeout: 1000 * 5
+      timeout: 1000 * 5,
+      headers
     })
   );
 
