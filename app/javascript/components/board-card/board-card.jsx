@@ -14,7 +14,6 @@ const BoardCard = ({board, users}) => {
       );
     }
 
-    console.log(board);
     const classes = `${style.ava} ${style.avatarText} ${
       style[`avatar${board.id % 10}`]
     }`;
