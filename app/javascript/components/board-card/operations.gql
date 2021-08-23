@@ -21,8 +21,3 @@ mutation continueBoardMutation($boardSlug: String!) {
     }
   }
 }
-
-
-# query getBoardsQuery {
-
-# }
