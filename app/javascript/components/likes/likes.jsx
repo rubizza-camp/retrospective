@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useMutation} from '@apollo/react-hooks';
-import {likeCardMutation} from './operations.gql';
+import {likeCardMutation, likeCommentMutation} from './operations.gql';
+import style from './style.module.less';
 const EMOJIES = {
   mad: '😡',
   sad: '😔',
@@ -10,7 +11,7 @@ const EMOJIES = {
 
 const Likes = ({type, likes, id}) => {
   const [likeCard] = useMutation(likeCardMutation);
-  const [style, setStyle] = useState('has-text-info');
+  const [likeComment] = useMutation(likeCommentMutation);
   const [timer, setTimer] = useState(null);
 
   useEffect(() => {
@@ -20,42 +21,51 @@ const Likes = ({type, likes, id}) => {
   }, [timer]);
 
   const addLike = async () => {
-    const {data} = await likeCard({
-      variables: {
-        id
-      }
-    });
+    if (EMOJIES[type]) {
+      const {data} = await likeCard({
+        variables: {
+          id
+        }
+      });
 
-    if (!data.likeCard.card) {
-      console.log(data.likeCard.errors.fullMessages.join(' '));
+      if (!data.likeCard.card) {
+        console.log(data.likeCard.errors.fullMessages.join(' '));
+      }
+    } else {
+      const {data} = await likeComment({
+        variables: {
+          id
+        }
+      });
+
+      if (!data.likeComment.comment) {
+        console.log(data.likeComment.errors.fullMessages.join(' '));
+      }
     }
   };
 
   const handleMouseDown = () => {
-    setStyle({style: 'has-text-success'});
     addLike();
     const timer = setInterval(() => addLike(), 300);
     setTimer(timer);
   };
 
   const handleMouseUp = (currentTimer) => {
-    setStyle('has-text-info');
     clearInterval(currentTimer);
   };
 
   const handleMouseLeave = (currentTimer) => {
-    setStyle('has-text-info');
     clearInterval(currentTimer);
   };
 
   return (
     <div
-      style={{cursor: 'pointer'}}
+      className={style.likesWrapper}
       onMouseDown={handleMouseDown}
       onMouseUp={() => handleMouseUp(timer)}
       onMouseLeave={() => handleMouseLeave(timer)}
     >
-      <a className={style}>{EMOJIES[type] || EMOJIES.universal}</a>
+      <div>{EMOJIES[type] || EMOJIES.universal}</div>
       <span> {likes} </span>
     </div>
   );
