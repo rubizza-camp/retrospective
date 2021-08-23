@@ -2,33 +2,23 @@ import React, {useState} from 'react';
 import style from './menu-icon.module.less';
 import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {api} from '../../api/api';
+import {boardApi} from '../../api/boardsApi';
 
 export const MenuIcon = ({boardSlug}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const continueHandler = () => {
-    api
-      .post(`boards/${boardSlug}/continue`)
-      .then((response) => console.log(response));
-
+    boardApi.continueBoard(boardSlug);
     setIsOpen(false);
   };
 
   const historyHandler = () => {
-    api
-      .get(`boards/${boardSlug}/history`)
-      .then((response) => console.log(response));
-    api.get(`boards`).then((response) => console.log(response));
-
+    boardApi.historyBoard(boardSlug);
     setIsOpen(false);
   };
 
   const deleteHandler = () => {
-    api
-      .delete(`boards/${boardSlug}`, {}, {})
-      .then((response) => console.log(response));
-
+    boardApi.deleteBoard(boardSlug);
     setIsOpen(false);
   };
 
