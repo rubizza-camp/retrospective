@@ -61,6 +61,10 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
     setNewComment((comment) => `${comment}${emoji.emoji}`);
   };
 
+  const handleCloseComments = () => {
+    onClickClosed();
+  };
+
   return (
     <div className="comments">
       <div className="comments__wrapper">
@@ -91,7 +95,7 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
         <button
           type="button"
           className="new-comment__buttons__item new-comment__buttons__item--hide"
-          onClick={() => onClickClosed()}
+          onClick={handleCloseComments}
         >
           hide discussion
         </button>

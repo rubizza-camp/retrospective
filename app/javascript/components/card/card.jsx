@@ -17,7 +17,6 @@ const Card = ({
   onCommentButtonClick
 }) => {
   const currentUser = useContext(UserContext);
-
   const isTemporaryId = (id) => {
     return id.toString().startsWith('tmp-');
   };
@@ -48,7 +47,9 @@ const Card = ({
         id={id}
         likes={likes}
         type={type}
+        isCommentsShown={isCommentsShown}
         commentsNumber={comments.length}
+        onClickClosed={onClickClosed}
         onCommentButtonClick={onCommentButtonClick}
       />
 
