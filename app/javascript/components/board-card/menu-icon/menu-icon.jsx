@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import style from './menu-icon.module.less';
 import {faEllipsisH} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {boardApi} from '../../api/boardsApi';
+import {boardApi} from '../../api/boards-api';
 
 export const MenuIcon = ({boardSlug}) => {
   const [isOpen, setIsOpen] = useState(false);
