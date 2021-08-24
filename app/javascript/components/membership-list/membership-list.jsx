@@ -134,7 +134,7 @@ const MembershipList = () => {
     }
 
     return (
-      <div className="users">
+      <div className="users users--ready">
         <div className="avatars avatars--ready">
           {readyMembers.slice(0, 5).map((user) => {
             return (
@@ -148,11 +148,13 @@ const MembershipList = () => {
             );
           })}
         </div>
-        <div className="users__text users__text--ready">
-          {readyMembers.length} ready
-        </div>
-        <div className="users__text users__text--not-ready">
-          and waiting for {notReadyMembers.length} more
+        <div className="users__text__container">
+          <div className="users__text users__text--ready">
+            {readyMembers.length} ready
+          </div>
+          <div className="users__text users__text--not-ready">
+            and waiting for {notReadyMembers.length} more
+          </div>
         </div>
         <div className="avatars avatars--not-ready">
           {notReadyMembers.slice(0, 5).map((user) => {
