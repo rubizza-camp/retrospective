@@ -109,7 +109,7 @@ class BoardsController < ApplicationController
   private
 
   def board_params
-    params.require(:board).permit(:title, :team_id, :email, :private, column_names: [])
+    params.require(:board).permit(:title, :private, column_names: [])
   end
 
   def set_board
