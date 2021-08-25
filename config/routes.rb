@@ -59,7 +59,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :boards, param: :slug, only: %i[index show destroy] do
+      resources :boards, param: :slug, only: %i[index show update destroy] do
         member do
           post 'continue'
           get 'history'
