@@ -28,18 +28,14 @@ export const GroupIcons = ({users}) => {
     );
   });
 
-  const stylesForUsersCount = `${style.combatant} ${style.userCount}`;
-
   return (
     <div className={style.card}>
       <div className={style.cardBottom}>
-        <div className={style.avatarGroup}>
-          {userIcon}
-          <span className={style.avaAddCount}>
-            <span className={stylesForUsersCount}>{users.length}</span>
-          </span>
-        </div>
+        <div className={style.avatarGroup}>{userIcon}</div>
       </div>
+      <span className={style.avaAddCount}>
+        <span className={style.userCount}>{users.length}</span>
+      </span>
     </div>
   );
 };

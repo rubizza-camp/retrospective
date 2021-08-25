@@ -140,6 +140,7 @@ text-align: left;
 .avatarGroup {
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
   color: #616161;
   transition: all ease 0.2s;
 }
@@ -152,9 +153,14 @@ text-align: left;
    display:none;
 }
 
+.combatant:nth-last-child(n+5) {
+   display:none;
+}
+
 
 
 .combatant {
+  border: 2px solid #FFFFFF;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -176,8 +182,14 @@ text-align: left;
 }
 
 .userCount{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   font-size: 20px;
   color:gray; 
+  background-color: white;
 }
 
 .arrowIcon{
