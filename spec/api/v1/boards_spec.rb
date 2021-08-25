@@ -71,6 +71,49 @@ RSpec.describe API::V1::BoardsController, type: :controller do
     end
   end
 
+  describe 'PATCH /api/v1/boards/:slug' do
+    subject(:response) { patch :update, params: params }
+    let_it_be(:params) { { slug: board1.slug } }
+
+    context 'user has permission to update' do
+      let_it_be(:update_permission) { create(:permission, identifier: 'update_board') }
+      let!(:permission) do
+        create(:board_permissions_user,
+               permission: update_permission,
+               user: author,
+               board: board1)
+      end
+
+      context 'board can be updated' do
+        context 'when params are valid' do
+          let_it_be(:new_title) { Faker::Lorem.word }
+          let_it_be(:params) { params.merge board: { title: new_title } }
+
+          it { is_expected.to have_http_status(:ok) }
+
+          it 'returns updated board' do
+            expect(json_body.dig('data', 'board').keys).to match_array(board_attrs)
+            expect(json_body.dig('data', 'board', 'title')).to eq(new_title)
+          end
+        end
+
+        context 'when params are invalid' do
+          let_it_be(:params) { params.merge board: { title: nil } }
+
+          it { is_expected.to have_http_status(422) }
+
+          it 'returns errors' do
+            expect(json_body.dig('errors', 'fullMessages')).to eq(["Title can't be blank"])
+          end
+        end
+      end
+    end
+
+    context 'user has not permission to update' do
+      it_behaves_like :controllers_api_unauthenticated_action
+    end
+  end
+
   describe 'DELETE /api/v1/boards/:slug' do
     subject(:response) { delete :destroy, params: { slug: board1.slug } }
 

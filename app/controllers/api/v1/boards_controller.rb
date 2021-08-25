@@ -44,6 +44,18 @@ module API
         render json: serialize_resource(boards_by_date)
       end
 
+      def update
+        authorize! @board, to: :update?
+
+        old_column_names = @board.column_names
+        if @board.update(board_params)
+          result = Boards::RenameColumns.new(@board).call(old_column_names, @board.column_names)
+          render json: serialize_resource(result.value!) if result.success?
+        else
+          render_json_error(@board.errors.full_messages)
+        end
+      end
+
       def destroy
         authorize! @board, to: :destroy?
 
@@ -52,6 +64,12 @@ module API
         else
           render_json_error(@board.errors.full_messages)
         end
+      end
+
+      private
+
+      def board_params
+        params.require(:board).permit(:title, :team_id, :email, :private, column_names: [])
       end
     end
   end
