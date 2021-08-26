@@ -189,6 +189,7 @@ const ActionItem = ({
             avatar={assignee.avatar?.thumb?.url}
             firstName={assignee.firstName}
             lastName={assignee.lastName}
+            nickName={assignee.nickname}
           />
         )}
       </div>

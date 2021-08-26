@@ -1,14 +1,14 @@
 import React from 'react';
 import {useMutation} from '@apollo/react-hooks';
 import {destroyMembershipMutation} from './operations.gql';
-import {getUserInitials} from '../../utils/helpers';
+import {getUserInitials, getFullnameOrNickname} from '../../utils/helpers';
 import avatarStyle from './style.module.less';
 
 const User = ({
   membership: {
     ready,
     id,
-    user: {email, avatar, lastName, firstName}
+    user: {email, avatar, lastName, firstName, nickname}
   },
   shouldDisplayReady,
   shouldHandleDelete,
@@ -59,9 +59,7 @@ const User = ({
       {renderBoardAvatar(avatar.thumb.url, firstName, lastName)}
       <div className={avatarStyle.avatarTooltip}>
         <span> ^ </span>
-        <span>
-          {firstName} {lastName}
-        </span>
+        <span>{getFullnameOrNickname(firstName, lastName, nickname)}</span>
       </div>
       {shouldHandleDelete && (
         <a className="delete is-small" onClick={deleteUser} />

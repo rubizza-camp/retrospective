@@ -1,12 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react';
 import {useMutation, useQuery, useSubscription} from '@apollo/react-hooks';
+import React, {useContext, useEffect, useState} from 'react';
+import BoardSlugContext from '../../utils/board-slug-context';
+import {getFullnameOrNickname} from '../../utils/helpers';
 import {
-  toggleReadyStatusMutation,
   getMembershipQuery,
-  membershipUpdatedSubscription
+  membershipUpdatedSubscription,
+  toggleReadyStatusMutation
 } from './operations.gql';
 import style from './style.module.less';
-import BoardSlugContext from '../../utils/board-slug-context';
 
 const ReadyButton = ({user}) => {
   const boardSlug = useContext(BoardSlugContext);
@@ -64,7 +65,11 @@ const ReadyButton = ({user}) => {
     >
       {isReady
         ? 'Not ready'
-        : `Ready, ${user.firstName ? user.firstName : user.nickname}?`}
+        : `Ready, ${getFullnameOrNickname(
+            user.firstName,
+            user.lastName,
+            user.nickname
+          )}?`}
     </button>
   );
 };

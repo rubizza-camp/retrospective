@@ -3,6 +3,7 @@ import style from './style.module.less';
 import Textarea from 'react-textarea-autosize';
 import {ActionItemAssignee} from '../action-item-assigne';
 import {CardUserAvatar} from '../card-user-avatar';
+import {getFullnameOrNickname} from '../../utils/helpers';
 
 const ActionItemEdit = ({
   users,
@@ -50,7 +51,11 @@ const ActionItemEdit = ({
                   }}
                 >
                   <span>
-                    {user.firstName} {user.lastName}
+                    {getFullnameOrNickname(
+                      user.firstName,
+                      user.lastName,
+                      user.nickname
+                    )}
                   </span>
                   <CardUserAvatar
                     avatar={user.avatar?.thumb?.url}
@@ -76,6 +81,7 @@ const ActionItemEdit = ({
         <ActionItemAssignee
           firstName={currentAssignee.firstName}
           lastName={currentAssignee.lastName}
+          nickName={currentAssignee.nickname}
           avatar={currentAssignee.avatar?.thumb?.url}
         />
       )}

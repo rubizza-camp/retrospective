@@ -20,3 +20,7 @@ export const handleKeyPress = (evt, handleEnter, handleEscape) => {
     handleEscape(evt);
   }
 };
+
+export const getFullnameOrNickname = (name, surname, nickname) => {
+  return name ? `${name} ${surname}` : nickname;
+};
