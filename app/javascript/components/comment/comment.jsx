@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import {CommentLikes} from '../comment-likes';
 import {CardUser} from '../card-user';
 import {Linkify, linkifyOptions} from '../../utils/linkify';
 import style from './style.module.less';
 import {destroyCommentMutation, updateCommentMutation} from './operations.gql';
 import {useMutation} from '@apollo/react-hooks';
+import Likes from '../likes/likes';
 
 const Comment = ({id, comment, editable}) => {
   const [editMode, setEditMode] = useState(false);
@@ -86,7 +86,7 @@ const Comment = ({id, comment, editable}) => {
             <div className={style.commentText}>
               <Linkify options={linkifyOptions}>{comment.content}</Linkify>
               <div className={style.commentLike}>
-                <CommentLikes id={comment.id} likes={comment.likes} />
+                <Likes id={comment.id} likes={comment.likes} />
               </div>
             </div>
             {editable && (
