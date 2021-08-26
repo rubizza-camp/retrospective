@@ -1,5 +1,5 @@
 import React from 'react';
-import {getUserInitials} from '../../utils/helpers';
+import {getInitials} from '../../utils/helpers';
 import style from './style.module.less';
 
 const CardUserAvatar = ({avatar, firstName, lastName}) => {
@@ -8,9 +8,7 @@ const CardUserAvatar = ({avatar, firstName, lastName}) => {
   }
 
   return (
-    <div className={style.avatarText}>
-      {getUserInitials(firstName, lastName)}
-    </div>
+    <div className={style.avatarText}>{getInitials(firstName, lastName)}</div>
   );
 };
 
