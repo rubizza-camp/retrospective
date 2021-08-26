@@ -1,27 +1,13 @@
 import {formatRelative, subDays} from 'date-fns';
-import {enGB} from 'date-fns/locale';
 import React from 'react';
 import arrow from '../../images/undo_13';
 import {getInitialsTitleBoard} from '../../utils/helpers';
+import {locale} from '../../utils/format-date';
 import style from './board-card.module.less';
 import {GroupIcons} from './group-icons/group-icons';
 import {MenuIcon} from './menu-icon/menu-icon';
 
 const BoardCard = ({board, users}) => {
-  const formatRelativeLocale = {
-    lastWeek: "'Last' eeee, 'at' HH:mm",
-    yesterday: "'Yesterday', 'at' HH:mm",
-    today: "'Today', 'at' HH:mm",
-    tomorrow: "'Tomorrow', 'at' HH:mm",
-    nextWeek: "'Next', 'at' eeee",
-    other: "dd.MM.yyyy, 'at' HH:mm"
-  };
-
-  const locale = {
-    ...enGB,
-    formatRelative: (token) => formatRelativeLocale[token]
-  };
-
   const renderBoardAvatar = (boardAvatar, title) => {
     if (boardAvatar) {
       return (
