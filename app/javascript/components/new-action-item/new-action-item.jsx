@@ -1,12 +1,12 @@
-import React, {useState, useContext, useMemo} from 'react';
 import {useMutation} from '@apollo/react-hooks';
-import {addActionItemMutation} from './operations.gql';
+import React, {useContext, useMemo, useState} from 'react';
 import BoardSlugContext from '../../utils/board-slug-context';
-import UserContext from '../../utils/user-context';
-import style from './style.module.less';
-import {CardUser} from '../card-user';
 import {handleKeyPress} from '../../utils/helpers';
+import UserContext from '../../utils/user-context';
 import {ActionItemEdit} from '../action-item-edit';
+import {CardUserAvatar} from '../card-user-avatar';
+import {addActionItemMutation} from './operations.gql';
+import style from './style.module.less';
 
 const NewActionItem = ({users}) => {
   const currentUser = useContext(UserContext);
@@ -48,10 +48,9 @@ const NewActionItem = ({users}) => {
     () => users.find((user) => user.id.toString() === newActionItemAssigneeId),
     [newActionItemAssigneeId]
   );
-
   return (
     <div className={style.newActionItem}>
-      <CardUser
+      <CardUserAvatar
         firstName={currentUser.firstName}
         lastName={currentUser.lastName}
         nickname={currentUser.nickname}
