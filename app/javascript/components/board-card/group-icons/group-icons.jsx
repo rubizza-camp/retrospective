@@ -1,6 +1,6 @@
 import React from 'react';
 import {getInitials} from '../../../utils/helpers';
-import style from '../board-card.module.less';
+import style from '../style.module.less';
 
 export const GroupIcons = ({users}) => {
   const userIcon = users.map((user) => {

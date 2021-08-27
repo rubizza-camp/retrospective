@@ -3,8 +3,8 @@ import React from 'react';
 import arrow from '../../images/undo_13';
 import {getInitialsTitleBoard} from '../../utils/helpers';
 import {locale} from '../../utils/format-date';
-import style from './board-card.module.less';
-import './board-card.less';
+import style from './style.module.less';
+import './style.less';
 import {GroupIcons} from './group-icons/group-icons';
 import {MenuIcon} from './menu-icon/menu-icon';
 
