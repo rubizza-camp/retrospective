@@ -1,0 +1,23 @@
+#import '../../fragments/board_card.graphql'
+
+mutation destroyBoardMutation($boardSlug: String!) {
+  destroyBoard(
+    input: { boardSlug: $boardSlug }
+  ) {
+    boardSlug
+    errors {
+      fullMessages
+    }
+  }
+}
+
+mutation continueBoardMutation($boardSlug: String!) {
+  continueBoard(
+    input: { boardSlug: $boardSlug }
+  ) {
+    boardSlug
+    errors {
+      fullMessages
+    }
+  }
+}

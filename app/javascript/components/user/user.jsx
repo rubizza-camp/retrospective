@@ -1,7 +1,7 @@
 import React from 'react';
 import {useMutation} from '@apollo/react-hooks';
 import {destroyMembershipMutation} from './operations.gql';
-import {getUserInitials, getFullnameOrNickname} from '../../utils/helpers';
+import {getInitials, getFullnameOrNickname} from '../../utils/helpers';
 import avatarStyle from './style.module.less';
 
 const User = ({
@@ -11,8 +11,7 @@ const User = ({
     user: {email, avatar, lastName, firstName, nickname}
   },
   shouldDisplayReady,
-  shouldHandleDelete,
-  amount
+  shouldHandleDelete
 }) => {
   const [destroyMember] = useMutation(destroyMembershipMutation);
   const deleteUser = async () => {
@@ -28,28 +27,24 @@ const User = ({
   };
 
   const renderBoardAvatar = (userAvatar, userName, userSurname) => {
-    let avatarClasses = `${
-      shouldDisplayReady && ready && avatarStyle.isReady
-    } ${avatarStyle.avatar} ${amount > 5 && avatarStyle.avatarHugePeople}`;
-
     if (userAvatar) {
       return (
         <img
           src={avatar.thumb.url}
-          className={avatarClasses}
+          className={`${shouldDisplayReady && ready ? 'isReady' : ''} avatar`}
           alt={email}
           title={email}
         />
       );
     }
 
-    avatarClasses += ` ${avatarStyle.avatarText} ${
-      avatarStyle[`avatar-${id % 10}`]
-    }`;
+    let classes = `${avatarStyle.avatar} ${avatarStyle.avatarText}
+      ${avatarStyle[`avatar-${id % 10}`]}`;
+    shouldDisplayReady && ready && (classes += avatarStyle.isReady);
 
     return (
       <div className={avatarClasses}>
-        {getUserInitials(userName, userSurname)}
+        {getInitials(userName, userSurname)}
       </div>
     );
   };
