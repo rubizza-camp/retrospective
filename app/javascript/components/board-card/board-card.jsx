@@ -4,7 +4,6 @@ import arrow from '../../images/undo_13';
 import {getInitialsTitleBoard} from '../../utils/helpers';
 import {locale} from '../../utils/format-date';
 import style from './style.module.less';
-import './style.less';
 import {GroupIcons} from './group-icons/group-icons';
 import {MenuIcon} from './menu-icon/menu-icon';
 
@@ -31,17 +30,17 @@ const BoardCard = ({board, users}) => {
   if (!numberСhanges) numberСhanges = 1;
 
   return (
-    <div className="board">
-      <div className="board__header">
+    <div className={style.board}>
+      <div className={style.header}>
         {renderBoardAvatar('', board.title)}
-        <a href={`/boards/${board.slug}`} className="title">
+        <a href={`/boards/${board.slug}`} className={style.title}>
           <span>{board.title}</span>
         </a>
         <MenuIcon boardSlug={board.slug} />
       </div>
-      <div className="board__footer">
-        <span className="textDate">
-          <div style={backGroundArrow} className="arrowIcon">
+      <div className={style.footer}>
+        <span className={style.textDate}>
+          <div style={backGroundArrow} className={style.arrowIcon}>
             <span>{numberСhanges}</span>
           </div>
           {formatRelative(subDays(new Date(board.updated_at), 0), new Date(), {
