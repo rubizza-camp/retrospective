@@ -15,7 +15,7 @@ const createAPI = () => {
 
   const api = applyCaseMiddleware(
     axios.create({
-      baseURL: `http://localhost:3000/api/v1/`,
+      baseURL: '/api/v1/',
       timeout: 1000 * 5,
       headers
     })
