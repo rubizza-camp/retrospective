@@ -20,7 +20,5 @@ module Types
     field :update_action_item, mutation: Mutations::UpdateActionItemMutation
     field :update_card, mutation: Mutations::UpdateCardMutation
     field :update_comment, mutation: Mutations::UpdateCommentMutation
-    field :continue_board, mutation: Mutations::ContinueBoardMutation
-    field :destroy_board, mutation: Mutations::DestroyBoardMutation
   end
 end

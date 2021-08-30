@@ -43,13 +43,6 @@ module Types
       argument :boardSlug, String, required: true
     end
 
-    field :board_continued, Types::DeletedBoardType, null: false, description: 'A board was continued' do
-      argument :boardSlug, String, required: true
-    end
-
-    field :board_destroyed, Types::DeletedBoardType, null: false, description: 'A board was destroyed' do
-      argument :boardSlug, String, required: true
-    end
     # rubocop:enable Layout/LineLength
 
     def action_item_added(*); end
@@ -71,9 +64,5 @@ module Types
     def membership_list_updated(*); end
 
     def membership_updated(*); end
-
-    def board_continued(*); end
-
-    def board_destroyed(*); end
   end
 end
