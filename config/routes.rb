@@ -59,10 +59,15 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :boards, param: :slug, only: %i[index show update destroy] do
+      resources :boards, param: :slug, except: %i[index] do
         member do
           post 'continue'
           get 'history'
+        end
+
+        collection do
+          get 'my'
+          get 'participating'
         end
       end
 

@@ -3,24 +3,41 @@
 module API
   module V1
     class BoardsController < API::V1::BaseController
-      before_action except: %i[index] do
+      before_action only: %i[show continue edit update destroy history] do
         @board = Board.find_by_slug!(params[:slug])
       end
 
-      # app/graphql/queries/boards.rb
-      def index
+      def my
         authorize!
+        boards = Board.creator_boards(current_user)
 
-        boards = Board.includes(:cards).limit(10)
-
-        render json: serialize_resource(boards)
+        render json: boards, include_users: :limited
       end
 
-      # app/graphql/queries/board.rb
-      def show
-        authorize! @board
+      def participating
+        authorize!
+        boards = Board.member_boards(current_user) - Board.creator_boards(current_user)
 
-        render json: serialize_resource(@board)
+        render json: boards, include_users: :limited
+      end
+
+      def show
+        authorize! @board, to: :show?
+
+        render json: @board, include_users: :all
+      end
+
+      def new
+        @board = Board.new(title: Date.today.strftime('%d-%m-%Y'))
+        authorize! @board, to: :new?
+
+        render json: @board
+      end
+
+      def edit
+        authorize! @board, to: :edit?
+
+        render json: @board
       end
 
       def continue
@@ -28,7 +45,7 @@ module API
 
         result = Boards::Continue.new(@board, current_user).call
         if result.success?
-          render json: serialize_resource(result.value!)
+          render json: result.value!
         else
           render_json_error(result.failure)
         end
@@ -37,11 +54,24 @@ module API
       def history
         authorize!
 
-        boards = Boards::GetHistoryOfBoard.new(@board.id).call
-        boards_by_date = boards.order(created_at: :desc)
-                               .group_by { |record| record.created_at.strftime('%B, %Y') }
+        boards = Boards::GetHistoryOfBoard.new(@board.id).call.order(created_at: :desc)
 
-        render json: serialize_resource(boards_by_date)
+        render json: boards, include_users: :limited
+      end
+
+      def create
+        @board = Board.new(board_params)
+        authorize! @board, to: :create?
+
+        @board.memberships.build(user_id: current_user.id, role: 'creator')
+        result = Boards::BuildPermissions.new(@board, current_user)
+                                         .call(identifiers_scope: 'creator')
+
+        if result.success? && @board.save
+          render json: result.value!, status: 201
+        else
+          render_json_error(result.failure || @board.errors.full_messages)
+        end
       end
 
       def update
@@ -50,7 +80,7 @@ module API
         old_column_names = @board.column_names
         if @board.update(board_params)
           result = Boards::RenameColumns.new(@board).call(old_column_names, @board.column_names)
-          render json: serialize_resource(result.value!) if result.success?
+          render json: result.value! if result.success?
         else
           render_json_error(@board.errors.full_messages)
         end

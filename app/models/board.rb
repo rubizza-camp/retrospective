@@ -13,6 +13,22 @@ class Board < ApplicationRecord
   belongs_to :previous_board, class_name: 'Board', optional: true
   before_create :set_slug
 
+  scope :member_boards, lambda { |user|
+    where.not(id: Board.select(:previous_board_id).where.not(previous_board_id: nil))
+         .joins(board_permissions_users: :permission)
+         .where(permissions: { identifier: :toggle_ready_status },
+                board_permissions_users: { user_id: user.id })
+         .order(created_at: :desc)
+  }
+
+  scope :creator_boards, lambda { |user|
+    where.not(id: Board.select(:previous_board_id).where.not(previous_board_id: nil))
+         .joins(board_permissions_users: :permission)
+         .where(permissions: { identifier: :destroy_board },
+                board_permissions_users: { user_id: user.id })
+         .order(created_at: :desc)
+  }
+
   def to_param
     slug
   end
