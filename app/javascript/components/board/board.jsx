@@ -1,13 +1,21 @@
 import {formatRelative, subDays} from 'date-fns';
-import React from 'react';
+import React, {useState} from 'react';
 import arrow from '../../images/undo_13';
 import {getInitialsTitleBoard} from '../../utils/helpers';
 import {locale} from '../../utils/format-date';
 import style from './style.module.less';
-import {GroupIcons} from './group-icons/group-icons';
+// Import {GroupIcons} from './group-icons/group-icons';
 import {MenuIcon} from './menu-icon/menu-icon';
 
-const BoardCard = ({board, users}) => {
+const Board = ({
+  board,
+  setBoards,
+  setModal,
+  setHistoryBoards,
+  historyBoards
+}) => {
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
+
   const renderBoardAvatar = (boardAvatar, title) => {
     if (boardAvatar) {
       return (
@@ -30,27 +38,47 @@ const BoardCard = ({board, users}) => {
   if (!numberСhanges) numberСhanges = 1;
 
   return (
-    <div className={style.board}>
+    <div
+      className={style.board}
+      onClick={(event) => {
+        event.stopPropagation();
+        setIsOpenMenu(false);
+      }}
+    >
       <div className={style.header}>
         {renderBoardAvatar('', board.title)}
         <a href={`/boards/${board.slug}`} className={style.title}>
           <span>{board.title}</span>
         </a>
-        <MenuIcon boardSlug={board.slug} />
+        {!historyBoards.length && (
+          <MenuIcon
+            historyBoards={historyBoards}
+            setHistoryBoards={setHistoryBoards}
+            setModal={setModal}
+            setBoards={setBoards}
+            isOpenMenu={isOpenMenu}
+            setIsOpenMenu={setIsOpenMenu}
+            boardSlug={board.slug}
+          />
+        )}
       </div>
       <div className={style.footer}>
         <span className={style.textDate}>
           <div style={backGroundArrow} className={style.arrowIcon}>
             <span>{numberСhanges}</span>
           </div>
-          {formatRelative(subDays(new Date(board.updated_at), 0), new Date(), {
-            locale
-          })}
+          {formatRelative(
+            subDays(new Date(board.created_at || board.createdAt), 0),
+            new Date(),
+            {
+              locale
+            }
+          )}
         </span>
-        <GroupIcons users={users} />
+        {/* <GroupIcons users={users} /> */}
       </div>
     </div>
   );
 };
 
-export default BoardCard;
+export default Board;
