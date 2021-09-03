@@ -31,7 +31,9 @@ const User = ({
       return (
         <img
           src={avatar.thumb.url}
-          className={`${shouldDisplayReady && ready ? 'isReady' : ''} avatar`}
+          className={`${
+            shouldDisplayReady && ready ? avatarStyle.isReady : ''
+          } ${avatarStyle.avatar}`}
           alt={email}
           title={email}
         />
@@ -42,11 +44,7 @@ const User = ({
       ${avatarStyle[`avatar-${id % 10}`]}`;
     shouldDisplayReady && ready && (classes += avatarStyle.isReady);
 
-    return (
-      <div className={avatarClasses}>
-        {getInitials(userName, userSurname)}
-      </div>
-    );
+    return <div className={classes}>{getInitials(userName, userSurname)}</div>;
   };
 
   return (

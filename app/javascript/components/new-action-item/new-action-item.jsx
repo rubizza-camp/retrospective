@@ -4,7 +4,7 @@ import BoardSlugContext from '../../utils/board-slug-context';
 import {handleKeyPress} from '../../utils/helpers';
 import UserContext from '../../utils/user-context';
 import {ActionItemEdit} from '../action-item-edit';
-import {CardUserAvatar} from '../card-user-avatar';
+import CardUser from '../card-user/card-user';
 import {addActionItemMutation} from './operations.gql';
 import style from './style.module.less';
 
@@ -50,11 +50,11 @@ const NewActionItem = ({users}) => {
   );
   return (
     <div className={style.newActionItem}>
-      <CardUserAvatar
+      <CardUser
         firstName={currentUser.firstName}
         lastName={currentUser.lastName}
         nickname={currentUser.nickname}
-        avatar={currentUser.avatar.thumb.url}
+        avatar={currentUser.avatar}
       />
       <ActionItemEdit
         users={users}
