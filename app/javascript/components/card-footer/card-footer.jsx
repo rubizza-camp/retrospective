@@ -22,7 +22,7 @@ const CardFooter = ({
   return (
     <div className="card-footer">
       <div className="card-footer__likes">
-        <Likes id={id} likes={likes} type={type} />
+        <Likes isCard id={id} likes={likes} type={type} />
       </div>
       {isCommentsShown ? (
         <div className="card-footer__comments">

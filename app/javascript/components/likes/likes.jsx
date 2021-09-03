@@ -9,7 +9,7 @@ const EMOJIES = {
   universal: '👍'
 };
 
-const Likes = ({type, likes, id}) => {
+const Likes = ({type, likes, id, isCard}) => {
   const [likeCard] = useMutation(likeCardMutation);
   const [likeComment] = useMutation(likeCommentMutation);
   const [timer, setTimer] = useState(null);
@@ -21,7 +21,7 @@ const Likes = ({type, likes, id}) => {
   }, [timer]);
 
   const addLike = async () => {
-    if (EMOJIES[type]) {
+    if (isCard) {
       const {data} = await likeCard({
         variables: {
           id

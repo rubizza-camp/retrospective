@@ -86,7 +86,7 @@ const Comment = ({id, comment, editable}) => {
             <div className={style.commentText}>
               <Linkify options={linkifyOptions}>{comment.content}</Linkify>
               <div className={style.commentLike}>
-                <Likes id={comment.id} likes={comment.likes} />
+                <Likes id={comment.id} likes={comment.likes} isCard={false} />
               </div>
             </div>
             {editable && (
