@@ -124,3 +124,5 @@ ActionItem.create(body: 'actions should be taken', board_id: board1.id, author_i
 Rake::Task['permissions:create_missing_for_boards'].invoke
 Rake::Task['permissions:create_missing_for_cards'].invoke
 Rake::Task['permissions:create_missing_for_comments'].invoke
+Rake::Task['permissions:create_missing_for_like_cards'].invoke
+Rake::Task['permissions:create_missing_for_like_comments'].invoke
