@@ -14,10 +14,9 @@ module Boards
         card = Card.new(card_params)
 
         card.transaction do
-          BuildPermissions.new(card, user).call(identifiers_scope: 'card')
+          Boards::Cards::BuildPermissions.new(card, user).call(identifiers_scope: 'card')
           card.save!
         end
-
         Success(card)
       rescue StandardError => e
         Failure(e)

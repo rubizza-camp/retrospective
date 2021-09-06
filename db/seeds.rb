@@ -2,11 +2,6 @@
 
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
 
 user1 = User.find_or_create_by(email: 'tu1@mail.com') { |u| u.password = '123456', u.nickname = 'tu1', u.provider = 'provider', u.uid = 'uid1', u.last_name = 'Sidorov', u.first_name = 'Ivan' }
 user2 = User.find_or_create_by(email: 'tu2@mail.com') { |u| u.password = '123456', u.nickname = 'tu2', u.provider = 'provider', u.uid = 'uid2', u.last_name = 'Petrov', u.first_name = 'Petr' }
@@ -21,28 +16,6 @@ user9 = User.find_or_create_by(email: 'tu9@mail.com') { |u| u.password = '123456
 Team.create(name: 'Wolves', user_ids: [user1.id, user2.id, user3.id, user4.id, user5.id]) unless Team.where(name: 'Wolves').exists?
 Team.create(name: 'Tigers', user_ids: [user1.id, user5.id]) unless Team.where(name: 'Tigers').exists?
 Team.create(name: 'Eagles', user_ids: [user2.id, user3.id, user4.id]) unless Team.where(name: 'Eagles').exists?
-
-board1 = Board.find_or_create_by(title: 'TestUser1_RetroBoard')
-board2 = Board.find_or_create_by(title: 'TestUser2_RetroBoard')
-board3 = Board.find_or_create_by(title: 'TestUser3_RetroBoard')
-board4 = Board.find_or_create_by(title: 'TestUser4_RetroBoard')
-board5 = Board.find_or_create_by(title: 'TestUser5_RetroBoard')
-
-Membership.create([
-                    { user_id: user1.id, board_id: board1.id, role: 'creator', ready: false },
-                    { user_id: user2.id, board_id: board1.id, role: 'member', ready: false },
-                    { user_id: user3.id, board_id: board1.id, role: 'member', ready: false },
-                    { user_id: user4.id, board_id: board1.id, role: 'member', ready: false },
-                    { user_id: user5.id, board_id: board1.id, role: 'member', ready: false },
-                    { user_id: user6.id, board_id: board1.id, role: 'member', ready: false },
-                    { user_id: user7.id, board_id: board1.id, role: 'member', ready: false },
-                    { user_id: user8.id, board_id: board1.id, role: 'member', ready: false },
-                    { user_id: user9.id, board_id: board1.id, role: 'member', ready: false },
-                    { user_id: user2.id, board_id: board2.id, role: 'creator', ready: false },
-                    { user_id: user2.id, board_id: board3.id, role: 'creator', ready: false },
-                    { user_id: user2.id, board_id: board4.id, role: 'creator', ready: false },
-                    { user_id: user2.id, board_id: board5.id, role: 'creator', ready: false }
-                  ])
 
 permissions_data = {
   view_private_board: 'User can view private board',
@@ -85,37 +58,62 @@ errors = []
 end
 puts errors
 
-Permission.creator_permissions.each do |permission|
-  BoardPermissionsUser.create([
-                                { user_id: user1.id, permission_id: permission.id, board_id: board1.id },
-                                { user_id: user2.id, permission_id: permission.id, board_id: board2.id },
-                                { user_id: user2.id, permission_id: permission.id, board_id: board3.id },
-                                { user_id: user2.id, permission_id: permission.id, board_id: board4.id },
-                                { user_id: user2.id, permission_id: permission.id, board_id: board5.id }
-                              ])
+board1 = Board.find_or_create_by(title: 'TestUser1_RetroBoard')
+board2 = Board.find_or_create_by(title: 'TestUser2_RetroBoard')
+board3 = Board.find_or_create_by(title: 'TestUser3_RetroBoard')
+board4 = Board.find_or_create_by(title: 'TestUser4_RetroBoard')
+board5 = Board.find_or_create_by(title: 'TestUser5_RetroBoard')
+
+Membership.create([
+                    { user_id: user1.id, board_id: board1.id, role: 'creator', ready: false },
+                    { user_id: user2.id, board_id: board2.id, role: 'creator', ready: false },
+                    { user_id: user2.id, board_id: board3.id, role: 'creator', ready: false },
+                    { user_id: user2.id, board_id: board4.id, role: 'creator', ready: false },
+                    { user_id: user2.id, board_id: board5.id, role: 'creator', ready: false }
+                  ])
+
+# Create creator's board permissions
+# TODO Move creating memeberships and permissions to the operation Boards::Create
+creator_params = [{ board: board1, creator: user1 }, { board: board2, creator: user2 },
+                  { board: board3, creator: user2 }, { board: board4, creator: user2 }]
+creator_params.each do |params|
+  board = params[:board]
+  Boards::BuildPermissions.new(board, params[:creator]).call(identifiers_scope: 'creator')
+  board.save
 end
 
-Permission.member_permissions.each do |permission|
-  BoardPermissionsUser.create([
-                                { user_id: user2.id, permission_id: permission.id, board_id: board1.id },
-                                { user_id: user3.id, permission_id: permission.id, board_id: board1.id },
-                                { user_id: user4.id, permission_id: permission.id, board_id: board1.id },
-                                { user_id: user5.id, permission_id: permission.id, board_id: board1.id },
-                                { user_id: user6.id, permission_id: permission.id, board_id: board1.id },
-                                { user_id: user7.id, permission_id: permission.id, board_id: board1.id },
-                                { user_id: user8.id, permission_id: permission.id, board_id: board1.id },
-                                { user_id: user9.id, permission_id: permission.id, board_id: board1.id }
-                              ])
+# Invite users to board1
+[user2, user3, user4, user5, user6, user7, user8, user9].each do |user|
+  Boards::InviteUsers.new(board1.reload, User.where(id: user.id)).call
 end
 
-Card.create(kind: 'mad', body: 'user1 is very mad', author_id: user1.id, board_id: board1.id) unless Card.where(body: 'user1 is very mad').exists?
-Card.create(kind: 'sad', body: 'user1 is very sad', author_id: user1.id, board_id: board1.id) unless Card.where(body: 'user1 is very sad').exists?
-Card.create(kind: 'glad', body: 'user1 is very glad #1', author_id: user1.id, board_id: board1.id) unless Card.where(body: 'user1 is very glad #1').exists?
-Card.create(kind: 'glad', body: 'user1 is very glad #2', author_id: user1.id, board_id: board1.id) unless Card.where(body: 'user1 is very glad #2').exists?
-Card.create(kind: 'sad', body: 'user2 is very sad', author_id: user2.id, board_id: board1.id) unless Card.where(body: 'user2 is very sad').exists?
-Card.create(kind: 'mad', body: 'user3 is very mad', author_id: user3.id, board_id: board1.id) unless Card.where(body: 'user3 is very mad').exists?
-Card.create(kind: 'mad', body: 'user4 is very mad', author_id: user4.id, board_id: board1.id) unless Card.where(body: 'user4 is very mad').exists?
-Card.create(kind: 'mad', body: 'user5 is very mad', author_id: user5.id, board_id: board1.id) unless Card.where(body: 'user5 is very mad').exists?
+# Invite users to board2
+[user1, user3, user4, user5, user6].each do |user|
+  Boards::InviteUsers.new(board2.reload, User.where(id: user.id)).call
+end
+
+# Invite users to board3
+[user1, user3, user4, user6].each do |user|
+  Boards::InviteUsers.new(board3.reload, User.where(id: user.id)).call
+end
+
+# Create cards
+cards_params = [{ kind: 'mad', body: 'user1 is very mad', author_id: user1.id, board_id: board1.reload.id, author: user1 },
+                { kind: 'sad', body: 'user1 is very sad', author_id: user1.id, board_id: board1.id, author: user1 },
+                { kind: 'glad', body: 'user1 is very glad #1', author_id: user1.id, board_id: board1.id, author: user1 },
+                { kind: 'glad', body: 'user1 is very glad #2', author_id: user1.id, board_id: board1.id, author: user1 },
+                { kind: 'sad', body: 'user2 is very sad', author_id: user2.id, board_id: board1.id, author: user2 },
+                { kind: 'mad', body: 'user3 is very mad', author_id: user3.id, board_id: board1.id, author: user3 },
+                { kind: 'mad', body: 'user4 is very mad', author_id: user4.id, board_id: board1.id, author: user4 },
+                { kind: 'mad', body: 'user5 is very mad', author_id: user5.id, board_id: board1.id, author: user5 },
+                { kind: 'mad', body: 'user3 is very mad', author_id: user3.id, board_id: board2.reload.id, author: user3 },
+                { kind: 'sad', body: 'user3 is very sad #1', author_id: user3.id, board_id: board2.id, author: user3 },
+                { kind: 'sad', body: 'user3 is very sad #2', author_id: user3.id, board_id: board2.id, author: user3 }]
+cards_params.each do |params|
+  next if Card.where(body: params[:body], board_id: params[:board_id]).exists?
+
+  Boards::Cards::Create.new(params.delete(:author)).call(params)
+end
 
 ActionItem.create(body: 'issue should be fixed', board_id: board1.id, author_id: user1.id) unless ActionItem.where(body: 'issue should be fixed', board_id: board1.id, author_id: user1.id).exists?
 ActionItem.create(body: 'meetings should be held', board_id: board1.id, author_id: user1.id) unless ActionItem.where(body: 'meetings should be held', board_id: board1.id, author_id: user1.id).exists?
