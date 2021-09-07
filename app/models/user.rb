@@ -46,6 +46,12 @@ class User < ApplicationRecord
                                                             permission: permission).any?
   end
 
+  def creator?(board)
+    board_permissions_users
+      .exists?(permission: Permission.find_by_identifier(Permission::MASTER_CREATOR_ID),
+               board: board)
+  end
+
   private
 
   def new_user_settings(info)

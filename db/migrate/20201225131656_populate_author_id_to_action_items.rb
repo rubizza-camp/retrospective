@@ -2,6 +2,8 @@
 
 class PopulateAuthorIdToActionItems < ActiveRecord::Migration[6.0]
   def change
+    return true unless column_exists?(:memberships, :role)
+
     Board.find_each do |board|
       creator = board.memberships.where(role: 'creator').first
       if creator

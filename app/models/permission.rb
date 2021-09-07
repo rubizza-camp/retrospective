@@ -12,6 +12,8 @@ class Permission < ApplicationRecord
   CARD_IDENTIFIERS = %w[update_card destroy_card].freeze
   COMMENT_IDENTIFIERS = %w[update_comment destroy_comment].freeze
   LIKE_IDENTIFIERS = %w[like_comment like_card].freeze
+  MASTER_CREATOR_ID = :destroy_board
+  MASTER_MEMBER_ID = :toggle_ready_status
 
   has_many :board_permissions_users, dependent: :destroy
   has_many :board_users, through: :board_permissions_users, source: :user

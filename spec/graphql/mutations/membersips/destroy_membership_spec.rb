@@ -4,17 +4,14 @@ require 'rails_helper'
 
 RSpec.describe Mutations::DestroyMembershipMutation, type: :request do
   describe '#resolve' do
-    let!(:board) { create(:board) }
+    let(:board) { create(:board) }
     let(:author) { create(:user) }
     let(:non_author) { create(:user) }
-    let!(:creatorship) do
-      create(:membership, board: board, user: author, role: 'creator')
-    end
-    let!(:non_creatorship) do
-      create(:membership, board: board, user: non_author, role: 'member')
-    end
+    let!(:creatorship) { create(:membership, board: board, user: author) }
+    let!(:non_creatorship) { create(:membership, board: board, user: non_author) }
     let_it_be(:member_permission) { create(:permission, identifier: 'some_identifier') }
     let_it_be(:destroy_permission) { create(:permission, identifier: 'destroy_membership') }
+
     let(:request) { post '/graphql', params: { query: query(id: non_creatorship.id) } }
 
     before do
@@ -40,10 +37,7 @@ RSpec.describe Mutations::DestroyMembershipMutation, type: :request do
       it 'returns a membership' do
         request
 
-        json = JSON.parse(response.body)
-        data = json.dig('data', 'destroyMembership')
-
-        expect(data).to include(
+        expect(json_body.dig('data', 'destroyMembership')).to include(
           'id' => non_creatorship.id
         )
       end
@@ -56,8 +50,7 @@ RSpec.describe Mutations::DestroyMembershipMutation, type: :request do
 
       it 'returns unauthorized error' do
         request
-        json = JSON.parse(response.body)
-        message = json['errors'].first['message']
+        message = json_body['errors'].first['message']
 
         expect(message).to eq('You are not authorized to perform this action')
       end

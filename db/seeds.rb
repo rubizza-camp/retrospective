@@ -64,16 +64,16 @@ board3 = Board.find_or_create_by(title: 'TestUser3_RetroBoard')
 board4 = Board.find_or_create_by(title: 'TestUser4_RetroBoard')
 board5 = Board.find_or_create_by(title: 'TestUser5_RetroBoard')
 
-Membership.create([
-                    { user_id: user1.id, board_id: board1.id, role: 'creator', ready: false },
-                    { user_id: user2.id, board_id: board2.id, role: 'creator', ready: false },
-                    { user_id: user2.id, board_id: board3.id, role: 'creator', ready: false },
-                    { user_id: user2.id, board_id: board4.id, role: 'creator', ready: false },
-                    { user_id: user2.id, board_id: board5.id, role: 'creator', ready: false }
-                  ])
-
 # Create creator's board permissions
 # TODO Move creating memeberships and permissions to the operation Boards::Create
+Membership.create([
+                    { user_id: user1.id, board_id: board1.id, ready: false },
+                    { user_id: user2.id, board_id: board2.id, ready: false },
+                    { user_id: user2.id, board_id: board3.id, ready: false },
+                    { user_id: user2.id, board_id: board4.id, ready: false },
+                    { user_id: user2.id, board_id: board5.id, ready: false }
+                  ])
+
 creator_params = [{ board: board1, creator: user1 }, { board: board2, creator: user2 },
                   { board: board3, creator: user2 }, { board: board4, creator: user2 }]
 creator_params.each do |params|
@@ -119,7 +119,6 @@ ActionItem.create(body: 'issue should be fixed', board_id: board1.id, author_id:
 ActionItem.create(body: 'meetings should be held', board_id: board1.id, author_id: user1.id) unless ActionItem.where(body: 'meetings should be held', board_id: board1.id, author_id: user1.id).exists?
 ActionItem.create(body: 'actions should be taken', board_id: board1.id, author_id: user1.id) unless ActionItem.where(body: 'actions should be taken', board_id: board1.id, author_id: user1.id).exists?
 
-Rake::Task['permissions:create_missing_for_boards'].invoke
 Rake::Task['permissions:create_missing_for_cards'].invoke
 Rake::Task['permissions:create_missing_for_comments'].invoke
 Rake::Task['permissions:create_missing_for_like_cards'].invoke

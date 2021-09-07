@@ -44,9 +44,9 @@
   action_items: @action_items,
   board: @board.as_json,
   cards_by_type: @cards_by_type,
-  creators: @board_creators,
   init_prev_items: @previous_action_items || [],
   user: current_user.as_json,
+  user_is_creator: current_user.creator?(@board),
   users: @users,
   previous_board_slug: @previous_board_slug
 })

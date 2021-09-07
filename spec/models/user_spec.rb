@@ -190,4 +190,21 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#creator?' do
+    subject { user.creator?(board) }
+
+    context 'when user is a creator of the board' do
+      let_it_be(:permission) { create(:permission, identifier: Permission::MASTER_CREATOR_ID) }
+      before do
+        create(:board_permissions_user, user: user, board: board, permission: permission)
+      end
+
+      it { is_expected.to be true }
+    end
+
+    context 'when user is not a creator of the board' do
+      it { is_expected.to be false }
+    end
+  end
 end

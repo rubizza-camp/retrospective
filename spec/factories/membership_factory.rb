@@ -5,6 +5,5 @@ FactoryBot.define do
     sequence(:id) { |number| number }
     user
     board
-    role { 'member' }
   end
 end

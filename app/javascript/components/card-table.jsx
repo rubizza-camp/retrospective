@@ -11,9 +11,9 @@ import {BoardColumnHidden} from './board-column-hidden';
 const CardTable = ({
   actionItems,
   cardsByType,
-  creators,
   initPrevItems,
   user,
+  userIsCreator,
   users,
   previousBoardSlug
 }) => {
@@ -55,7 +55,7 @@ const CardTable = ({
     return content;
   };
 
-  user.isCreator = creators.includes(user.id);
+  user.isCreator = userIsCreator;
   return (
     <Provider>
       <BoardSlugContext.Provider value={window.location.pathname.split('/')[2]}>

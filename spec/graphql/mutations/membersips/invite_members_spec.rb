@@ -4,18 +4,13 @@ require 'rails_helper'
 
 RSpec.describe Mutations::InviteMembersMutation, type: :request do
   describe '.resolve' do
-    let!(:author) { create(:user) }
-    let!(:board) { create(:board) }
-    let!(:creatorship) do
-      create(:membership, board: board, user: author, role: 'creator')
-    end
-    let(:invite_permission) { create(:permission, identifier: 'invite_members') }
-
-    let(:invitee1) { build_stubbed(:user) }
-    let(:invitee2) { build_stubbed(:user) }
-
-    let(:membership1) { build_stubbed(:membership, board: board, user: invitee1) }
-    let(:membership2) { build_stubbed(:membership, board: board, user: invitee2) }
+    let_it_be(:author) { create(:user) }
+    let_it_be(:board) { create(:board) }
+    let_it_be(:invite_permission) { create(:permission, identifier: 'invite_members') }
+    let_it_be(:invitee1) { build_stubbed(:user) }
+    let_it_be(:invitee2) { build_stubbed(:user) }
+    let_it_be(:membership1) { build_stubbed(:membership, board: board, user: invitee1) }
+    let_it_be(:membership2) { build_stubbed(:membership, board: board, user: invitee2) }
 
     let(:request) do
       post '/graphql', params: { query: query(board_slug: board.slug,
@@ -23,6 +18,7 @@ RSpec.describe Mutations::InviteMembersMutation, type: :request do
     end
 
     before do
+      create(:membership, board: board, user: author)
       create(:board_permissions_user, permission: invite_permission, user: author, board: board)
     end
 
@@ -38,10 +34,8 @@ RSpec.describe Mutations::InviteMembersMutation, type: :request do
 
     it 'returns a list of memberships' do
       request
-      json = JSON.parse(response.body)
-      data = json.dig('data', 'inviteMembers', 'memberships')
 
-      expect(data).to match_array(
+      expect(json_body.dig('data', 'inviteMembers', 'memberships')).to match_array(
         [
           {
             'id' => membership1.id,

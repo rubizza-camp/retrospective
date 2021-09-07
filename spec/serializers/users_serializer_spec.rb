@@ -3,16 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe MembershipSerializer do
-  let_it_be(:membership) { create(:membership, role: 'creator') }
+  let_it_be(:membership) { create(:membership) }
 
   subject { described_class.new(membership).to_json }
 
   it 'makes json with id' do
     expect(subject['id']).to be_present
-  end
-
-  it 'makes json with role' do
-    expect(subject).to include '"role":"creator"'
   end
 
   it 'makes json with ready' do

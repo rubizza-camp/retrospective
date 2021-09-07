@@ -63,7 +63,7 @@ module API
         @board = Board.new(board_params)
         authorize! @board, to: :create?
 
-        @board.memberships.build(user_id: current_user.id, role: 'creator')
+        @board.memberships.build(user_id: current_user.id)
         result = Boards::BuildPermissions.new(@board, current_user)
                                          .call(identifiers_scope: 'creator')
 

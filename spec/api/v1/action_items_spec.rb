@@ -5,9 +5,6 @@ require 'rails_helper'
 describe 'Action Item API', type: :request do
   let_it_be(:author) { create(:user) }
   let_it_be(:board) { create(:board) }
-  let_it_be(:creatorship) do
-    create(:membership, board: board, user: author, role: 'creator')
-  end
 
   before do
     login_as author
@@ -34,7 +31,7 @@ describe 'Action Item API', type: :request do
     it 'return created action item' do
       request
 
-      expect(json_body['data']['actionItem']).to include('body' => 'test item')
+      expect(json_body.dig('data', 'actionItem')).to include('body' => 'test item')
     end
 
     it 'create action item in db' do
@@ -217,9 +214,6 @@ describe 'Action Item API', type: :request do
 
   describe 'PUT /api/v1/action_items/:id/move' do
     let_it_be(:new_board) { create(:board) }
-    let_it_be(:creatorship2) do
-      create(:membership, board: new_board, user: author, role: 'creator')
-    end
     let_it_be(:action_item) { create(:action_item, board: board) }
 
     let(:request) do
