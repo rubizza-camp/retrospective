@@ -40,11 +40,21 @@ const User = ({
       );
     }
 
-    let classes = `${avatarStyle.avatar} ${avatarStyle.avatarText}
-      ${avatarStyle[`avatar-${id % 10}`]}`;
-    shouldDisplayReady && ready && (classes += avatarStyle.isReady);
+    const classes = [
+      avatarStyle.avatar,
+      avatarStyle.avatarText,
+      avatarStyle[`avatar-${id % 10}`]
+    ];
 
-    return <div className={classes}>{getInitials(userName, userSurname)}</div>;
+    if (shouldDisplayReady && ready) {
+      classes.push(avatarStyle.isReady);
+    }
+
+    return (
+      <div className={classes.join(' ')}>
+        {getInitials(userName, userSurname)}
+      </div>
+    );
   };
 
   return (
