@@ -23,6 +23,7 @@ const BoardsContainer = () => {
       setBoards={setStartBoards}
       setHistoryBoards={setHistoryBoards}
       board={board}
+      users={board.users}
     />
   ));
 
@@ -34,6 +35,7 @@ const BoardsContainer = () => {
       setBoards={setStartBoards}
       setHistoryBoards={setHistoryBoards}
       board={board}
+      users={board.users}
     />
   ));
 

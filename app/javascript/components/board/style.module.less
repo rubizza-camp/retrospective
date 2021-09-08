@@ -5,7 +5,7 @@
   height: 136px;
   border-radius: 8px;
   box-shadow: 0px 8px 16px 0px #757D5C40;
-
+  cursor:default;
 }
 .header{
   display: flex;
@@ -32,7 +32,7 @@
   justify-content: center;
   align-items: center;
   margin-right: 8px;
-  cursor:default;
+
 }
 .avatarText {
   border-radius: 4px;
@@ -48,13 +48,13 @@
   height: 50%;
   margin: 0 0 0 10px;
   color: black;
-  
+
 }
 .title:hover{
   color: black;
 }
 
-.title span {
+.title a {
 font-size: 20px;
 font-style: normal;
 font-weight: 500;
@@ -146,16 +146,7 @@ text-align: left;
 }
 
 
-.avaContainer {
-  width: 50%;
-}
-.avaContainer:nth-last-child(n+5) {
-   display:none;
-}
 
-.combatant:nth-last-child(n+5) {
-   display:none;
-}
 
 
 
@@ -173,12 +164,14 @@ text-align: left;
   font-weight: 500;
   color: white;
   letter-spacing: -0.1em;
+  margin-right: -12px;
   cursor:default;
 }
 
 .avaAddCount {
   width: 20%;
   cursor:default;
+  margin-left: 10px;
 }
 
 .userCount{
@@ -188,7 +181,7 @@ text-align: left;
   width: 24px;
   height: 24px;
   font-size: 20px;
-  color:gray; 
+  color:gray;
   background-color: white;
 }
 
@@ -212,11 +205,11 @@ text-align: left;
   font-style: normal;
   font-weight: 400;
   line-height: 18px;
-  letter-spacing: 0.01em; 
+  letter-spacing: 0.01em;
   text-align: center;
   font-size: 12px;
   position: absolute;
-  
-  
+
+
 }
 

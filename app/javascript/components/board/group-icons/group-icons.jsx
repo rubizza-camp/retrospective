@@ -2,7 +2,7 @@ import React from 'react';
 import {getInitials} from '../../../utils/helpers';
 import style from '../style.module.less';
 
-export const GroupIcons = ({users}) => {
+export const GroupIcons = ({users, usersCount}) => {
   const userIcon = users.map((user) => {
     const stylesForAvatarIcon = `${style.combatant} ${
       style[`avatar${user.id % 10}`]
@@ -20,10 +20,8 @@ export const GroupIcons = ({users}) => {
     }
 
     return (
-      <span key={user.id} className={style.avaContainer}>
-        <span className={stylesForAvatarIcon}>
-          {getInitials(user.first_name, user.last_name)}
-        </span>
+      <span key={user.id} className={stylesForAvatarIcon}>
+        {getInitials(user.firstName, user.lastName)}
       </span>
     );
   });
@@ -34,7 +32,7 @@ export const GroupIcons = ({users}) => {
         <div className={style.avatarGroup}>{userIcon}</div>
       </div>
       <span className={style.avaAddCount}>
-        <span className={style.userCount}>{users.length}</span>
+        <span className={style.userCount}>{usersCount}</span>
       </span>
     </div>
   );

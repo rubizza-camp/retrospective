@@ -4,7 +4,7 @@ import arrow from '../../images/undo_13';
 import {getInitialsTitleBoard} from '../../utils/helpers';
 import {locale} from '../../utils/format-date';
 import style from './style.module.less';
-// Import {GroupIcons} from './group-icons/group-icons';
+import {GroupIcons} from './group-icons/group-icons';
 import {MenuIcon} from './menu-icon/menu-icon';
 
 const Board = ({
@@ -12,7 +12,8 @@ const Board = ({
   setBoards,
   setModal,
   setHistoryBoards,
-  historyBoards
+  historyBoards,
+  users
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
@@ -47,9 +48,9 @@ const Board = ({
     >
       <div className={style.header}>
         {renderBoardAvatar('', board.title)}
-        <a href={`/boards/${board.slug}`} className={style.title}>
-          <span>{board.title}</span>
-        </a>
+        <span className={style.title}>
+          <a href={`/boards/${board.slug}`}>{board.title}</a>
+        </span>
         {!historyBoards.length && (
           <MenuIcon
             historyBoards={historyBoards}
@@ -75,7 +76,7 @@ const Board = ({
             }
           )}
         </span>
-        {/* <GroupIcons users={users} /> */}
+        <GroupIcons users={users} usersCount={board.usersCount} />
       </div>
     </div>
   );

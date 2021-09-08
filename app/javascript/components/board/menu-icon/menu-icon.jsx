@@ -22,7 +22,7 @@ export const MenuIcon = ({
   const historyHandler = async () => {
     const response = await boardApi.historyBoard(boardSlug);
     setIsOpenMenu(false);
-    setHistoryBoards(response.august_2021 || response.september_2021);
+    setHistoryBoards(response);
     setModal(true);
   };
 
