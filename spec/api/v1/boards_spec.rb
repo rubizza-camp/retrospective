@@ -5,20 +5,53 @@ require 'rails_helper'
 RSpec.describe API::V1::BoardsController, type: :controller do
   let_it_be(:author) { create(:user) }
   let_it_be(:board1) { create(:board) }
-  let_it_be(:board_attrs) { %w[title id slug createdAt updatedAt cards] }
+  let_it_be(:board_attrs) { %w[title id slug created_at users_count private] }
 
   before { login_as author }
 
-  describe 'GET /api/v1/boards' do
-    subject(:response) { get :index }
-    let_it_be(:board2) { create(:board) }
+  describe 'GET /api/v1/boards/my' do
+    let_it_be(:creator_permission) { create(:permission, identifier: 'destroy_board') }
+
+    before do
+      create(:board_permissions_user, permission: creator_permission,
+                                      user: author, board: board1)
+    end
+
+    subject(:response) { get :my }
 
     it { is_expected.to have_http_status(:ok) }
 
     it 'returns boards' do
-      handler = serialize_resource([board1, board2])
+      expect(json_body.size).to eq(1)
+      expect(json_body.first.keys).to match_array(board_attrs + ['users'])
+    end
+  end
 
-      expect(json_body).to eq(JSON.parse(handler))
+  describe 'GET /api/v1/boards/participating' do
+    let_it_be(:member_permission) { create(:permission, identifier: 'toggle_ready_status') }
+
+    before do
+      create(:board_permissions_user, permission: member_permission,
+                                      user: author, board: board1)
+    end
+
+    subject(:response) { get :participating }
+
+    it { is_expected.to have_http_status(:ok) }
+
+    it 'returns boards' do
+      expect(json_body.size).to eq(1)
+      expect(json_body.first.keys).to match_array(board_attrs + ['users'])
+    end
+  end
+
+  describe 'GET /api/v1/boards/new' do
+    subject(:response) { get :new }
+
+    it { is_expected.to have_http_status(:ok) }
+
+    it 'returns board' do
+      expect(json_body.keys).to match_array(board_attrs)
     end
   end
 
@@ -28,9 +61,22 @@ RSpec.describe API::V1::BoardsController, type: :controller do
     it { is_expected.to have_http_status(:ok) }
 
     it 'returns board' do
-      handler = serialize_resource(board1)
+      expect(json_body.keys).to match_array(board_attrs + ['users'])
+    end
+  end
 
-      expect(json_body).to eq(JSON.parse(handler))
+  describe 'GET /api/v1/boards/:slug/edit' do
+    subject(:response) { get :edit, params: { slug: board1.slug } }
+    let_it_be(:edit_permission) { create(:permission, identifier: 'edit_board') }
+
+    before do
+      create(:board_permissions_user, permission: edit_permission, user: author, board: board1)
+    end
+
+    it { is_expected.to have_http_status(:ok) }
+
+    it 'returns board' do
+      expect(json_body.keys).to match_array(board_attrs)
     end
   end
 
@@ -38,6 +84,10 @@ RSpec.describe API::V1::BoardsController, type: :controller do
     subject(:response) { get :history, params: { slug: board1.slug } }
 
     it { is_expected.to have_http_status(:ok) }
+
+    it 'returns board' do
+      expect(json_body.first.keys).to match_array(board_attrs + ['users'])
+    end
   end
 
   describe 'POST /api/v1/boards/:slug/continue' do
@@ -60,14 +110,32 @@ RSpec.describe API::V1::BoardsController, type: :controller do
         end
 
         it 'returns new board' do
-          expect(json_body.dig('data', 'board').keys).to match_array(board_attrs)
-          expect(json_body.dig('data', 'board', 'title')).to eq("#{board1.title} #2")
+          expect(json_body.keys).to match_array(board_attrs)
+          expect(json_body['title']).to eq("#{board1.title} #2")
         end
       end
     end
 
     context 'user has not permission to continue' do
       it_behaves_like :controllers_api_unauthenticated_action
+    end
+  end
+
+  describe 'POST /api/v1/boards/' do
+    subject(:response) { post :create, params: { board: { title: Faker::Lorem.word } } }
+
+    context 'when board is valid' do
+      it { is_expected.to have_http_status(201) }
+    end
+
+    context 'when board is invalid' do
+      subject(:response) { post :create, params: { board: { title: '' } } }
+
+      it { is_expected.to have_http_status(422) }
+
+      it 'returns errors' do
+        expect(json_body.dig('errors', 'fullMessages')).to eq(["Title can't be blank"])
+      end
     end
   end
 
@@ -92,8 +160,8 @@ RSpec.describe API::V1::BoardsController, type: :controller do
           it { is_expected.to have_http_status(:ok) }
 
           it 'returns updated board' do
-            expect(json_body.dig('data', 'board').keys).to match_array(board_attrs)
-            expect(json_body.dig('data', 'board', 'title')).to eq(new_title)
+            expect(json_body.keys).to match_array(board_attrs)
+            expect(json_body['title']).to eq(new_title)
           end
         end
 

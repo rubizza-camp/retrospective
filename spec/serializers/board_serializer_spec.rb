@@ -23,11 +23,15 @@ RSpec.describe BoardSerializer do
     expect(subject['created_at']).to be_present
   end
 
-  it 'makes json with updated at' do
-    expect(subject['updated_at']).to be_present
+  it 'makes json with users' do
+    expect(subject['users']).to be_present
   end
 
-  it 'makes json with comments' do
-    expect(subject['cards']).to be_present
+  it 'makes json with users_count' do
+    expect(subject['users_count']).to be_present
+  end
+
+  it 'makes json with private' do
+    expect(subject['private']).to be_present
   end
 end
