@@ -54,7 +54,6 @@ namespace :permissions do
 
         CardPermissionsUser.create!(permissions_users_data)
         counter += 1
-
       rescue StandardError => e
         puts "Failed to add #{permission.identifier} for#{card.author.email}: #{e.message}"
       end
@@ -84,6 +83,50 @@ namespace :permissions do
 
     if !Rails.env.test? && counter.positive?
       puts "#{counter} comment permissions successfully updated"
+    end
+  end
+
+  desc 'update users with missing permissions for like cards'
+  task create_missing_for_like_cards: :environment do
+    counter = 0
+
+    permission = Permission.find_by(identifier: :like_card)
+    Card.find_each do |card|
+      card.board.users.where.not(id: card.author.id).each do |user|
+        permissions_users_data = { card: card, permission: permission, user: user }
+        next if CardPermissionsUser.exists?(permissions_users_data)
+
+        CardPermissionsUser.create!(permissions_users_data)
+        counter += 1
+      rescue StandardError => e
+        puts "Failed to add #{permission.identifier} for#{user.email}: #{e.message}"
+      end
+    end
+
+    if !Rails.env.test? && counter.positive?
+      puts "#{counter} like card permissions successfully updated"
+    end
+  end
+
+  desc 'update users with missing permissions for like comments'
+  task create_missing_for_like_comments: :environment do
+    counter = 0
+
+    permission = Permission.find_by(identifier: :like_comment)
+    Comment.find_each do |comment|
+      comment.card.board.users.where.not(id: comment.author.id).each do |user|
+        permissions_users_data = { comment: comment, permission: permission, user: user }
+        next if CommentPermissionsUser.exists?(permissions_users_data)
+
+        CommentPermissionsUser.create!(permissions_users_data)
+        counter += 1
+      rescue StandardError => e
+        puts "Failed to add #{permission.identifier} for#{user.email}: #{e.message}"
+      end
+    end
+
+    if !Rails.env.test? && counter.positive?
+      puts "#{counter} like comment permissions successfully updated"
     end
   end
 end
