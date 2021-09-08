@@ -31,19 +31,27 @@ const User = ({
       return (
         <img
           src={avatar.thumb.url}
-          className={`${shouldDisplayReady && ready ? 'isReady' : ''} avatar`}
+          className={`${
+            shouldDisplayReady && ready ? avatarStyle.isReady : ''
+          } ${avatarStyle.avatar}`}
           alt={email}
           title={email}
         />
       );
     }
 
-    let classes = `${avatarStyle.avatar} ${avatarStyle.avatarText}
-      ${avatarStyle[`avatar-${id % 10}`]}`;
-    shouldDisplayReady && ready && (classes += avatarStyle.isReady);
+    const classes = [
+      avatarStyle.avatar,
+      avatarStyle.avatarText,
+      avatarStyle[`avatar-${id % 10}`]
+    ];
+
+    if (shouldDisplayReady && ready) {
+      classes.push(avatarStyle.isReady);
+    }
 
     return (
-      <div className={avatarClasses}>
+      <div className={classes.join(' ')}>
         {getInitials(userName, userSurname)}
       </div>
     );
