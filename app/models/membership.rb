@@ -4,6 +4,4 @@ class Membership < ApplicationRecord
   belongs_to :user
   belongs_to :board, counter_cache: :users_count
   validates_uniqueness_of :user_id, scope: [:board_id]
-
-  self.ignored_columns = ['role']
 end
