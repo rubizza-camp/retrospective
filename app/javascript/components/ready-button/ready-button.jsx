@@ -46,7 +46,7 @@ const ReadyButton = ({user}) => {
   }, []);
 
   const handleReadyButtonCLick = async () => {
-    const {data} = toggleReadyStatus({
+    const {data} = await toggleReadyStatus({
       variables: {
         id
       }
