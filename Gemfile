@@ -47,6 +47,8 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
 
+gem 'strong_migrations', '~> 0.7.8'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'rubocop', '~> 1.6.1', require: false
