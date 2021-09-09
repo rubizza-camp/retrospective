@@ -6,23 +6,18 @@ RSpec.describe Queries::Membership, type: :request do
   describe '.resolve' do
     let!(:author) { create(:user) }
     let!(:board) { create(:board) }
-    let!(:creatorship) do
-      create(:membership, board: board, user: author, role: 'creator')
-    end
+    let!(:membership) { create(:membership, board: board, user: author) }
 
     before { sign_in author }
 
     it 'returns membership for provided id' do
       post '/graphql', params: { query: query(board_slug: board.slug) }
 
-      json = JSON.parse(response.body)
-      data = json['data']['membership']
-
-      expect(data).to include(
+      expect(json_body.dig('data', 'membership')).to include(
         'id' => be_present,
         'board' => { 'id' => board.id.to_s },
         'user' => { 'id' => author.id.to_s },
-        'ready' => creatorship.ready
+        'ready' => membership.ready
       )
     end
   end

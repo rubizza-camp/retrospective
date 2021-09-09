@@ -16,7 +16,7 @@ class Board < ApplicationRecord
   scope :member_boards, lambda { |user|
     where.not(id: Board.select(:previous_board_id).where.not(previous_board_id: nil))
          .joins(board_permissions_users: :permission)
-         .where(permissions: { identifier: :toggle_ready_status },
+         .where(permissions: { identifier: Permission::MASTER_MEMBER_ID },
                 board_permissions_users: { user_id: user.id })
          .order(created_at: :desc)
   }
@@ -24,7 +24,7 @@ class Board < ApplicationRecord
   scope :creator_boards, lambda { |user|
     where.not(id: Board.select(:previous_board_id).where.not(previous_board_id: nil))
          .joins(board_permissions_users: :permission)
-         .where(permissions: { identifier: :destroy_board },
+         .where(permissions: { identifier: Permission::MASTER_CREATOR_ID },
                 board_permissions_users: { user_id: user.id })
          .order(created_at: :desc)
   }

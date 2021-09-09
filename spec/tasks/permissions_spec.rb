@@ -21,41 +21,6 @@ RSpec.describe 'permissions.rake' do
     let_it_be(:board) { create(:board) }
     let_it_be(:other_permission) { create(:permission) }
 
-    context 'for boards' do
-      let_it_be(:task_name) { 'permissions:create_missing_for_boards' }
-
-      context 'with creator membership' do
-        let_it_be(:creator_permission) { create(:permission, identifier: 'destroy_board') }
-        before { create(:membership, user: user, board: board, role: 'creator') }
-
-        it 'connects to missing creator permissions' do
-          run_task
-          expect(user.board_permissions).to include(creator_permission)
-        end
-
-        it 'does not connect to non creator_permissions' do
-          run_task
-          expect(user.board_permissions).not_to include(other_permission)
-        end
-      end
-
-      context 'with members' do
-        let_it_be(:member_permission) { create(:permission, identifier: 'toggle_ready_status') }
-
-        before { create(:membership, user: user, board: board, role: 'member') }
-
-        it 'connects to missing member permissions' do
-          run_task
-          expect(user.board_permissions).to include(member_permission)
-        end
-
-        it 'does not connect to non member_permissions' do
-          run_task
-          expect(user.board_permissions).not_to include(other_permission)
-        end
-      end
-    end
-
     context 'for cards' do
       let_it_be(:card_permission) { create(:permission, identifier: 'update_card') }
       let!(:card) { create(:card, author: user) }

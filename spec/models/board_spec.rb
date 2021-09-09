@@ -8,9 +8,7 @@ RSpec.describe Board, type: :model do
   let_it_be(:member) { create(:user) }
   let_it_be(:creator) { create(:user) }
   let_it_be(:membership) { create(:membership, user_id: member.id, board_id: board.id) }
-  let_it_be(:creatorship) do
-    create(:membership, user_id: creator.id, board_id: board.id, role: 'creator')
-  end
+  let_it_be(:creatorship) { create(:membership, user_id: creator.id, board_id: board.id) }
 
   context 'validations' do
     it 'is valid with valid attributes' do

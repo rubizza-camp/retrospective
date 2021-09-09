@@ -1,27 +1,6 @@
 # frozen_string_literal: true
 
 namespace :permissions do
-  desc 'update creators and members with missing permissions for boards'
-  task create_missing_for_boards: :environment do
-    Membership.creator.find_each do |membership|
-      # rubocop:disable Layout/LineLength
-      permission_ids = Permission.creator_permissions.where.not(id: BoardPermissionsUser.select(:permission_id)
-        .where(user: membership.user, board: membership.board)).ids
-      # rubocop:enable Layout/LineLength
-
-      create_board_permissions_users(permission_ids, membership) unless permission_ids.empty?
-    end
-
-    Membership.member.find_each do |membership|
-      # rubocop:disable Layout/LineLength
-      permission_ids = Permission.member_permissions.where.not(id: BoardPermissionsUser.select(:permission_id)
-        .where(user: membership.user, board: membership.board)).ids
-      # rubocop:enable Layout/LineLength
-
-      create_board_permissions_users(permission_ids, membership) unless permission_ids.empty?
-    end
-  end
-
   # rubocop:disable Metrics/MethodLength
   def create_board_permissions_users(permission_ids, membership)
     unless Rails.env.test?

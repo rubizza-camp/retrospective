@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Membership API', type: :request do
   let_it_be(:author) { create(:user) }
   let_it_be(:board) { create(:board) }
-  let_it_be(:creatorship) { create(:membership, user: author, board: board, role: 'creator') }
+  let_it_be(:creatorship) { create(:membership, user: author, board: board) }
 
   before { login_as author }
 

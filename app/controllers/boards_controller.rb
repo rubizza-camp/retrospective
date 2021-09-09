@@ -10,13 +10,15 @@ class BoardsController < ApplicationController
   def my
     authorize!
 
-    @boards_by_date = boards_by_role(:creator)
+    @boards_by_date = Board.creator_boards(current_user)
+                           .group_by { |record| record.created_at.strftime('%B, %Y') }
   end
 
   def participating
     authorize!
 
-    @boards_by_date = boards_by_role(:member)
+    @boards_by_date = (Board.member_boards(current_user) - Board.creator_boards(current_user))
+                      .group_by { |record| record.created_at.strftime('%B, %Y') }
   end
 
   def history
@@ -38,7 +40,6 @@ class BoardsController < ApplicationController
     end.reduce({}, :merge).as_json
     @action_items = ActiveModelSerializers::SerializableResource.new(@board.action_items.order(created_at: :desc)).as_json
     @action_item = ActionItem.new(board_id: @board.id)
-    @board_creators = @board.memberships.where(role: 'creator').pluck(:user_id)
     @previous_action_items = if @board.previous_board&.action_items&.any?
                                ActiveModelSerializers::SerializableResource.new(@board.previous_board.action_items).as_json
                              end
@@ -62,7 +63,7 @@ class BoardsController < ApplicationController
   def create
     authorize!
     @board = Board.new(board_params)
-    @board.memberships.build(user_id: current_user.id, role: 'creator')
+    @board.memberships.build(user_id: current_user.id)
 
     result = Boards::BuildPermissions.new(@board, current_user).call(identifiers_scope: 'creator')
 
@@ -114,13 +115,5 @@ class BoardsController < ApplicationController
 
   def set_board
     @board = Board.find_by!(slug: params[:slug])
-  end
-
-  def boards_by_role(role)
-    Board.where.not(id: Board.select(:previous_board_id).where.not(previous_board_id: nil))
-         .joins(:memberships).where(memberships: { user_id: current_user.id, role: role })
-         .includes(:users, :cards, :action_items)
-         .order(created_at: :desc)
-         .group_by { |record| record.created_at.strftime('%B, %Y') }
   end
 end

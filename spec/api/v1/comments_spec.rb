@@ -5,9 +5,6 @@ require 'rails_helper'
 describe 'Comments API', type: :request do
   let_it_be(:author) { create(:user) }
   let_it_be(:board) { create(:board) }
-  let_it_be(:creatorship) do
-    create(:membership, board: board, user: author, role: 'creator')
-  end
   let_it_be(:card) { create(:card, board: board, author: author) }
 
   describe 'POST /api/v1/comments' do
