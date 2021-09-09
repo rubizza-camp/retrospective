@@ -4,6 +4,7 @@ import style from './board-card/style.module.less';
 import './style.less';
 import {faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {actionItemsApi} from './api/action-items-api';
 
 const ActionItemsContainer = ({actionItems, actionItemsResolved}) => {
   console.log(actionItems);
@@ -72,14 +73,22 @@ const ActionItemsContainer = ({actionItems, actionItemsResolved}) => {
           <div className="item__content">{item.body}</div>
           {item.status === 'pending' && (
             <div className="item__footer">
-              <button type="button" onClick={() => alert('Complete')}>
+              <button
+                type="button"
+                onClick={() => actionItemsApi.completeActionItem(item.id)}
+              >
                 Complete
               </button>
-              <button type="button" onClick={() => alert('Move to next week')}>
+              <button
+                type="button"
+                onClick={() => actionItemsApi.moveActionItem(item.id)}
+              >
                 Move to next week
                 <span>{generateChevrons()}</span>
               </button>
-              <span onClick={() => alert('Discard task')}>Discard task</span>
+              <span onClick={() => actionItemsApi.closeActionItem(item.id)}>
+                Discard task
+              </span>
             </div>
           )}
         </div>
