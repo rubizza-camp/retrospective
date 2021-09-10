@@ -2,24 +2,50 @@ import {api} from './api';
 
 export const boardApi = {
   async getBoards() {
-    const response = await api.get(`boards/my`);
-    return response.data;
+    try {
+      const {data} = await api.get(`boards/my`);
+      return data;
+    } catch (error) {
+      alert(error);
+    }
   },
   async getBoard(boardSlug) {
-    const response = await api.get(`boards/${boardSlug}`);
-    return response.data.data.board;
+    try {
+      const {
+        data: {
+          data: {board}
+        }
+      } = await api.get(`boards/${boardSlug}`);
+      return board;
+    } catch (error) {
+      alert(error);
+    }
   },
 
   async deleteBoard(boardSlug) {
-    await api.delete(`boards/${boardSlug}`, {}, {});
+    try {
+      await api.delete(`boards/${boardSlug}`, {}, {});
+      return await this.getBoards();
+    } catch (error) {
+      alert(error);
+    }
   },
 
   async continueBoard(boardSlug) {
-    await api.post(`boards/${boardSlug}/continue`);
+    try {
+      await api.post(`boards/${boardSlug}/continue`);
+      return await this.getBoards();
+    } catch (error) {
+      alert(error);
+    }
   },
 
   async historyBoard(boardSlug) {
-    const response = await api.get(`boards/${boardSlug}/history`);
-    return response.data;
+    try {
+      const {data} = await api.get(`boards/${boardSlug}/history`);
+      return data;
+    } catch (error) {
+      alert(error);
+    }
   }
 };

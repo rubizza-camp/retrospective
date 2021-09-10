@@ -35,26 +35,20 @@ const User = ({
             shouldDisplayReady && ready ? avatarStyle.isReady : ''
           } ${avatarStyle.avatar}`}
           alt={email}
-          title={email}
         />
       );
     }
 
-    const classes = [
-      avatarStyle.avatar,
-      avatarStyle.avatarText,
-      avatarStyle[`avatar-${id % 10}`]
-    ];
+    const classes =
+      shouldDisplayReady && ready
+        ? `${avatarStyle.avatar} ${avatarStyle.avatarText} ${
+            avatarStyle[`avatar-${id % 10}`]
+          } ${avatarStyle.isReady}`
+        : `${avatarStyle.avatar} ${avatarStyle.avatarText} ${
+            avatarStyle[`avatar-${id % 10}`]
+          }`;
 
-    if (shouldDisplayReady && ready) {
-      classes.push(avatarStyle.isReady);
-    }
-
-    return (
-      <div className={classes.join(' ')}>
-        {getInitials(userName, userSurname)}
-      </div>
-    );
+    return <div className={classes}>{getInitials(userName, userSurname)}</div>;
   };
 
   return (

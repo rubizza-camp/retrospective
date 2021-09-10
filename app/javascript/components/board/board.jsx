@@ -1,82 +1,75 @@
-import {formatRelative, subDays} from 'date-fns';
 import React, {useState} from 'react';
 import arrow from '../../images/undo_13';
-import {getInitialsTitleBoard} from '../../utils/helpers';
-import {locale} from '../../utils/format-date';
-import style from './style.module.less';
+import {getDate} from '../../utils/get-date';
+import {boardApi} from '../api/boards-api';
+import {BoardAvatar} from './board-avatar';
 import {GroupIcons} from './group-icons/group-icons';
 import {MenuIcon} from './menu-icon/menu-icon';
+import style from './style.module.less';
 
 const Board = ({
   board,
   setBoards,
-  setModal,
+  setIsModal,
   setHistoryBoards,
   historyBoards,
   users
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
-  const renderBoardAvatar = (boardAvatar, title) => {
-    if (boardAvatar) {
-      return (
-        <img src={boardAvatar} className={style.ava} alt="ava" title={title} />
-      );
-    }
+  const continueBoard = async () => {
+    const boards = await boardApi.continueBoard(board.slug);
+    setBoards(boards);
+    setIsOpenMenu(false);
+  };
 
-    const classes = `${style.ava} ${style.avatarText} ${
-      style[`avatar${board.id % 10}`]
-    }`;
+  const historyBoard = async () => {
+    const boards = await boardApi.historyBoard(board.slug);
+    setIsOpenMenu(false);
+    setHistoryBoards(boards);
+    setIsModal(true);
+  };
 
-    return <div className={classes}>{getInitialsTitleBoard(title)}</div>;
+  const deleteBoard = async () => {
+    const boards = await boardApi.deleteBoard(board.slug);
+    setBoards(boards);
+    setIsOpenMenu(false);
+  };
+
+  const onClickHandler = (event) => {
+    event.stopPropagation();
+    setIsOpenMenu(false);
   };
 
   const backGroundArrow = {
     backgroundImage: `url(${arrow})`
   };
 
-  let numberСhanges = board.title.split('#')[1];
-  if (!numberСhanges) numberСhanges = 1;
-
   return (
-    <div
-      className={style.board}
-      onClick={(event) => {
-        event.stopPropagation();
-        setIsOpenMenu(false);
-      }}
-    >
+    <div className={style.board} onClick={onClickHandler}>
       <div className={style.header}>
-        {renderBoardAvatar('', board.title)}
+        <BoardAvatar id={board.id} boardAvatar="" title={board.title} />
         <span className={style.title}>
           <a href={`/boards/${board.slug}`}>{board.title}</a>
         </span>
         {!historyBoards.length && (
           <MenuIcon
-            historyBoards={historyBoards}
-            setHistoryBoards={setHistoryBoards}
-            setModal={setModal}
-            setBoards={setBoards}
+            continueBoard={continueBoard}
+            deleteBoard={deleteBoard}
+            historyBoard={historyBoard}
             isOpenMenu={isOpenMenu}
             setIsOpenMenu={setIsOpenMenu}
-            boardSlug={board.slug}
           />
         )}
       </div>
       <div className={style.footer}>
         <span className={style.textDate}>
           <div style={backGroundArrow} className={style.arrowIcon}>
-            <span>{numberСhanges}</span>
+            <span>{board.boardsCount}</span>
           </div>
-          {formatRelative(
-            subDays(new Date(board.created_at || board.createdAt), 0),
-            new Date(),
-            {
-              locale
-            }
-          )}
+          {getDate(board.createdAt)}
         </span>
-        <GroupIcons users={users} usersCount={board.usersCount} />
+        <GroupIcons users={users} totalUsersCount={board.usersCount} />
       </div>
     </div>
   );

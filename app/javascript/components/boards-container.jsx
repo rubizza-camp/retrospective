@@ -7,7 +7,7 @@ import './style.less';
 const BoardsContainer = () => {
   const [startBoards, setStartBoards] = useState([]);
   const [historyBoards, setHistoryBoards] = useState([]);
-  const [modal, setModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
 
   useEffect(() => {
     boardApi.getBoards().then((response) => {
@@ -15,40 +15,36 @@ const BoardsContainer = () => {
     });
   }, []);
 
-  const boardElement = startBoards.map((board) => (
-    <Board
-      key={board.id}
-      setModal={setModal}
-      historyBoards={historyBoards}
-      setBoards={setStartBoards}
-      setHistoryBoards={setHistoryBoards}
-      board={board}
-      users={board.users}
-    />
-  ));
-
-  const historyBoardElement = historyBoards.map((board) => (
-    <Board
-      key={board.id}
-      setModal={setModal}
-      historyBoards={historyBoards}
-      setBoards={setStartBoards}
-      setHistoryBoards={setHistoryBoards}
-      board={board}
-      users={board.users}
-    />
-  ));
-
   return (
     <div className="board-container">
       <ModalWindow
-        visible={modal}
-        setVisible={setModal}
+        visible={isModal}
+        setVisible={setIsModal}
         setHistoryBoards={setHistoryBoards}
       >
-        {historyBoardElement}
+        {historyBoards.map((board) => (
+          <Board
+            key={board.id}
+            setIsModal={setIsModal}
+            historyBoards={historyBoards}
+            setBoards={setStartBoards}
+            setHistoryBoards={setHistoryBoards}
+            board={board}
+            users={board.users}
+          />
+        ))}
       </ModalWindow>
-      {boardElement}
+      {startBoards.map((board) => (
+        <Board
+          key={board.id}
+          setIsModal={setIsModal}
+          historyBoards={historyBoards}
+          setBoards={setStartBoards}
+          setHistoryBoards={setHistoryBoards}
+          board={board}
+          users={board.users}
+        />
+      ))}
     </div>
   );
 };
