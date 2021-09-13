@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :action_item do
     sequence(:body) { |n| "Test Action Item#{n}" }
+    status { :pending }
     association :board
     association :assignee, factory: :user
     association :author, factory: :user, email: Faker::Internet.email
