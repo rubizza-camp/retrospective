@@ -34,4 +34,8 @@ RSpec.describe BoardSerializer do
   it 'makes json with private' do
     expect(subject['private']).to be_present
   end
+
+  it 'makes json with boards_count' do
+    expect(subject['boards_count']).to be_present
+  end
 end

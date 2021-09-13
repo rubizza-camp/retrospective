@@ -3,7 +3,7 @@
 class BoardSerializer < ActiveModel::Serializer
   USERS_LIMIT = 4
 
-  attributes :id, :title, :slug, :created_at, :users_count, :private
+  attributes :id, :title, :slug, :created_at, :users_count, :private, :boards_count
   attribute :users, if: :include_users?
 
   def users
@@ -15,7 +15,7 @@ class BoardSerializer < ActiveModel::Serializer
   end
 
   def boards_count
-    Boards::GetHistoryOfBoard.new(id).call.count
+    Boards::GetHistoryOfBoard.new(object.id).call.count
   end
 
   def include_users?
