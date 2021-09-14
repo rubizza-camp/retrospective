@@ -62,13 +62,10 @@ class BoardsController < ApplicationController
 
   def create
     authorize!
-    @board = Board.new(board_params)
-    @board.memberships.build(user_id: current_user.id)
 
-    result = Boards::BuildPermissions.new(@board, current_user).call(identifiers_scope: 'creator')
-
-    if result.success? && @board.save
-      redirect_to @board, notice: 'Board was successfully created.'
+    result = Boards::Create.new(current_user).call(board_params)
+    if result.success?
+      redirect_to result.value!, notice: 'Board was successfully created.'
     else
       flash[:alert] = result.failure
       render :new

@@ -60,17 +60,13 @@ module API
       end
 
       def create
-        @board = Board.new(board_params)
-        authorize! @board, to: :create?
+        authorize!
 
-        @board.memberships.build(user_id: current_user.id)
-        result = Boards::BuildPermissions.new(@board, current_user)
-                                         .call(identifiers_scope: 'creator')
-
-        if result.success? && @board.save
+        result = Boards::Create.new(current_user).call(board_params)
+        if result.success?
           render json: result.value!, status: 201
         else
-          render_json_error(result.failure || @board.errors.full_messages)
+          render_json_error(result.failure)
         end
       end
 

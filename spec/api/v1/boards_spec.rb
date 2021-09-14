@@ -134,7 +134,8 @@ RSpec.describe API::V1::BoardsController, type: :controller do
       it { is_expected.to have_http_status(422) }
 
       it 'returns errors' do
-        expect(json_body.dig('errors', 'fullMessages')).to eq(["Title can't be blank"])
+        expect(json_body.dig('errors', 'fullMessages'))
+          .to eq("Validation failed: Title can't be blank")
       end
     end
   end

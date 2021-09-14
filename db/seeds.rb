@@ -58,47 +58,40 @@ errors = []
 end
 puts errors
 
-board1 = Board.find_or_create_by(title: 'TestUser1_RetroBoard')
-board2 = Board.find_or_create_by(title: 'TestUser2_RetroBoard')
-board3 = Board.find_or_create_by(title: 'TestUser3_RetroBoard')
-board4 = Board.find_or_create_by(title: 'TestUser4_RetroBoard')
-board5 = Board.find_or_create_by(title: 'TestUser5_RetroBoard')
+# Create boards
+board_params = [{ title: 'TestUser1_RetroBoard', author: user1 },
+                { title: 'TestUser2_RetroBoard', author: user2 },
+                { title: 'TestUser3_RetroBoard', author: user2 },
+                { title: 'TestUser4_RetroBoard', author: user2 },
+                { title: 'TestUser5_RetroBoard', author: user2 }]
+board_params.each do |params|
+  next if Board.where(title: params[:title]).exists?
 
-# Create creator's board permissions
-# TODO Move creating memeberships and permissions to the operation Boards::Create
-Membership.create([
-                    { user_id: user1.id, board_id: board1.id, ready: false },
-                    { user_id: user2.id, board_id: board2.id, ready: false },
-                    { user_id: user2.id, board_id: board3.id, ready: false },
-                    { user_id: user2.id, board_id: board4.id, ready: false },
-                    { user_id: user2.id, board_id: board5.id, ready: false }
-                  ])
-
-creator_params = [{ board: board1, creator: user1 }, { board: board2, creator: user2 },
-                  { board: board3, creator: user2 }, { board: board4, creator: user2 }]
-creator_params.each do |params|
-  board = params[:board]
-  Boards::BuildPermissions.new(board, params[:creator]).call(identifiers_scope: 'creator')
-  board.save
+  Boards::Create.new(params.delete(:author)).call(params)
 end
 
 # Invite users to board1
+board1 = Board.find_by(title: 'TestUser1_RetroBoard')
 [user2, user3, user4, user5, user6, user7, user8, user9].each do |user|
-  Boards::InviteUsers.new(board1.reload, User.where(id: user.id)).call
+  Boards::InviteUsers.new(board1, User.where(id: user.id)).call
 end
 
 # Invite users to board2
+board2 = Board.find_by(title: 'TestUser2_RetroBoard')
 [user1, user3, user4, user5, user6].each do |user|
-  Boards::InviteUsers.new(board2.reload, User.where(id: user.id)).call
+  Boards::InviteUsers.new(board2, User.where(id: user.id)).call
 end
 
 # Invite users to board3
+board3 = Board.find_by(title: 'TestUser3_RetroBoard')
 [user1, user3, user4, user6].each do |user|
-  Boards::InviteUsers.new(board3.reload, User.where(id: user.id)).call
+  Boards::InviteUsers.new(board3, User.where(id: user.id)).call
 end
 
 # Create cards
-cards_params = [{ kind: 'mad', body: 'user1 is very mad', author_id: user1.id, board_id: board1.reload.id, author: user1 },
+board1 = Board.find_by(title: 'TestUser1_RetroBoard')
+board2 = Board.find_by(title: 'TestUser2_RetroBoard')
+cards_params = [{ kind: 'mad', body: 'user1 is very mad', author_id: user1.id, board_id: board1.id, author: user1 },
                 { kind: 'sad', body: 'user1 is very sad', author_id: user1.id, board_id: board1.id, author: user1 },
                 { kind: 'glad', body: 'user1 is very glad #1', author_id: user1.id, board_id: board1.id, author: user1 },
                 { kind: 'glad', body: 'user1 is very glad #2', author_id: user1.id, board_id: board1.id, author: user1 },
@@ -106,7 +99,7 @@ cards_params = [{ kind: 'mad', body: 'user1 is very mad', author_id: user1.id, b
                 { kind: 'mad', body: 'user3 is very mad', author_id: user3.id, board_id: board1.id, author: user3 },
                 { kind: 'mad', body: 'user4 is very mad', author_id: user4.id, board_id: board1.id, author: user4 },
                 { kind: 'mad', body: 'user5 is very mad', author_id: user5.id, board_id: board1.id, author: user5 },
-                { kind: 'mad', body: 'user3 is very mad', author_id: user3.id, board_id: board2.reload.id, author: user3 },
+                { kind: 'mad', body: 'user3 is very mad', author_id: user3.id, board_id: board2.id, author: user3 },
                 { kind: 'sad', body: 'user3 is very sad #1', author_id: user3.id, board_id: board2.id, author: user3 },
                 { kind: 'sad', body: 'user3 is very sad #2', author_id: user3.id, board_id: board2.id, author: user3 }]
 cards_params.each do |params|
@@ -115,6 +108,8 @@ cards_params.each do |params|
   Boards::Cards::Create.new(params.delete(:author)).call(params)
 end
 
+# Create action items
+board1 = Board.find_by(title: 'TestUser1_RetroBoard')
 ActionItem.create(body: 'issue should be fixed', board_id: board1.id, author_id: user1.id) unless ActionItem.where(body: 'issue should be fixed', board_id: board1.id, author_id: user1.id).exists?
 ActionItem.create(body: 'meetings should be held', board_id: board1.id, author_id: user1.id) unless ActionItem.where(body: 'meetings should be held', board_id: board1.id, author_id: user1.id).exists?
 ActionItem.create(body: 'actions should be taken', board_id: board1.id, author_id: user1.id) unless ActionItem.where(body: 'actions should be taken', board_id: board1.id, author_id: user1.id).exists?
