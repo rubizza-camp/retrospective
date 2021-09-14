@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe API::V1::BoardsController, type: :controller do
   let_it_be(:author) { create(:user) }
   let_it_be(:board1) { create(:board) }
-  let_it_be(:board_attrs) { %w[title id slug created_at users_count private] }
+  let_it_be(:board_attrs) { %w[title id slug created_at users_count private boards_count] }
 
   before { login_as author }
 
