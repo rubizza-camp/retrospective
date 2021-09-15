@@ -44,26 +44,14 @@ const Likes = ({type, likes, id, isCard}) => {
     }
   };
 
-  const handleMouseDown = () => {
+  const handleMouseClick = () => {
     addLike();
-    const timer = setInterval(() => addLike(), 300);
-    setTimer(timer);
-  };
-
-  const handleMouseUp = (currentTimer) => {
-    clearInterval(currentTimer);
-  };
-
-  const handleMouseLeave = (currentTimer) => {
-    clearInterval(currentTimer);
   };
 
   return (
     <div
       className={style.likesWrapper}
-      onMouseDown={handleMouseDown}
-      onMouseUp={() => handleMouseUp(timer)}
-      onMouseLeave={() => handleMouseLeave(timer)}
+      onClick={handleMouseClick}
     >
       <div>{EMOJIES[type] || EMOJIES.universal}</div>
       <span> {likes} </span>
