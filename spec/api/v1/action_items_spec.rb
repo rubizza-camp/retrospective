@@ -2,9 +2,18 @@
 
 require 'rails_helper'
 
-describe 'Action Item API', type: :request do
+RSpec.describe API::V1::ActionItemsController, type: :controller do
   let_it_be(:author) { create(:user) }
+  let_it_be(:assignee) { create(:user) }
   let_it_be(:board) { create(:board) }
+  let_it_be(:pending_action_item) { create(:action_item, author: author, assignee: assignee) }
+  let_it_be(:resolved_action_item) do
+    create(:action_item, status: :done, author: author, assignee: assignee)
+  end
+
+  let_it_be(:item_attrs) do
+    %w[id body times_moved status author assignee_avatar_url]
+  end
 
   before do
     login_as author
@@ -16,30 +25,41 @@ describe 'Action Item API', type: :request do
     allow(author).to receive(:allowed?).with('reopen_action_items', board).and_return(true)
   end
 
+  describe 'GET /api/v1/action_items/index' do
+    before { login_as assignee }
+
+    subject(:response) { get :index }
+
+    it { is_expected.to have_http_status(:ok) }
+
+    it 'returns action_items' do
+      expect(json_body.size).to eq(2)
+      expect(json_body.first.keys).to match_array(item_attrs)
+    end
+
+    it 'should be sorted' do
+      expect(json_body.first['status']).to eq('pending')
+      expect(json_body.second['status']).to eq('done')
+    end
+  end
+
   describe 'POST /api/v1/action_items' do
-    let(:request) do
-      post '/api/v1/action_items', params: { body: 'test item', board_slug: board.slug,
-                                             assignee_id: author.id }
+    subject(:response) do
+      post :create, params: { body: 'test item', board_slug: board.slug, assignee_id: author.id }
     end
 
-    it 'return 200' do
-      request
-
-      expect(response.status).to eq(200)
-    end
+    it { is_expected.to have_http_status(:ok) }
 
     it 'return created action item' do
-      request
-
-      expect(json_body.dig('data', 'actionItem')).to include('body' => 'test item')
+      expect(json_body['body']).to eq('test item')
     end
 
     it 'create action item in db' do
-      expect { request }.to change { ActionItem.count }.by(1)
+      expect { subject }.to change { ActionItem.count }.by(1)
     end
 
     it 'broadcast created item' do
-      expect { request }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
+      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
                                                       .with(start_with('{"data":{"actionItem":'))
     end
   end
@@ -48,167 +68,90 @@ describe 'Action Item API', type: :request do
     let_it_be(:new_assignee) { create(:user) }
     let_it_be(:action_item) { create(:action_item, board: board) }
 
-    let(:request) do
-      put "/api/v1/action_items/#{action_item.id}", params: { body: 'new text',
-                                                              assignee_id: new_assignee.id }
+    subject(:response) do
+      put :update, params: { id: action_item.id, body: 'new text', assignee_id: new_assignee.id }
     end
 
-    it 'return 200' do
-      request
-
-      expect(response.status).to eq(200)
-    end
+    it { is_expected.to have_http_status(:ok) }
 
     it 'return updated action item' do
-      request
-      handler = serialize_resource(action_item.reload)
-
-      expect(json_body).to eq(JSON.parse(handler))
+      expect(json_body['body']).to eq('new text')
     end
 
     it 'broadcast updated item' do
-      handler = serialize_resource(action_item)
-
-      expect { request }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
-                                                      .with(handler)
+      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
     end
   end
 
   describe 'DELETE /api/v1/action_items/:id' do
     let_it_be(:action_item) { create(:action_item, board: board) }
 
-    let(:request) { delete "/api/v1/action_items/#{action_item.id}" }
+    subject(:response) { delete :destroy, params: { id: action_item.id } }
 
-    it 'return 200' do
-      request
-
-      expect(response.status).to eq(200)
-    end
-
-    it 'return deleted action item' do
-      request
-      handler = serialize_resource(action_item)
-
-      expect(json_body).to eq(JSON.parse(handler))
-    end
+    it { is_expected.to have_http_status(:ok) }
 
     it 'delete action item in db' do
-      expect { request }.to change { ActionItem.count }.by(-1)
+      expect { subject }.to change { ActionItem.count }.by(-1)
     end
 
     it 'broadcast deleted item' do
-      handler = serialize_resource(action_item)
-
-      expect { request }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
-                                                      .with(handler)
+      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
     end
   end
 
   describe 'PUT /api/v1/action_items/:id/close' do
     let_it_be(:action_item) { create(:action_item, board: board) }
 
-    let(:request) do
-      put "/api/v1/action_items/#{action_item.id}/close", params: { board_slug: board.slug }
-    end
+    subject(:response) { put :close, params: { id: action_item.id, board_slug: board.slug } }
 
-    it 'return 200' do
-      request
-
-      expect(response.status).to eq(200)
-    end
+    it { is_expected.to have_http_status(:ok) }
 
     it 'action item became closed' do
-      request
-
-      expect(action_item.reload).to have_attributes(
-        'status' => 'closed'
-      )
+      expect { subject }.to change { action_item.reload.status }.from('pending').to('closed')
     end
 
     it 'return closed action item' do
-      request
-      handler = serialize_resource(action_item.reload)
-
-      expect(json_body).to eq(JSON.parse(handler))
+      expect(json_body.keys).to match_array(item_attrs)
     end
 
     it 'broadcast closed item' do
-      handler = serialize_resource(action_item)
-
-      expect { request }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
-                                                      .with(handler)
+      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
     end
   end
 
   describe 'PUT /api/v1/action_items/:id/compete' do
     let_it_be(:action_item) { create(:action_item, board: board) }
 
-    let(:request) do
-      put "/api/v1/action_items/#{action_item.id}/complete", params: { board_slug: board.slug }
-    end
+    subject(:response) { put :complete, params: { id: action_item.id, board_slug: board.slug } }
 
-    it 'return 200' do
-      request
-
-      expect(response.status).to eq(200)
-    end
+    it { is_expected.to have_http_status(:ok) }
 
     it 'action item became competed' do
-      request
-
-      expect(action_item.reload).to have_attributes(
-        'status' => 'done'
-      )
+      expect { subject }.to change { action_item.reload.status }.from('pending').to('done')
     end
 
     it 'return completed action item' do
-      request
-      handler = serialize_resource(action_item.reload)
-
-      expect(json_body).to eq(JSON.parse(handler))
+      expect(json_body.keys).to match_array(item_attrs)
     end
 
     it 'broadcast completed item' do
-      handler = serialize_resource(action_item)
-
-      expect { request }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
-                                                      .with(handler)
+      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
     end
   end
 
   describe 'PUT /api/v1/action_items/:id/reopen' do
     let_it_be(:action_item) { create(:action_item, board: board, status: 'done') }
 
-    let(:request) do
-      put "/api/v1/action_items/#{action_item.id}/reopen", params: { board_slug: board.slug }
-    end
+    subject(:response) { put :reopen, params: { id: action_item.id, board_slug: board.slug } }
 
-    it 'return 200' do
-      request
-
-      expect(response.status).to eq(200)
-    end
+    it { is_expected.to have_http_status(:ok) }
 
     it 'action item became reopen' do
-      request
-
-      expect(action_item.reload).to have_attributes(
-        'status' => 'pending'
-      )
+      expect { subject }.to change { action_item.reload.status }.from('done').to('pending')
     end
 
     it 'return reopened action item' do
-      request
-      handler = serialize_resource(action_item.reload)
-
-      expect(json_body).to eq(JSON.parse(handler))
-    end
-
-    it 'broadcast reopened item' do
-      handler = serialize_resource(action_item)
-
-      expect { request }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
-                                                      .with(handler)
+      expect(json_body.keys).to match_array(item_attrs)
     end
   end
 
@@ -216,45 +159,20 @@ describe 'Action Item API', type: :request do
     let_it_be(:new_board) { create(:board) }
     let_it_be(:action_item) { create(:action_item, board: board) }
 
-    let(:request) do
-      put "/api/v1/action_items/#{action_item.id}/move", params: { board_slug: new_board.slug }
-    end
+    subject(:response) { put :move, params: { id: action_item.id, board_slug: new_board.slug } }
+
     before do
-      login_as author
       allow(author).to receive(:allowed?).with('move_action_items', new_board).and_return(true)
     end
 
-    # before do
-    #   put "/api/v1/action_items/#{action_item.id}/move", params: { board_slug: new_board.slug }
-    # end
-
-    it 'return 200' do
-      request
-
-      expect(response.status).to eq(200)
-    end
+    it { is_expected.to have_http_status(:ok) }
 
     it 'action item became move' do
-      request
-
-      expect(action_item.reload).to have_attributes(
-        'board_id' => new_board.id,
-        'times_moved' => 1
-      )
+      expect { subject }.to change { action_item.reload.times_moved }.by(1)
     end
 
     it 'return moved action item' do
-      request
-      handler = serialize_resource(action_item.reload)
-
-      expect(json_body).to eq(JSON.parse(handler))
-    end
-
-    it 'broadcast moved item' do
-      handler = serialize_resource(action_item)
-
-      expect { request }.to have_broadcasted_to(new_board).from_channel(ActionItemsChannel)
-                                                          .with(handler)
+      expect(json_body.keys).to match_array(item_attrs)
     end
   end
 end
