@@ -2,17 +2,17 @@ import React from 'react';
 import {actionItemsApi} from '../api/action-items-api';
 import style from './style.module.less';
 
-export const ActionButton = ({id, type, title}) => {
-  const onClickHandler = () => {
+export const ActionButton = ({id, type, title, setActionItems}) => {
+  const onClickHandler = async () => {
     switch (type) {
       case 'close':
-        actionItemsApi.closeActionItem(id);
+        setActionItems(await actionItemsApi.closeActionItem(id));
         break;
       case 'complete':
-        actionItemsApi.completeActionItem(id);
+        setActionItems(await actionItemsApi.completeActionItem(id));
         break;
       case 'reopen':
-        actionItemsApi.reopenActionItem(id);
+        setActionItems(await actionItemsApi.reopenActionItem(id));
         break;
     }
   };
