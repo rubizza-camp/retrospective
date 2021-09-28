@@ -3,7 +3,7 @@
   <div class='box'>
     <h1>Editing Board</h1>
   </div>
-  <div class='box'>
+  <div class='box is-relative'>
     <% if allowed_to?(:update?, @board) %>
       <%= render 'form', board: @board %>
     <% end %>

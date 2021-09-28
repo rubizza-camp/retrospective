@@ -95,7 +95,7 @@ module API
       private
 
       def board_params
-        params.require(:board).permit(:title, :private, column_names: [])
+        params.require(:board).permit(:title, :private, column_names: [], column_emojis: [])
       end
     end
   end
