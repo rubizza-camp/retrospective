@@ -23,10 +23,6 @@ RSpec.describe ActionItemSerializer do
     expect(subject).to include '"status":"pending"'
   end
 
-  it 'makes json with status' do
-    expect(subject['assignee_avatar_url']).to be_present
-  end
-
   it 'makes json with author' do
     expect(subject['author']).to be_present
   end
