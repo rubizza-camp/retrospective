@@ -1,30 +1,51 @@
 import {api} from './api';
 
 export const boardApi = {
-  getBoards() {
-    api.get('boards/my').then((response) => console.log(response.data));
+  async getBoards() {
+    try {
+      const {data} = await api.get(`boards/my`);
+      return data;
+    } catch (error) {
+      alert(error);
+    }
+  },
+  async getBoard(boardSlug) {
+    try {
+      const {
+        data: {
+          data: {board}
+        }
+      } = await api.get(`boards/${boardSlug}`);
+      return board;
+    } catch (error) {
+      alert(error);
+    }
   },
 
-  deleteBoard(boardSlug) {
-    api
-      .delete(`boards/${boardSlug}`, {}, {})
-      .then((response) => console.log(response));
-  },
-  showBoard(boardSlug) {
-    api
-      .get(`boards/${boardSlug}`, {}, {})
-      .then((response) => console.log(response.data));
+  async deleteBoard(boardSlug) {
+    try {
+      await api.delete(`boards/${boardSlug}`, {}, {});
+      return await this.getBoards();
+    } catch (error) {
+      alert(error);
+    }
   },
 
-  continueBoard(boardSlug) {
-    api
-      .post(`boards/${boardSlug}/continue`)
-      .then((response) => console.log(response.data));
+  async continueBoard(boardSlug) {
+    try {
+      await api.post(`boards/${boardSlug}/continue`);
+      return await this.getBoards();
+    } catch (error) {
+      alert(error);
+    }
   },
 
-  historyBoard(boardSlug) {
-    api
-      .get(`boards/${boardSlug}/history`)
-      .then((response) => console.log(response.data));
+  async historyBoard(boardSlug) {
+    try {
+      const {data} = await api.get(`boards/${boardSlug}/history`);
+      return data;
+    } catch (error) {
+      alert(error);
+    }
   }
 };
