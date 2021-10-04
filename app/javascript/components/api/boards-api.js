@@ -6,7 +6,23 @@ export const boardApi = {
       const {data} = await api.get(`boards/my`);
       return data;
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+      } else {
+        alert('Something went wrong, try again.');
+      }
+    }
+  },
+  async getBoardsWhereIAm() {
+    try {
+      const {data} = await api.get(`boards/participating`);
+      return data;
+    } catch (error) {
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+      } else {
+        alert('Something went wrong, try again.');
+      }
     }
   },
   async getBoard(boardSlug) {
@@ -18,7 +34,11 @@ export const boardApi = {
       } = await api.get(`boards/${boardSlug}`);
       return board;
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+      } else {
+        alert('Something went wrong, try again.');
+      }
     }
   },
 
@@ -27,7 +47,12 @@ export const boardApi = {
       await api.delete(`boards/${boardSlug}`, {}, {});
       return await this.getBoards();
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+        return this.getBoards();
+      }
+
+      alert('Something went wrong, try again.');
     }
   },
 
@@ -36,7 +61,12 @@ export const boardApi = {
       await api.post(`boards/${boardSlug}/continue`);
       return await this.getBoards();
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+        return this.getBoards();
+      }
+
+      alert('Something went wrong, try again.');
     }
   },
 
@@ -45,7 +75,12 @@ export const boardApi = {
       const {data} = await api.get(`boards/${boardSlug}/history`);
       return data;
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+        return this.getBoards();
+      }
+
+      alert('Something went wrong, try again.');
     }
   }
 };

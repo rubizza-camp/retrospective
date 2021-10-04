@@ -10,7 +10,7 @@
       <%= image_tag 'icon-plus.svg', class: 'inline-icon'%>
       Create new board
     </a>
-      <%= react_component('boards-container')%>
+      <%= react_component('boards-container', {role: 'creator'})%>
     <% if @boards_by_date.length > 3%>
       <div class='load-more-boards-container'>
         <%= image_tag 'chevron-down.svg', class: 'load-more-boards-button'%>
