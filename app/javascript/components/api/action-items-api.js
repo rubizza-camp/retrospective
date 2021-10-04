@@ -6,7 +6,11 @@ export const actionItemsApi = {
       const {data} = await api.get(`action_items`);
       return data;
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+      } else {
+        alert('Something went wrong, try again.');
+      }
     }
   },
 
@@ -15,7 +19,12 @@ export const actionItemsApi = {
       await api.put(`action_items/${id}/close`);
       return this.getActionItems();
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+        return this.getActionItems();
+      }
+
+      alert('Something went wrong, try again.');
     }
   },
 
@@ -24,7 +33,12 @@ export const actionItemsApi = {
       await api.put(`action_items/${id}/complete`);
       return this.getActionItems();
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+        return this.getActionItems();
+      }
+
+      alert('Something went wrong, try again.');
     }
   },
 
@@ -33,7 +47,12 @@ export const actionItemsApi = {
       await api.put(`action_items/${id}/reopen`);
       return this.getActionItems();
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+        return this.getActionItems();
+      }
+
+      alert('Something went wrong, try again.');
     }
   },
 
@@ -42,7 +61,12 @@ export const actionItemsApi = {
       await api.put(`action_items/${id}/move`);
       return this.getActionItems();
     } catch (error) {
-      alert(error);
+      if (error.response) {
+        alert(error.response.data.errors.fullMessages);
+        return this.getActionItems();
+      }
+
+      alert('Something went wrong, try again.');
     }
   }
 };

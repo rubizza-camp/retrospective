@@ -16,7 +16,7 @@ export const UsersAvatars = ({users}) => {
               key={user.id}
               src={user.avatar.url}
               className={style.combatant}
-              alt="avaatar"
+              alt="avatar"
             />
           );
         }

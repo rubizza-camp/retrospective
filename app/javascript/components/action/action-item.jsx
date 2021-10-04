@@ -26,7 +26,6 @@ export const ActionItem = ({item, setActionItems}) => {
             type="complete"
             title="Complete"
           />
-
           <ActionButton
             id={item.id}
             setActionItems={setActionItems}
