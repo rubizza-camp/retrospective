@@ -31,7 +31,7 @@ const Board = ({
   };
 
   const deleteBoard = async () => {
-    const boards = await boardApi.deleteBoard(board.slug);
+    const boards = await boardApi.deleteBoard();
     setBoards(boards);
     setIsOpenMenu(false);
   };

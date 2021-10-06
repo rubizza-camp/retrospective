@@ -6,8 +6,15 @@ import {UsersAvatars} from './users-avatars';
 
 export const ActionItem = ({item, setActionItems}) => {
   const users = [item.author, item.assignee];
+
+  const itemStyle = {
+    pending: `${style.pending}`,
+    done: `${style.done}`,
+    closed: `${style.closed}`
+  };
+
   return (
-    <div className={style.item}>
+    <div className={`${itemStyle[item.status]} ${style.item}`}>
       <div className={style.header}>
         <div className={style.avatars}>
           <UsersAvatars users={users} />
