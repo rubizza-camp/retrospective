@@ -1,7 +1,6 @@
 <% content_for :scripts do %>
   <%= javascript_pack_tag 'application' %>
   <%= stylesheet_pack_tag 'application' %>
-
 <% end %>
 
 <div class='header'>
@@ -42,7 +41,7 @@
 
 <%= react_component('card-table', {
   action_items: @action_items,
-  board: @board.as_json,
+  column_emojis: @board.column_emojis,
   cards_by_type: @cards_by_type,
   init_prev_items: @previous_action_items || [],
   user: current_user.as_json,

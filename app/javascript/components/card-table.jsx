@@ -11,14 +11,13 @@ import {BoardColumnHidden} from './board-column-hidden';
 const CardTable = ({
   actionItems,
   cardsByType,
+  columnEmojis,
   initPrevItems,
   user,
   userIsCreator,
   users,
   previousBoardSlug
 }) => {
-  const EMOJIES = ['😡', '😔', '🤗'];
-
   const [isPreviousItemsOpen, setIsPreviousItemsOpen] = useState(
     initPrevItems.length > 0
   );
@@ -45,7 +44,7 @@ const CardTable = ({
           <CardColumn
             key={columnName}
             kind={columnName}
-            smile={EMOJIES[index]}
+            smile={columnEmojis[index]}
             initCards={cards}
           />
         </div>

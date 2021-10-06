@@ -2,6 +2,7 @@
 
 fragment BoardCard on BoardCard {
 column_names
+column_emojis
 created_at
 id
 previous_board_id

@@ -1,3 +1,8 @@
+<% content_for :scripts do %>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+<% end %>
+
 <%= form_with(model: board, local: true) do |form| %>
   <% if board.errors.any? %>
     <div id="error_explanation">
@@ -18,12 +23,35 @@
     <%= form.label(:private, 'Make board private')%>
   </div>
 
-  <% @board.column_names.each_with_index do |name, index| %>
-    <div class='field'>
-      <%= form.label(:private, "The #{(index+1).ordinalize} column name")%>
-      <%= form.text_field :column_names, class: 'input', multiple: true, value: name %>
+  <div class="columns">
+    <div class="column">
+      <% @board.column_names.each_with_index do |name, index| %>
+        <div class='field-body'>
+          <div class='field'>
+            <%= form.label(:column_name, "The #{(index+1).ordinalize} column name")%>
+            <%= form.text_field :column_names, class: 'input', multiple: true, value: name %>
+          </div>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+    <div class="column">
+      <% @board.column_emojis.each_with_index do |emoji, index| %>
+        <%= form.label(:column_emoji, "The #{(index+1).ordinalize} column emoji")%>
+        <div class='field-body'>
+          <div class='field'>
+            <%= form.text_field :column_emojis, class: 'input', id: "column-emojis-#{index}", multiple: true, value: emoji, maxlength: 1, readonly: true %>
+          </div>
+
+          <div class='field'>
+            <a class='emoji-picker-open-btn' data-id="<%=index %>">Select emoji</a>
+            <div class="tooltip-emoji-picker" id="tooltip-<%=index %>" role="tooltip">
+              <emoji-picker data-id="<%=index %>"></emoji-picker>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
   <div class="actions">
     <%= form.submit %>

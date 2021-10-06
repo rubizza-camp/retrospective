@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_09_071333) do
+ActiveRecord::Schema.define(version: 2021_09_22_091117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2021_09_09_071333) do
     t.boolean "private", default: false
     t.text "column_names", default: ["mad", "sad", "glad"], array: true
     t.integer "users_count", default: 0
+    t.text "column_emojis", default: ["😡", "😔", "🤗"], array: true
     t.index ["previous_board_id"], name: "index_boards_on_previous_board_id", unique: true
     t.index ["slug"], name: "index_boards_on_slug", unique: true
   end
