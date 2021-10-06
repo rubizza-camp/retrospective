@@ -18,6 +18,11 @@ $(document).ready(() => {
       $('.tooltip-emoji-picker').removeClass('shown');
     });
 
+    // Prevent closing emoji picker on using picker
+    $('emoji-picker').click((event) => {
+      event.stopPropagation();
+    });
+
     $(window).click(() => {
       $('.tooltip-emoji-picker').removeClass('shown');
     });
