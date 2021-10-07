@@ -1,4 +1,8 @@
-<%= javascript_pack_tag 'application'%>
+<% content_for :scripts do %>
+  <%= javascript_pack_tag 'application' %>
+  <%= stylesheet_pack_tag 'application' %>
+<% end %>
+
 <div class="column is-10">
   <div class='box'>
     <h1>Editing Board</h1>
