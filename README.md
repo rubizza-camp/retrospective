@@ -1,29 +1,8 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* ...
+# Retrospective
 
 ## Development instructions
 
-1.  Install docker:  [docker engine install](https://docs.docker.com/engine/install/ "docker engine install")
+1. Install docker:  [docker engine install](https://docs.docker.com/engine/install/ "docker engine install")
 
 
 2. Install docker-compose: [docker compose install](https://docs.docker.com/compose/install/ "docker compose install")
@@ -31,16 +10,22 @@ Things you may want to cover:
 
 3. Clone the project: https://github.com/cybergizer-hq/retrospective
 
-
-4. Create and setup postgres db:
+4. Prepare:
+``` bash
+docker-compose run runner bundle install
+docker-compose run runner yarn install
 ```
-docker-compose run rake db:create db:setup
+
+5. Create and setup postgres db:
+```
+docker-compose run runner bundle exec rails db:create db:setup
+RAILS_ENV=test docker-compose run runner bundle exec rails db:create db:setup
 ```
 
-
-5. Run the containers:
-```
+6. Run app:
+``` bash
 docker-compose up -d rails
+docker-compose up -d webpacker
 ```
 
 run Rails console if needed:
@@ -48,5 +33,10 @@ run Rails console if needed:
 docker-compose run runner
 ```
 
-6. In order to skip Alfred login and login with the first seed user
+7. In order to skip Alfred login and login with the first seed user
    put `SKIP_ALFRED=true` in your .env file
+
+8. Run specs:
+```
+RAILS_ENV=test docker-compose run runner bundle exec rspec
+```
