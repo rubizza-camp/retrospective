@@ -32,7 +32,7 @@ const Board = ({
   };
 
   const deleteBoard = async () => {
-    const boards = await boardApi.deleteBoard();
+    const boards = await boardApi.deleteBoard(board.slug);
     setBoards(boards);
     setIsOpenMenu(false);
   };
