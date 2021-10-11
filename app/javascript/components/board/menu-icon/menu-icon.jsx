@@ -4,6 +4,7 @@ import React from 'react';
 import style from './style.module.less';
 
 export const MenuIcon = ({
+  role,
   setIsOpenMenu,
   isOpenMenu,
   historyBoard,
@@ -24,15 +25,19 @@ export const MenuIcon = ({
         onClick={onClickHandler}
       />
       <div className={isOpenMenu ? style.openMenu : style.items}>
-        <div className={style.item} onClick={continueBoard}>
-          continue
-        </div>
+        {role === 'creator' && (
+          <div className={style.item} onClick={continueBoard}>
+            continue
+          </div>
+        )}
         <div className={style.item} onClick={historyBoard}>
           history
         </div>
-        <div className={style.item} onClick={deleteBoard}>
-          delete
-        </div>
+        {role === 'creator' && (
+          <div className={style.item} onClick={deleteBoard}>
+            delete
+          </div>
+        )}
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import {MenuIcon} from './menu-icon/menu-icon';
 import style from './style.module.less';
 
 const Board = ({
+  role,
   board,
   setBoards,
   setIsModal,
@@ -54,6 +55,7 @@ const Board = ({
         </span>
         {!historyBoards.length && (
           <MenuIcon
+            role={role}
             continueBoard={continueBoard}
             deleteBoard={deleteBoard}
             historyBoard={historyBoard}

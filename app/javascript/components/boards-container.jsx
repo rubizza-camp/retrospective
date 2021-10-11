@@ -4,16 +4,22 @@ import Board from './board/board';
 import ModalWindow from './board/modal/modal-window';
 import './style.less';
 
-const BoardsContainer = () => {
+const BoardsContainer = ({role}) => {
   const [startBoards, setStartBoards] = useState([]);
   const [historyBoards, setHistoryBoards] = useState([]);
   const [isModal, setIsModal] = useState(false);
 
   useEffect(() => {
-    boardApi.getBoards().then((response) => {
-      setStartBoards(response);
-    });
-  }, []);
+    if (role === 'creator') {
+      boardApi.getBoards().then((response) => {
+        setStartBoards(response);
+      });
+    } else {
+      boardApi.getBoardsWhereIAm().then((response) => {
+        setStartBoards(response);
+      });
+    }
+  }, [role]);
 
   return (
     <div className="board-container">
@@ -25,6 +31,7 @@ const BoardsContainer = () => {
         {historyBoards.map((board) => (
           <Board
             key={board.id}
+            role={role}
             setIsModal={setIsModal}
             historyBoards={historyBoards}
             setBoards={setStartBoards}
@@ -37,6 +44,7 @@ const BoardsContainer = () => {
       {startBoards.map((board) => (
         <Board
           key={board.id}
+          role={role}
           setIsModal={setIsModal}
           historyBoards={historyBoards}
           setBoards={setStartBoards}
