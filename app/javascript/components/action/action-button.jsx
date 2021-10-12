@@ -4,16 +4,21 @@ import style from './style.module.less';
 
 export const ActionButton = ({id, type, title, setActionItems}) => {
   const onClickHandler = async () => {
+    let actionItems;
     switch (type) {
       case 'close':
-        setActionItems(await actionItemsApi.closeActionItem(id));
+        actionItems = await actionItemsApi.closeActionItem(id);
         break;
       case 'complete':
-        setActionItems(await actionItemsApi.completeActionItem(id));
+        actionItems = await actionItemsApi.completeActionItem(id);
         break;
       case 'reopen':
-        setActionItems(await actionItemsApi.reopenActionItem(id));
+        actionItems = await actionItemsApi.reopenActionItem(id);
         break;
+    }
+
+    if (actionItems) {
+      setActionItems(actionItems);
     }
   };
 
