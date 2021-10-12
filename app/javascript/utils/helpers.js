@@ -30,5 +30,5 @@ export const handleKeyPress = (evt, handleEnter, handleEscape) => {
 };
 
 export const getFullnameOrNickname = (name, surname, nickname) => {
-  return name ? `${name} ${surname}` : nickname;
+  return name && surname ? `${name} ${surname}` : nickname;
 };
