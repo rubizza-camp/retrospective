@@ -22,7 +22,7 @@ const Card = ({
   };
 
   const isCurrentUserAuthor =
-    currentUser.id.toString() === author.id.toString(); // Temporary solution for matching data types (after edit card it will still availible to edit)
+    Boolean(currentUser) && currentUser.id.toString() === author.id.toString(); // Temporary solution for matching data types (after edit card it will still availible to edit)
 
   const editable = useMemo(() => !isTemporaryId(id) && isCurrentUserAuthor, [
     id,
@@ -30,8 +30,10 @@ const Card = ({
   ]);
 
   const deletable = useMemo(
-    () => !isTemporaryId(id) && (isCurrentUserAuthor || currentUser.isCreator),
-    [id, isCurrentUserAuthor]
+    () =>
+      !isTemporaryId(id) &&
+      (isCurrentUserAuthor || (Boolean(currentUser) && currentUser.isCreator)),
+    [id, currentUser, isCurrentUserAuthor]
   );
 
   return (

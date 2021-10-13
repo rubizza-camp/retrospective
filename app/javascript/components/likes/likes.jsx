@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {useMutation} from '@apollo/react-hooks';
 import {likeCardMutation, likeCommentMutation} from './operations.gql';
 import style from './style.module.less';
+import UserContext from '../../utils/user-context';
 const EMOJIES = {
   mad: '😡',
   sad: '😔',
@@ -12,7 +13,8 @@ const EMOJIES = {
 const Likes = ({type, likes, id, isCard}) => {
   const [likeCard] = useMutation(likeCardMutation);
   const [likeComment] = useMutation(likeCommentMutation);
-  const [timer, setTimer] = useState(null);
+  const [timer] = useState(null);
+  const currentUser = useContext(UserContext);
 
   useEffect(() => {
     return function () {
@@ -45,14 +47,13 @@ const Likes = ({type, likes, id, isCard}) => {
   };
 
   const handleMouseClick = () => {
-    addLike();
+    if (currentUser) {
+      addLike();
+    }
   };
 
   return (
-    <div
-      className={style.likesWrapper}
-      onClick={handleMouseClick}
-    >
+    <div className={style.likesWrapper} onClick={handleMouseClick}>
       <div>{EMOJIES[type] || EMOJIES.universal}</div>
       <span> {likes} </span>
     </div>

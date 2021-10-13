@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Likes} from '../likes';
 import './style.less';
+import UserContext from '../../utils/user-context';
 
 const CardFooter = ({
   id,
@@ -11,6 +12,7 @@ const CardFooter = ({
   onClickClosed,
   isCommentsShown
 }) => {
+  const currentUser = useContext(UserContext);
   const handleOpenComments = () => {
     onCommentButtonClick();
   };
@@ -31,9 +33,8 @@ const CardFooter = ({
       ) : (
         <div className="card-footer__comments">
           <a onClick={handleOpenComments}>
-            {commentsNumber > 0
-              ? `see ${commentsNumber} comments`
-              : `add a comment`}
+            {commentsNumber > 0 && `see ${commentsNumber} comments`}
+            {Boolean(currentUser) && commentsNumber === 0 && `add a comment`}
           </a>
         </div>
       )}

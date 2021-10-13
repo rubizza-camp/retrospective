@@ -20,7 +20,7 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
   const [addComment] = useMutation(addCommentMutation);
 
   useEffect(() => {
-    textInput.current.focus();
+    textInput.current && textInput.current.focus();
   }, []);
 
   const handleErrorSubmit = () => {
@@ -73,42 +73,50 @@ const CommentsDropdown = ({id, comments, onClickClosed}) => {
             key={item.id}
             id={item.id}
             comment={item}
-            editable={user.id === item.author.id}
+            editable={Boolean(user) && user.id === item.author.id}
           />
         ))}
       </div>
-      <div className="new-comment">
-        <Textarea
-          ref={textInput}
-          className={`new-comment__textarea ${
-            isError && 'new-comment__textarea--error'
-          }`}
-          value={newComment}
-          onChange={(evt) => setNewComment(evt.target.value)}
-          onKeyDown={(evt) => handleKeyPress(evt, handleSubmit, onClickClosed)}
-        />
-        <a className="new-comment__smile" onClick={handleSmileClick}>
-          <FontAwesomeIcon icon={faSmile} />
-        </a>
-      </div>
-      <div className="new-comment__buttons">
-        <button
-          type="button"
-          className="new-comment__buttons__item new-comment__buttons__item--hide"
-          onClick={handleCloseComments}
-        >
-          hide discussion
-        </button>
-        <button
-          ref={controlElement}
-          className="new-comment__buttons__item new-comment__buttons__item--add"
-          type="button"
-          onClick={() => handleSubmit(newComment)}
-        >
-          post
-        </button>
-      </div>
-      {showEmojiPicker && <EmojiPicker onEmojiClick={handleEmojiPickerClick} />}
+      {Boolean(user) && (
+        <>
+          <div className="new-comment">
+            <Textarea
+              ref={textInput}
+              className={`new-comment__textarea ${
+                isError && 'new-comment__textarea--error'
+              }`}
+              value={newComment}
+              onChange={(evt) => setNewComment(evt.target.value)}
+              onKeyDown={(evt) =>
+                handleKeyPress(evt, handleSubmit, onClickClosed)
+              }
+            />
+            <a className="new-comment__smile" onClick={handleSmileClick}>
+              <FontAwesomeIcon icon={faSmile} />
+            </a>
+          </div>
+          <div className="new-comment__buttons">
+            <button
+              type="button"
+              className="new-comment__buttons__item new-comment__buttons__item--hide"
+              onClick={handleCloseComments}
+            >
+              hide discussion
+            </button>
+            <button
+              ref={controlElement}
+              className="new-comment__buttons__item new-comment__buttons__item--add"
+              type="button"
+              onClick={() => handleSubmit(newComment)}
+            >
+              post
+            </button>
+          </div>
+          {showEmojiPicker && (
+            <EmojiPicker onEmojiClick={handleEmojiPickerClick} />
+          )}
+        </>
+      )}
     </div>
   );
 };
