@@ -22,11 +22,15 @@ const createAPI = () => {
   );
 
   const onSuccess = (response) => {
-    return response;
+    return response.data;
   };
 
-  const onFail = (err) => {
-    throw err;
+  const onFail = (error) => {
+    if (error.response) {
+      alert(error.response.data.errors.fullMessages);
+    } else {
+      alert('Something went wrong, try again.');
+    }
   };
 
   api.interceptors.response.use(onSuccess, onFail);

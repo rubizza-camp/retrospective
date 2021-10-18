@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import arrow from '../../images/undo_13';
-import {getDate} from '../../utils/get-date';
-import {boardApi} from '../api/boards-api';
-import {BoardAvatar} from './board-avatar';
-import {GroupIcons} from './group-icons/group-icons';
-import {MenuIcon} from './menu-icon/menu-icon';
+import { getDate } from '../../utils/get-date';
+import { boardApi } from '../api/boards-api';
+import { BoardAvatar } from './board-avatar';
+import { GroupIcons } from './group-icons/group-icons';
+import { MenuIcon } from './menu-icon/menu-icon';
 import style from './style.module.less';
 
 const Board = ({
@@ -20,20 +20,28 @@ const Board = ({
 
   const continueBoard = async () => {
     const boards = await boardApi.continueBoard(board.slug);
-    setBoards(boards);
+    if (boards) {
+      setBoards(boards);
+    }
+
     setIsOpenMenu(false);
   };
 
   const historyBoard = async () => {
     const boards = await boardApi.historyBoard(board.slug);
+    if (boards) {
+      setHistoryBoards(boards);
+    }
+
     setIsOpenMenu(false);
-    setHistoryBoards(boards);
     setIsModal(true);
   };
 
   const deleteBoard = async () => {
     const boards = await boardApi.deleteBoard(board.slug);
-    setBoards(boards);
+    if (boards) {
+      setBoards(boards);
+    }
     setIsOpenMenu(false);
   };
 
