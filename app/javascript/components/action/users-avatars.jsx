@@ -1,34 +1,15 @@
 import React from 'react';
-import {getInitials} from '../../utils/helpers';
-import style from '../board/style.module.less';
+import {Avatar} from '../avatar/avatar';
 
 export const UsersAvatars = ({users}) => {
-  return (
-    <>
-      {users.map((user) => {
-        const stylesForAvatarIcon = `${style.combatant} ${
-          style[`avatar${user.id % 10}`]
-        }`;
-
-        if (user.avatar.url) {
-          return (
-            <img
-              key={user.id}
-              src={user.avatar.url}
-              className={style.combatant}
-              alt="avatar"
-            />
-          );
-        }
-
-        return (
-          <span key={user.id} className={style.avaContainer}>
-            <span className={stylesForAvatarIcon}>
-              {getInitials(user.firstName, user.lastName)}
-            </span>
-          </span>
-        );
-      })}
-    </>
-  );
+  return users.map((user) => (
+    <Avatar
+      key={user.id}
+      avatar={user.avatar.url}
+      id={user.id}
+      isSquare={false}
+      firstName={user.firstName}
+      lastName={user.lastName}
+    />
+  ));
 };
