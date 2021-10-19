@@ -10,9 +10,11 @@ import {
   actionItemUpdatedSubscription
 } from './operations.gql';
 import {NewActionItem} from '../new-action-item';
+import UserContext from '../../utils/user-context';
 
 const ActionItemColumn = ({users, initItems, handleToggleClick}) => {
   const boardSlug = useContext(BoardSlugContext);
+  const currentUser = useContext(UserContext);
   const [items, setItems] = useState(initItems);
   const [skip, setSkip] = useState(true); // Workaround for https://github.com/apollographql/react-apollo/issues/3802
 
@@ -90,7 +92,7 @@ const ActionItemColumn = ({users, initItems, handleToggleClick}) => {
   return (
     <>
       <ActionItemHeader handleToggleClick={handleToggleClick} />
-      <NewActionItem users={users} />
+      {Boolean(currentUser) && <NewActionItem users={users} />}
       {items.map((item) => {
         return <ActionItem key={item.id} {...item} users={users} />;
       })}

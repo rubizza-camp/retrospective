@@ -16,6 +16,7 @@ const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
 
   const boardSlug = useContext(BoardSlugContext);
   const currentUser = useContext(UserContext);
+  const editable = Boolean(currentUser);
 
   const toggleOpen = () => setIsEdit(!isEdit);
 
@@ -71,7 +72,7 @@ const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
     <div className={style.header}>
       <div className={style.smile}>{smile}</div>
       <div className={style.wrapper}>
-        {isEdit ? (
+        {editable && isEdit ? (
           <form onSubmit={submitHandler}>
             <textarea
               ref={textInput}
@@ -108,9 +109,11 @@ const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
           </h2>
         )}
       </div>
-      <div className={style.buttonPlus} onClick={toggleOpen}>
-        +
-      </div>
+      {editable && !isEdit && (
+        <div className={style.buttonPlus} onClick={toggleOpen}>
+          +
+        </div>
+      )}
     </div>
   );
 };

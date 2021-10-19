@@ -133,7 +133,7 @@ const ActionItem = ({
 
   const currentUser = useContext(UserContext);
   const isStatusPending = status === 'pending';
-  const editable = currentUser.isCreator;
+  const editable = currentUser && currentUser.isCreator;
   const currentAssignee = useMemo(
     () => users.find((user) => user.id.toString() === actionItemAssigneeId),
     [actionItemAssigneeId, users]
@@ -194,7 +194,7 @@ const ActionItem = ({
         )}
       </div>
 
-      {isPrevious && !editMode && (
+      {Boolean(currentUser) && isPrevious && !editMode && (
         <ActionItemFooter
           id={id}
           isReopanable={currentUser.isCreator && !isStatusPending}

@@ -54,7 +54,10 @@ const CardTable = ({
     return content;
   };
 
-  user.isCreator = userIsCreator;
+  if (user) {
+    user.isCreator = userIsCreator;
+  }
+
   return (
     <Provider>
       <BoardSlugContext.Provider value={window.location.pathname.split('/')[2]}>
