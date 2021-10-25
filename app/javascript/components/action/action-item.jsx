@@ -1,11 +1,12 @@
 import React from 'react';
+import {getFullnameOrNickname} from '../../utils/helpers';
 import {ActionButton} from './action-button';
 import {GenerateChevrons} from './generate-chevrons';
 import style from './style.module.less';
 import {UsersAvatars} from './users-avatars';
 
 export const ActionItem = ({item, setActionItems}) => {
-  const users = [item.author, item.assignee];
+  const users = [item.assignee, item.author];
 
   const itemStyle = {
     pending: `${style.pending}`,
@@ -19,7 +20,13 @@ export const ActionItem = ({item, setActionItems}) => {
         <div className={style.avatars}>
           <UsersAvatars users={users} />
         </div>
-        <div className={style.title}>{item.author.name}</div>
+        <div className={style.title}>
+          {getFullnameOrNickname(
+            item.author.firstName,
+            item.author.lastName,
+            item.author.nickname
+          )}
+        </div>
         <div className={style.icon}>
           <GenerateChevrons timesMoved={item.timesMoved} />
         </div>
