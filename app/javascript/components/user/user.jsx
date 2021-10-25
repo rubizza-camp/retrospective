@@ -1,14 +1,15 @@
-import React from 'react';
 import {useMutation} from '@apollo/react-hooks';
+import React from 'react';
+import {getFullnameOrNickname} from '../../utils/helpers';
+import {Avatar} from '../avatar/avatar';
 import {destroyMembershipMutation} from './operations.gql';
-import {getInitials, getFullnameOrNickname} from '../../utils/helpers';
 import avatarStyle from './style.module.less';
 
 const User = ({
   membership: {
     ready,
     id,
-    user: {email, avatar, lastName, firstName, nickname}
+    user: {id: userId, email, avatar, lastName, firstName, nickname}
   },
   shouldDisplayReady,
   shouldHandleDelete
@@ -26,34 +27,22 @@ const User = ({
     }
   };
 
-  const renderBoardAvatar = (userAvatar, userName, userSurname) => {
-    if (userAvatar) {
-      return (
-        <img
-          src={avatar.thumb.url}
-          className={`${
-            shouldDisplayReady && ready ? avatarStyle.isReady : ''
-          } ${avatarStyle.avatar}`}
-          alt={email}
-        />
-      );
-    }
-
-    const classes =
-      shouldDisplayReady && ready
-        ? `${avatarStyle.avatar} ${avatarStyle.avatarText} ${
-            avatarStyle[`avatar-${id % 10}`]
-          } ${avatarStyle.isReady}`
-        : `${avatarStyle.avatar} ${avatarStyle.avatarText} ${
-            avatarStyle[`avatar-${id % 10}`]
-          }`;
-
-    return <div className={classes}>{getInitials(userName, userSurname)}</div>;
-  };
+  const classes =
+    shouldDisplayReady && ready
+      ? `${avatarStyle.avatar} ${avatarStyle.isReady}`
+      : `${avatarStyle.avatar}`;
 
   return (
     <div key={email} className={avatarStyle.avatarWrapper}>
-      {renderBoardAvatar(avatar.thumb.url, firstName, lastName)}
+      <div className={classes}>
+        <Avatar
+          isSquare
+          avatar={avatar.thumb.url}
+          id={userId}
+          firstName={firstName}
+          lastName={lastName}
+        />
+      </div>
       <div className={avatarStyle.avatarTooltip}>
         <span> ^ </span>
         <span>{getFullnameOrNickname(firstName, lastName, nickname)}</span>

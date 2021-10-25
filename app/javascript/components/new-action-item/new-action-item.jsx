@@ -51,6 +51,7 @@ const NewActionItem = ({users}) => {
   return (
     <div className={style.newActionItem}>
       <CardUser
+        id={currentUser.id}
         firstName={currentUser.firstName}
         lastName={currentUser.lastName}
         nickname={currentUser.nickname}

@@ -186,6 +186,7 @@ const ActionItem = ({
 
         {assignee && (
           <ActionItemAssignee
+            id={assignee.id}
             avatar={assignee.avatar?.thumb?.url}
             firstName={assignee.firstName}
             lastName={assignee.lastName}

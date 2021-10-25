@@ -1,9 +1,9 @@
 import React from 'react';
-import style from './style.module.less';
 import Textarea from 'react-textarea-autosize';
-import {ActionItemAssignee} from '../action-item-assigne';
-import {CardUserAvatar} from '../card-user-avatar';
 import {getFullnameOrNickname} from '../../utils/helpers';
+import {ActionItemAssignee} from '../action-item-assigne';
+import {Avatar} from '../avatar/avatar';
+import style from './style.module.less';
 
 const ActionItemEdit = ({
   users,
@@ -57,11 +57,15 @@ const ActionItemEdit = ({
                       user.nickname
                     )}
                   </span>
-                  <CardUserAvatar
-                    avatar={user.avatar?.thumb?.url}
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                  />
+                  <div className={style.ava}>
+                    <Avatar
+                      id={user.id}
+                      isSquare={false}
+                      avatar={user.avatar?.thumb?.url}
+                      firstName={user.firstName}
+                      lastName={user.lastName}
+                    />
+                  </div>
                 </li>
               );
             })}

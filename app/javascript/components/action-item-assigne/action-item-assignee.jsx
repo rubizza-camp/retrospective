@@ -1,10 +1,9 @@
 import React from 'react';
 import {getFullnameOrNickname} from '../../utils/helpers';
+import {Avatar} from '../avatar/avatar';
 import style from './style.module.less';
 
-import {CardUserAvatar} from '../card-user-avatar';
-
-const ActionItemAssignee = ({firstName, lastName, nickName, avatar}) => {
+const ActionItemAssignee = ({firstName, lastName, nickName, avatar, id}) => {
   return (
     <div className={style.assignee}>
       Assigned to
@@ -12,11 +11,15 @@ const ActionItemAssignee = ({firstName, lastName, nickName, avatar}) => {
         <span className={style.assigneeName}>
           {getFullnameOrNickname(firstName, lastName, nickName)}
         </span>
-        <CardUserAvatar
-          avatar={avatar}
-          firstName={firstName}
-          lastName={lastName}
-        />
+        <div className={style.ava}>
+          <Avatar
+            avatar={avatar}
+            id={id}
+            isSquare={false}
+            firstName={firstName}
+            lastName={lastName}
+          />
+        </div>
       </div>
     </div>
   );
