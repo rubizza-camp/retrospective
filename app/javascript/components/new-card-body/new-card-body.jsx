@@ -46,7 +46,7 @@ const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
     evt.preventDefault();
 
     handleCardAdd(card);
-
+    cancelHandler(evt);
     const {data} = await addCard({
       variables: {
         boardSlug,
@@ -54,6 +54,7 @@ const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
         body: newCard
       }
     });
+
     if (data.addCard.card) {
       handleGetNewCardID(card.id, data.addCard.card.id);
       setNewCard('');
@@ -72,7 +73,10 @@ const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
     <div className={style.header}>
       <div className={style.smile}>{smile}</div>
       <div className={style.wrapper}>
-        {editable && isEdit ? (
+        <h2 className={style.title} onDoubleClick={toggleOpen}>
+          {kind}
+        </h2>
+        {editable && isEdit && (
           <form onSubmit={submitHandler}>
             <textarea
               ref={textInput}
@@ -94,23 +98,24 @@ const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
               >
                 cancel
               </button>
-              <button
-                className={styleButton.buttonPost}
-                type="submit"
-                onSubmit={submitHandler}
-              >
-                post
-              </button>
+              {newCard && (
+                <button
+                  className={styleButton.buttonPost}
+                  type="submit"
+                  onSubmit={submitHandler}
+                >
+                  post
+                </button>
+              )}
             </div>
           </form>
-        ) : (
-          <h2 className={style.title} onDoubleClick={toggleOpen}>
-            {kind}
-          </h2>
         )}
       </div>
-      {editable && !isEdit && (
-        <div className={style.buttonPlus} onClick={toggleOpen}>
+      {editable && (
+        <div
+          className={isEdit ? style.buttonClose : style.buttonPlus}
+          onClick={isEdit ? cancelHandler : toggleOpen}
+        >
           +
         </div>
       )}

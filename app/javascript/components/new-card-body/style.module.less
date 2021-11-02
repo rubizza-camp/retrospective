@@ -13,12 +13,17 @@
 }
 
 .input {
-  overflow-y: scroll;
   border: none;
   padding: 0 15px 0 25px;
   width: 100%;
+  min-width: 100px;
+  resize: none;
   margin-top: 5px;
   font-family: "Commissioner";
+
+}
+.input::-webkit-scrollbar {
+  display:none;
 }
 
 .input::placeholder {
@@ -45,9 +50,19 @@
 }
 
 .buttonPlus {
+  transition-duration: .2s;
   position: absolute;
   right: 2px;
   top: 8px;
   cursor: pointer;
 }
 
+.buttonClose {
+  transform: rotate(45deg);
+  transition-duration: .2s;
+  color: red;
+  position: absolute;
+  right: 2px;
+  top: 8px;
+  cursor: pointer;
+}
