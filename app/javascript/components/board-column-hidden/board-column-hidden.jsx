@@ -13,14 +13,6 @@ const BoardColumnHidden = ({toggleOpen, isLeft}) => {
         <RightArrow />
         <RightArrow />
       </button>
-      <div className={style.dot}>
-        <span className={`${style.dotItem} ${style.dotItemRed}`} />
-        <span className={`${style.dotItem} ${style.dotItemYellow}`} />
-        <span className={`${style.dotItem} ${style.dotItemYellow}`} />
-        <span className={`${style.dotItem} ${style.dotItemGreen}`} />
-        <span className={`${style.dotItem} ${style.dotItemGreen}`} />
-        <span className={`${style.dotItem} ${style.dotItemGreen}`} />
-      </div>
     </div>
   );
 };
