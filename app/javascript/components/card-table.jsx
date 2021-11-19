@@ -76,6 +76,7 @@ const CardTable = ({
             ) : (
               <BoardColumnHidden
                 isLeft
+                items={initPrevItems}
                 toggleOpen={togglePreviousItemsOpened}
               />
             )}
@@ -89,7 +90,10 @@ const CardTable = ({
                 />
               </div>
             ) : (
-              <BoardColumnHidden toggleOpen={toggleActionItemsOpened} />
+              <BoardColumnHidden
+                toggleOpen={toggleActionItemsOpened}
+                items={actionItems}
+              />
             )}
           </div>
         </UserContext.Provider>

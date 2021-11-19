@@ -91,7 +91,10 @@ const ActionItemColumn = ({users, initItems, handleToggleClick}) => {
 
   return (
     <>
-      <ActionItemHeader handleToggleClick={handleToggleClick} />
+      <ActionItemHeader
+        actionItems={initItems}
+        handleToggleClick={handleToggleClick}
+      />
       {Boolean(currentUser) && <NewActionItem users={users} />}
       {items.map((item) => {
         return <ActionItem key={item.id} {...item} users={users} />;
