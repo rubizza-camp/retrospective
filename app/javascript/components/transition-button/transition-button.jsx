@@ -50,7 +50,7 @@ const TransitionButton = ({id, action}) => {
         break;
 
       case 'reopen':
-        response = reopenActionItem({
+        response = await reopenActionItem({
           variables: {
             id,
             boardSlug
