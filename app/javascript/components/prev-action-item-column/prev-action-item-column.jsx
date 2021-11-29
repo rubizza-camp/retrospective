@@ -8,7 +8,7 @@ import {useSubscription} from '@apollo/react-hooks';
 import BoardSlugContext from '../../utils/board-slug-context';
 import style from './style.module.less';
 import {BoardColumnHidden} from '../board-column-hidden';
-import {LineForAction} from '../action-item-header/line-for-action';
+import {LinesForAction} from '../action-item-header/lines-for-action';
 
 const PreviousActionItemColumn = ({
   users,
@@ -81,7 +81,7 @@ const PreviousActionItemColumn = ({
         )}
         <BoardColumnHidden toggleOpen={handleToggleClick} />
       </div>
-      <LineForAction prevActionItems={initItems} />
+      <LinesForAction prevActionItems={actionItems} />
       {actionItems.map((item) => (
         <ActionItem key={item.id} isPrevious users={users} {...item} />
       ))}

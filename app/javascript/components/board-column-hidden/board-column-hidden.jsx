@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './style.module.less';
 import RightArrow from '../../images/right-arrow.svg';
-import {LineForAction} from '../action-item-header/line-for-action';
+import {LinesForAction} from '../action-item-header/lines-for-action';
 
 const BoardColumnHidden = ({toggleOpen, isLeft, items}) => {
   return (
@@ -14,7 +14,7 @@ const BoardColumnHidden = ({toggleOpen, isLeft, items}) => {
         <RightArrow />
         <RightArrow />
       </button>
-      {items && <LineForAction hiddenActionItem prevActionItems={items} />}
+      {items && <LinesForAction hiddenActionItem prevActionItems={items} />}
     </div>
   );
 };

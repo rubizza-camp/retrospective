@@ -10,7 +10,6 @@ import cardStyle from '../card-body/style.module.less';
 import {ActionItemFooter} from '../action-item-footer';
 import {ActionItemAssignee} from '../action-item-assigne';
 import UserContext from '../../utils/user-context';
-import style from './style.module.less';
 import styleCard from '../card/style.module.less';
 import {ActionItemEdit} from '../action-item-edit';
 import {handleKeyPress} from '../../utils/helpers';
@@ -112,25 +111,6 @@ const ActionItem = ({
     return chevrons;
   };
 
-  const pickColor = (number, isColor) => {
-    if (isColor) {
-      switch (number) {
-        case 0:
-          return style.green;
-        case 1:
-          return style.green;
-        case 2:
-          return style.green;
-        case 3:
-          return style.yellow;
-        default:
-          return style.red;
-      }
-    } else {
-      return ``;
-    }
-  };
-
   const currentUser = useContext(UserContext);
   const isStatusPending = status === 'pending';
   const editable = currentUser && currentUser.isCreator;
@@ -139,8 +119,14 @@ const ActionItem = ({
     [actionItemAssigneeId, users]
   );
 
+  const itemStyle = {
+    pending: `${styleCard.itemYellow}`,
+    done: `${styleCard.itemGreen}`,
+    closed: `${styleCard.itemRed}`
+  };
+
   return (
-    <div className={`${pickColor(timesMoved, isPrevious)} ${styleCard.card}`}>
+    <div className={`${itemStyle[status]} ${styleCard.card}`}>
       <div className={cardStyle.cardBody}>
         <div className={cardStyle.top}>
           {author && <CardUser {...author} />}

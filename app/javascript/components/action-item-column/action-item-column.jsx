@@ -92,7 +92,7 @@ const ActionItemColumn = ({users, initItems, handleToggleClick}) => {
   return (
     <>
       <ActionItemHeader
-        actionItems={initItems}
+        actionItems={items}
         handleToggleClick={handleToggleClick}
       />
       {Boolean(currentUser) && <NewActionItem users={users} />}
