@@ -3,9 +3,9 @@ import style from '../prev-action-item-column/style.module.less';
 
 export const LineForAction = ({status}) => {
   const itemStyle = {
-    pending: `${style.itemYellow}`,
+    pending: `${style.itemRed}`,
     done: `${style.itemGreen}`,
-    closed: `${style.itemRed}`
+    closed: `${style.itemGray}`
   };
 
   return <div className={itemStyle[status]} />;

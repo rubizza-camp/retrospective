@@ -120,9 +120,9 @@ const ActionItem = ({
   );
 
   const itemStyle = {
-    pending: `${styleCard.itemYellow}`,
+    pending: `${styleCard.itemRed}`,
     done: `${styleCard.itemGreen}`,
-    closed: `${styleCard.itemRed}`
+    closed: `${styleCard.itemGray}`
   };
 
   return (
