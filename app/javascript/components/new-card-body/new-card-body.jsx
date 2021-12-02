@@ -77,7 +77,7 @@ const NewCardBody = ({kind, smile, handleCardAdd, handleGetNewCardID}) => {
           {kind}
         </h2>
         {editable && isEdit && (
-          <form onSubmit={submitHandler}>
+          <form className={style.newCard} onSubmit={submitHandler}>
             <textarea
               ref={textInput}
               className={style.input}
