@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe DailyActionItemsMailer, type: :mailer do
+RSpec.xdescribe DailyActionItemsMailer, type: :mailer do
   describe '#send_action_items' do
     let_it_be(:user) { create(:user, email: 'test_user@mail.com') }
     let_it_be(:another_user) { create(:user) }

@@ -18,33 +18,33 @@ Rails.application.routes.draw do
 
   # get '/boardsql', to: 'boardsql#show'
 
-  resources :boards, param: :slug do
-    member do
-      post 'continue'
-      get 'history'
-    end
+  # resources :boards, param: :slug do
+  #   member do
+  #     post 'continue'
+  #     get 'history'
+  #   end
 
-    collection do
-      get 'my'
-      get 'participating'
-    end
-  end
+  #   collection do
+  #     get 'my'
+  #     get 'participating'
+  #   end
+  # end
 
-  resources :action_items, only: :index do
-    member do
-      put 'close'
-      put 'complete'
-      put 'reopen'
-    end
-  end
+  # resources :action_items, only: :index do
+  #   member do
+  #     put 'close'
+  #     put 'complete'
+  #     put 'reopen'
+  #   end
+  # end
 
-  resources :users, only: %i[edit update] do
-    member do
-      delete 'avatar_destroy', to: 'users#avatar_destroy'
-    end
-  end
+  # resources :users, only: %i[edit update] do
+  #   member do
+  #     delete 'avatar_destroy', to: 'users#avatar_destroy'
+  #   end
+  # end
 
-  resources :teams
+  # resources :teams
 
   resources :boardsql, param: :slug, only: :show
 

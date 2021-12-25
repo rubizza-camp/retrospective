@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ActionItemsController do
+RSpec.xdescribe ActionItemsController do
   let_it_be(:board) { create(:board) }
   let_it_be(:action_item) { create(:action_item, board: board) }
   let_it_be(:user) { create(:user) }
