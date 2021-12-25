@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe BoardsController do
+RSpec.xdescribe BoardsController do
   let_it_be(:creator) { create(:user) }
   let_it_be(:member) { create(:user) }
   let_it_be(:not_member) { create(:user) }
