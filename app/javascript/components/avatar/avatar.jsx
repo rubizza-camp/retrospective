@@ -2,7 +2,15 @@ import React from 'react';
 import {getInitials} from '../../utils/helpers';
 import style from './style.module.less';
 
-export const Avatar = ({avatar, id, isSquare, firstName, lastName}) => {
+export const Avatar = ({
+  avatar,
+  id,
+  isSquare,
+  firstName,
+  lastName,
+  width,
+  height
+}) => {
   if (avatar) {
     if (isSquare) {
       return <img src={avatar} className={style.squareAvatar} />;
@@ -23,5 +31,12 @@ export const Avatar = ({avatar, id, isSquare, firstName, lastName}) => {
         style[`avatar-${id % 10}`]
       }`;
 
-  return <div className={classes}>{getInitials(firstName, lastName)}</div>;
+  return (
+    <div
+      style={{width: `${width}px`, height: `${height}px`}}
+      className={classes}
+    >
+      {getInitials(firstName, lastName)}
+    </div>
+  );
 };

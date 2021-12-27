@@ -1,62 +1,54 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {getFullnameOrNickname} from '../../utils/helpers';
-import {ActionButton} from './action-button';
-import {GenerateChevrons} from './generate-chevrons';
+import {Avatar} from '../avatar/avatar';
 import style from './style.module.less';
-import {UsersAvatars} from './users-avatars';
 
-export const ActionItem = ({item, setActionItems}) => {
-  const users = [item.assignee, item.author];
-
-  const itemStyle = {
-    pending: `${style.pending}`,
-    done: `${style.done}`,
-    closed: `${style.closed}`
-  };
+export const ActionItem = ({item}) => {
+  const [isHidden, setIsHidden] = useState(false);
 
   return (
-    <div className={`${itemStyle[item.status]} ${style.item}`}>
+    <div className={`${style[item.status]} ${style.item}`}>
       <div className={style.header}>
-        <div className={style.avatars}>
-          <UsersAvatars users={users} />
-        </div>
-        <div className={style.title}>
-          {getFullnameOrNickname(
-            item.author.firstName,
-            item.author.lastName,
-            item.author.nickname
-          )}
-        </div>
-        <div className={style.icon}>
-          <GenerateChevrons timesMoved={item.timesMoved} />
+        <Avatar
+          isSquare
+          width={24}
+          height={24}
+          avatar=""
+          id="3"
+          firstName="board title"
+        />
+        <span className={style.title}>board.title</span>
+      </div>
+      <div className={isHidden ? style.showContent : style.content}>
+        {item.body}
+      </div>
+      {isHidden ||
+        (item.body.length >= 155 && (
+          <div className={style.text} onClick={() => setIsHidden(true)}>
+            see more
+          </div>
+        ))}
+      <div className={style.footer}>
+        <span className={style.text}>Assigned by</span>
+        <div className={style.author}>
+          <div className={style.authorName}>
+            {getFullnameOrNickname(
+              item.author.firstName,
+              item.author.lastName,
+              item.author.nickname
+            )}
+          </div>
+          <div className={style.authorAvatar}>
+            <Avatar
+              avatar={item.author.avatar.url}
+              id={item.id}
+              isSquare={false}
+              firstName={item.author.firstName}
+              lastName={item.author.lastName}
+            />
+          </div>
         </div>
       </div>
-      <div className={style.content}>{item.body}</div>
-      {item.status === 'pending' ? (
-        <div className={style.footer}>
-          <ActionButton
-            id={item.id}
-            setActionItems={setActionItems}
-            type="complete"
-            title="Complete"
-          />
-          <ActionButton
-            id={item.id}
-            setActionItems={setActionItems}
-            type="close"
-            title="Discard task"
-          />
-        </div>
-      ) : (
-        <div className={style.footer}>
-          <ActionButton
-            id={item.id}
-            setActionItems={setActionItems}
-            type="reopen"
-            title="Reopen"
-          />
-        </div>
-      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
-.item{
-  width: 250px;
+.item {
+  width: 320px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -14,96 +14,111 @@
   cursor: default;
 }
 
-.done{
+.done {
   background: #f8fdf4;
 }
-.closed{
+.closed {
   background: #9b9a99;
 }
-.pending{
+.pending {
   background: #fdf4f4;
 }
 
-.header{
-  display: flex;
-  align-items: center;
-  width: 100%;
-  position: relative;
-}
-
-.avatars{
-  display: flex;
-  align-items: center;
-  width: 21%;
-}
-
-.title{
-  width: 50%;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  font-size: 12px;
-  font-weight: normal;
-  line-height: 150%;
-  display: flex;
-  align-items: center;
-  letter-spacing: 0.01em;
-  color: #54554F;
-}
-
-.icon{
-  margin: 8px;
-  position: absolute;
-  right: -1px;
-}
-
-
-.content{
-  margin: 16px 8px 0px 8px;
+.content {
+  margin: 10px 0px 0px 0px;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 21px;
   letter-spacing: 0.015em;
   text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0.015em;
 }
 
+.showContent {
+  margin: 10px 0px 0px 0px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0.015em;
+  text-align: left;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: all;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0.015em;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0px 0px 0px 0px;
+}
+.title {
+  margin-left: 20px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 125%;
+}
 
 .footer {
-  width: 100%;
-  margin: 20px 0px 20px 0px;
-}
-.buttonContainer{
-  width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 15px 0px 0px 0px;
 }
 
-.button {
-  width: 90%;
-  padding: 0;
-  margin: 0 8px 0px 8px;
-  height: 37px;
-  color: #54554F;
-  background-color: transparent;
-  border: 1px solid #8D8E8A;
-  box-sizing: border-box;
-  border-radius: 4px;
+.text {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 150%;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.015em;
+  color: #797474;
+}
+div.text:hover {
+  color: black;
+  text-decoration: underline;
+}
+.author {
+  display: flex;
+  align-items: center;
 }
 
-.button:hover{
-  background-color: white;
-  color: #363636;
+.authorName {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 150%;
+  letter-spacing: 0.015em;
+  color: #171313;
+  order: 0;
+  flex-grow: 0;
+  margin: 0px 8px;
 }
-
-.footer span{
-  color: #54554F;
-  margin-top: 20px;
-}
-
-.footer span:hover{
-  color: red;
+.authorAvatar {
+  margin-right: 10px;
 }

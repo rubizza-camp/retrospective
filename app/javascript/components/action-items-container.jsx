@@ -16,13 +16,7 @@ const ActionItemsContainer = () => {
     <div className="items-container">
       {actionItems.map((item) => {
         return (
-          item.status !== 'closed' && (
-            <ActionItem
-              key={item.id}
-              item={item}
-              setActionItems={setActionItems}
-            />
-          )
+          item.status !== 'closed' && <ActionItem key={item.id} item={item} />
         );
       })}
     </div>
