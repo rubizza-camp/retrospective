@@ -89,5 +89,6 @@ Rails.application.routes.draw do
   end
 
   mount ActionCable.server, at: '/cable'
+  get '*path' => 'home#index'
 end
 # rubocop:enable Metrics/BlockLength

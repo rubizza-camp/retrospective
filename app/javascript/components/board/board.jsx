@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {NavLink} from 'react-router-dom';
 import arrow from '../../images/undo_13';
 import {getDate} from '../../utils/get-date';
 import {boardApi} from '../api/boards-api';
@@ -60,7 +61,7 @@ const Board = ({
       <div className={style.header}>
         <Avatar isSquare avatar="" id={board.id} firstName={board.title} />
         <span className={style.title}>
-          <a href={`/boards/${board.slug}`}>{board.title}</a>
+          <NavLink to={`/board/${board.slug}`}>{board.title}</NavLink>
         </span>
         {!historyBoards.length && (
           <MenuIcon

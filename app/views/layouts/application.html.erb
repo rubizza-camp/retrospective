@@ -5,8 +5,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= action_cable_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= stylesheet_pack_tag 'application' %>
     <%= javascript_include_tag 'application' %>
     <%= javascript_include_tag('https://use.fontawesome.com/releases/v5.3.1/js/all.js') %>
     <%= yield :scripts %>
@@ -14,9 +13,7 @@
 
   <body>
   <div class="columns" style="margin-top: 40px;">
-    <div class="column is-offset-1 is-2">
-      <%= render 'shared/menu' %>
-    </div>
+
     <div class="column is-9">
       <p id="notice"><%= notice %></p>
       <p id="alert"><%= alert %></p>
@@ -27,3 +24,5 @@
 
   </body>
 </html>
+
+

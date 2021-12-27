@@ -4,10 +4,11 @@ import Board from './board/board';
 import ModalWindow from './board/modal/modal-window';
 import './style.less';
 
-const BoardsContainer = ({role}) => {
+const BoardsContainer = () => {
   const [startBoards, setStartBoards] = useState([]);
   const [historyBoards, setHistoryBoards] = useState([]);
   const [isModal, setIsModal] = useState(false);
+  const [role, setRole] = useState('creator');
 
   useEffect(() => {
     if (role === 'creator') {
@@ -41,6 +42,14 @@ const BoardsContainer = ({role}) => {
           />
         ))}
       </ModalWindow>
+      <div>
+        <button type="button" onClick={() => setRole('creator')}>
+          creator
+        </button>
+        <button type="button" onClick={() => setRole('participating')}>
+          participating
+        </button>
+      </div>
       {startBoards.map((board) => (
         <Board
           key={board.id}

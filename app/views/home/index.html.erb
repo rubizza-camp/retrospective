@@ -1,8 +1,7 @@
-<h1 class='title'>Welcome to Retro</h1>
 
 <% if user_signed_in? %>
-  <p>Logged in as <strong><%= current_user.email %></strong></p>
   <p> <%= link_to 'Logout', destroy_user_session_path, method: :delete %></p>
+  <div id='root'></div>
 <% else %>
   <% if ENV.fetch('SKIP_ALFRED', false) == 'true' %>
     <%= link_to 'Sign in as Developer', user_developer_omniauth_callback_path %>
@@ -14,3 +13,6 @@
     <%= '|' unless provider == providers.last %>
   <% end %>
 <% end %>
+
+<%= javascript_pack_tag 'application' %>
+<%= stylesheet_pack_tag 'application' %>
