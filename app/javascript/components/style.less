@@ -121,15 +121,27 @@ select:focus-visible {
 }
 
 .items-container {
-  font-family: "Commissioner";
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 20px;
+}
+
+.items-column {
+  width: 320px
+}
+
+.column-header {
+  font-weight: 600;
+  font-size: 16px;
+  display: block;
+  padding-bottom: 20px;
 }
 
 .chevron-right {
   color: #ff000d;
   margin-left: -3px;
 }
+
 a.active {
   color: red;
 }
