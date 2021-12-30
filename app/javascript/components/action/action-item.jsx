@@ -1,13 +1,22 @@
-import React, {useState} from 'react';
-import {getFullnameOrNickname} from '../../utils/helpers';
-import {Avatar} from '../avatar/avatar';
-import style from './style.module.less';
+import React, { useState } from "react";
+import { getFullnameOrNickname } from "../../utils/helpers";
+import { Avatar } from "../avatar/avatar";
+import style from "./style.module.less";
 
-export const ActionItem = ({item}) => {
+export const ActionItem = ({ item, deleteCallback }) => {
   const [isHidden, setIsHidden] = useState(false);
+  const [isDeleteButtonVisible, setDeleteButtonVisible] = useState(false);
 
   return (
-    <div className={`${style[item.status]} ${style.item}`}>
+    <div
+      className={`${style[item.status]} ${style.item}`}
+      onMouseOver={() => {
+        setDeleteButtonVisible(true);
+      }}
+      onMouseOut={() => {
+        setDeleteButtonVisible(false);
+      }}
+    >
       <div className={style.header}>
         <Avatar
           isSquare
@@ -18,6 +27,16 @@ export const ActionItem = ({item}) => {
           firstName="board title"
         />
         <span className={style.title}>board.title</span>
+        <span
+          className={
+            isDeleteButtonVisible ? style.closeButtonVisible : style.closeButton
+          }
+          onClick={() => {
+            deleteCallback();
+          }}
+        >
+          &times;
+        </span>
       </div>
       <div className={isHidden ? style.showContent : style.content}>
         {item.body}

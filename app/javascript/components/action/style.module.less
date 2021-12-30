@@ -67,7 +67,9 @@
   align-items: center;
   width: 100%;
   margin: 0px 0px 0px 0px;
+  position: relative;
 }
+
 .title {
   margin-left: 20px;
   font-family: Inter;
@@ -117,6 +119,19 @@ div.text:hover {
   flex-grow: 0;
   margin: 0px 8px;
 }
+
 .authorAvatar {
   margin-right: 10px;
+}
+
+.closeButtonVisible {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.closeButton {
+  display: none;
 }

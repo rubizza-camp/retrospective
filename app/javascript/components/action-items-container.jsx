@@ -8,6 +8,8 @@ import './style.less';
 
 const ActionItemsContainer = () => {
   const [actionItems, setActionItems] = useState([]);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [cardId, setCardId] = useState(null);
   const columns = ['pending', 'inProgress', 'done'];
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const ActionItemsContainer = () => {
       case 'pending':
         return 'To do';
       case 'inProgress':
-        return 'In progress';
+        return 'In-progress';
       case 'done':
         return 'Done';
     }
@@ -60,7 +62,14 @@ const ActionItemsContainer = () => {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                             >
-                              <ActionItem key={uuid()} item={item} />
+                              <ActionItem
+                                key={uuid()}
+                                deleteCallback={() => {
+                                  setModalOpen(true);
+                                  setCardId(item.id);
+                                }}
+                                item={item}
+                              />
                             </div>
                           )}
                         </Draggable>
@@ -76,6 +85,34 @@ const ActionItemsContainer = () => {
           </div>
         ))}
       </DragDropContext>
+      <div className={isModalOpen ? 'modal-visible' : 'modal-hidden'}>
+        <div className="modal-content">
+          <div>
+            <h4>Delete file permanently?</h4>
+          </div>
+          <div>
+            <button
+              type="button"
+              className="button delete-button"
+              onClick={() => {
+                setModalOpen(false);
+                alert(`delete id ${cardId}`);
+              }}
+            >
+              Delete
+            </button>
+            <button
+              type="button"
+              className="button cancel-button"
+              onClick={() => {
+                setModalOpen(false);
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
