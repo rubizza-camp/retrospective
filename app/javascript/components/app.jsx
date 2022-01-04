@@ -3,6 +3,7 @@ import {Navigate, NavLink, Route, Routes, useNavigate} from 'react-router-dom';
 import logo from '../../assets/images/logo';
 import ActionItemsContainer from './action-items-container';
 import BoardsContainer from './boards-container';
+import {SettingsPage} from './settings-page/settings-page';
 import './style.less';
 import style from './style.module.css';
 import {UserMenu} from './user-menu/user-menu';
@@ -34,11 +35,7 @@ export const App = () => {
       <div>
         <Routes>
           <Route exact path="/" element={<ActionItemsContainer />} />
-          <Route
-            exact
-            path="/boards"
-            element={<BoardsContainer role="creator" />}
-          />
+          <Route exact path="/boards" element={<BoardsContainer />} />
           <Route
             exact
             path="/board/:boardSlug"
@@ -53,7 +50,7 @@ export const App = () => {
               </div>
             }
           />
-          <Route exact path="/settings" element={<div> settings</div>} />
+          <Route exact path="/settings" element={<SettingsPage />} />
           <Route
             exact
             path="/board/settings/:boardSlug"

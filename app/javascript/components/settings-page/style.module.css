@@ -1,0 +1,112 @@
+.container {
+  margin: 60px 0 0 208px;
+  display: flex;
+  flex-direction: column;
+}
+.avatarForm {
+  position: relative;
+  width: 320px;
+}
+.avatar {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+}
+
+.menuButton {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.items {
+  display: none;
+}
+
+.openMenu {
+  display: block;
+  transition: all ease 0.5s;
+  position: absolute;
+  top: 48px;
+  right: 1px;
+  width: 144px;
+  background: #f7f7f7;
+}
+
+.item {
+  padding: 10px;
+  box-shadow: 0 8px 16px rgba(117, 125, 92, 0.25);
+  background: #f7f7f7;
+  cursor: pointer;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0.015em;
+  list-style-type: none;
+}
+
+.item:hover {
+  background: #eeeeee;
+  color: #363636;
+}
+
+.formElement {
+  margin-bottom: 20px;
+}
+
+.avatarUploadButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 6px 12px;
+  background: #ffff;
+  border: 1px solid #171313;
+  color: #171313;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.avatarUploadButton:hover {
+  border: 1px solid #474343;
+  color: #474343;
+}
+
+.input {
+  width: 320px;
+  height: 40px;
+  margin-top: 8px;
+  border: 1px solid #b1b1b1;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.input:hover {
+  border: 1px solid #797474;
+}
+
+.input:focus {
+  border: 1px solid #3941ff;
+  filter: drop-shadow(0px 0px 4px #3941ff);
+}
+
+.submitButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 28px;
+  color: #ffff;
+  background: #171313;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+  background: #797474;
+}
