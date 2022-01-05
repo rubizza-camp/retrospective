@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import {NavLink} from 'react-router-dom';
-import arrow from '../../images/undo_13';
 import {getDate} from '../../utils/get-date';
 import {boardApi} from '../api/boards-api';
 import {Avatar} from '../avatar/avatar';
-import {GroupIcons} from './group-icons/group-icons';
 import {MenuIcon} from './menu-icon/menu-icon';
 import style from './style.module.less';
 
@@ -14,8 +12,7 @@ const Board = ({
   setBoards,
   setIsModal,
   setHistoryBoards,
-  historyBoards,
-  users
+  historyBoards
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
@@ -47,17 +44,8 @@ const Board = ({
     setIsOpenMenu(false);
   };
 
-  const onClickHandler = (event) => {
-    event.stopPropagation();
-    setIsOpenMenu(false);
-  };
-
-  const backGroundArrow = {
-    backgroundImage: `url(${arrow})`
-  };
-
   return (
-    <div className={style.board} onClick={onClickHandler}>
+    <div className={style.board}>
       <div className={style.header}>
         <Avatar isSquare avatar="" id={board.id} firstName={board.title} />
         <span className={style.title}>
@@ -76,12 +64,10 @@ const Board = ({
       </div>
       <div className={style.footer}>
         <span className={style.textDate}>
-          <div style={backGroundArrow} className={style.arrowIcon}>
-            <span>{board.boardsCount}</span>
-          </div>
+          Date of creation:
           {getDate(board.createdAt)}
         </span>
-        <GroupIcons users={users} totalUsersCount={board.usersCount} />
+        <span className={style.boardCount}>#{board.boardsCount}</span>
       </div>
     </div>
   );

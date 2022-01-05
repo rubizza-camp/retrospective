@@ -1,7 +1,10 @@
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React, {useEffect, useState} from 'react';
 import {boardApi} from './api/boards-api';
 import Board from './board/board';
 import ModalWindow from './board/modal/modal-window';
+import style from './board/style.module.less';
 import './style.less';
 
 const BoardsContainer = () => {
@@ -42,11 +45,32 @@ const BoardsContainer = () => {
           />
         ))}
       </ModalWindow>
-      <div>
-        <button type="button" onClick={() => setRole('creator')}>
+      <div className={style.buttons}>
+        <button
+          className={style.button}
+          type="button"
+          onClick={() => alert('add board')}
+        >
+          <FontAwesomeIcon
+            icon={faPlus}
+            size="sm"
+            color="#474343"
+            style={{marginRight: '8px'}}
+          />
+          New board
+        </button>
+        <button
+          className={style.button}
+          type="button"
+          onClick={() => setRole('creator')}
+        >
           creator
         </button>
-        <button type="button" onClick={() => setRole('participating')}>
+        <button
+          className={style.button}
+          type="button"
+          onClick={() => setRole('participating')}
+        >
           participating
         </button>
       </div>
@@ -59,7 +83,6 @@ const BoardsContainer = () => {
           setBoards={setStartBoards}
           setHistoryBoards={setHistoryBoards}
           board={board}
-          users={board.users}
         />
       ))}
     </div>

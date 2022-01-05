@@ -17,7 +17,7 @@ export const MenuIcon = ({
   };
 
   return (
-    <div className={style.dropdown}>
+    <div className={style.dropdown} onMouseLeave={() => setIsOpenMenu(false)}>
       <FontAwesomeIcon
         icon={faEllipsisH}
         size="lg"

@@ -1,152 +1,91 @@
-.board{
-  margin: 35px;
+.board {
+  margin: 35px 0px 35px 0px;
   padding: 16px;
   width: 430px;
-  height: 136px;
+  // height: 136px;
   border-radius: 8px;
-  box-shadow: 0px 8px 16px 0px #757D5C40;
-  cursor:default;
+  box-shadow: 0px 8px 16px 0px #757d5c40;
+  cursor: default;
 }
-.header{
+.header {
   display: flex;
+  align-items: center;
   width: 100%;
   height: 80%;
   position: relative;
+  margin-bottom: 15px;
 }
 
-.footer{
+.footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-right: 5%;
 }
 
-.title{
+.title {
   display: flex;
   text-align: left;
-  justify-content:flex-start;
-  align-items:center;
+  justify-content: flex-start;
+  align-items: center;
   width: 75%;
   height: 50%;
   margin: 0 0 0 10px;
   color: black;
-
-}
-.title:hover{
-  color: black;
 }
 
 .title a {
-font-size: 20px;
-font-style: normal;
-font-weight: 500;
-line-height: 25px;
-letter-spacing: 0.01em;
-text-align: left;
-text-overflow: ellipsis;
-white-space: nowrap;
-overflow: hidden;
-}
-
-.textDate{
-  display: flex;
-color: #8D8E8A;
-font-size: 12px;
-font-style: normal;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: 0.01em;
-text-align: left;
-}
-
-.card {
-  border-radius: 3px;
-  color: #616161;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 10px;
-
-}
-
-.cardBottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-}
-
-.avatarGroup {
-  display: flex;
-  align-items: center;
-  flex-direction: row-reverse;
-  color: #616161;
-  transition: all ease 0.2s;
-  width: 100%;
-}
-
-.combatant {
-  border: 2px solid #FFFFFF;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  font: 10px sans-serif;
-  line-height: 1;
-  text-transform: uppercase;
+  font-size: 20px;
+  font-style: normal;
   font-weight: 500;
-  color: white;
-  letter-spacing: -0.1em;
-  margin-right: -12px;
-  cursor:default;
+  line-height: 25px;
+  letter-spacing: 0.01em;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
-
-.avaAddCount {
-  width: 20%;
-  cursor:default;
-  margin-left: 10px;
+.textDate {
+  display: flex;
+  color: #8d8e8a;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  text-align: left;
 }
 
-.userCount{
+.boardCount {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 24px;
   height: 24px;
   font-size: 20px;
-  color:gray;
+  color: gray;
   background-color: white;
 }
 
-.arrowIcon{
-  width: 21px;
-  height: 21px;
-  margin-right: 10px;
-  transform: rotate(-90deg);
-  color: #C6C6C4;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: relative;
+.buttons {
+  display: flex;
 }
 
-.arrowIcon span{
-  width: 21px;
-  height: 21px;
-  color: #C6C6C4;
-  transform: rotate(90deg);
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  text-align: center;
-  font-size: 12px;
-  position: absolute;
-
-
+.button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 32px;
+  padding: 6px 12px;
+  background: #ffff;
+  border: 1px solid #171313;
+  color: #171313;
+  box-sizing: border-box;
+  border-radius: 4px;
 }
 
+.button:hover {
+  border: 1px solid #474343;
+  color: #474343;
+}
