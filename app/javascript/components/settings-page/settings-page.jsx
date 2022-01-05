@@ -90,45 +90,43 @@ export const SettingsPage = () => {
           onChange={onChangeHandler}
         />
       </div>
-      <label className={style.formElement}>
+      <div className='form-element'>
         <div>Nickname</div>
         <input
-          className={style.input}
+          className='input'
           value={dataForm.nickName}
           type="text"
           onChange={(element) =>
             setDataForm({...dataForm, nickName: element.currentTarget.value})
           }
         />
-      </label>
-      <label className={style.formElement}>
+      </div>
+      <div className='form-element'>
         <div>First name</div>
         <input
-          className={style.input}
+          className='input'
           value={dataForm.firstName}
           type="text"
           onChange={(element) =>
             setDataForm({...dataForm, firstName: element.currentTarget.value})
           }
         />
-      </label>
-      <label className={style.formElement}>
+      </div>
+      <div className='form-element'>
         <div>Last name</div>
         <input
-          className={style.input}
+          className='input'
           value={dataForm.lastName}
           type="text"
           onChange={(element) =>
             setDataForm({...dataForm, lastName: element.currentTarget.value})
           }
         />
-      </label>
+      </div>
       <div>
-        <input
-          className={style.submitButton}
-          type="submit"
-          value="Save changes"
-        />
+        <button className="button submit-button" type="submit">
+          Save changes
+        </button>
       </div>
     </form>
   );

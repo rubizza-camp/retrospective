@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {boardApi} from './api/boards-api';
 import Board from './board/board';
 import ModalWindow from './board/modal/modal-window';
+import {CreateBoard} from './create-board/create-board';
 import style from './board/style.module.less';
 import './style.less';
 
@@ -12,6 +13,7 @@ const BoardsContainer = () => {
   const [historyBoards, setHistoryBoards] = useState([]);
   const [isModal, setIsModal] = useState(false);
   const [role, setRole] = useState('creator');
+  const [isCreateBoardOpen, setCreateBoardOpen] = useState(false);
 
   useEffect(() => {
     if (role === 'creator') {
@@ -49,7 +51,9 @@ const BoardsContainer = () => {
         <button
           className={style.button}
           type="button"
-          onClick={() => alert('add board')}
+          onClick={() => {
+            setCreateBoardOpen(true);
+          }}
         >
           <FontAwesomeIcon
             icon={faPlus}
@@ -85,6 +89,10 @@ const BoardsContainer = () => {
           board={board}
         />
       ))}
+      <CreateBoard
+        isCreateBoardOpen={isCreateBoardOpen}
+        setCreateBoardOpen={setCreateBoardOpen}
+      />
     </div>
   );
 };

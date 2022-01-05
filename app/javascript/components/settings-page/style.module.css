@@ -2,6 +2,7 @@
   margin: 60px 0 0 208px;
   display: flex;
   flex-direction: column;
+  width: 320px;
 }
 .avatarForm {
   position: relative;
@@ -54,10 +55,6 @@
   color: #363636;
 }
 
-.formElement {
-  margin-bottom: 20px;
-}
-
 .avatarUploadButton {
   display: flex;
   flex-direction: row;
@@ -75,38 +72,4 @@
 .avatarUploadButton:hover {
   border: 1px solid #474343;
   color: #474343;
-}
-
-.input {
-  width: 320px;
-  height: 40px;
-  margin-top: 8px;
-  border: 1px solid #b1b1b1;
-  box-sizing: border-box;
-  border-radius: 4px;
-}
-.input:hover {
-  border: 1px solid #797474;
-}
-
-.input:focus {
-  border: 1px solid #3941ff;
-  filter: drop-shadow(0px 0px 4px #3941ff);
-}
-
-.submitButton {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 28px;
-  color: #ffff;
-  background: #171313;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-}
-
-.submitButton:hover {
-  background: #797474;
 }

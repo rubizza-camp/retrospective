@@ -167,6 +167,7 @@ a.active {
   width: 100%;
   height: 100%;
   background-color: rgba(217, 216, 216, 0.6);
+  z-index: 10;
 }
 
 .modal-content {
@@ -186,12 +187,29 @@ a.active {
   justify-content: space-around;
 }
 
+.input {
+  width: 100%;
+  height: 40px;
+  margin-top: 8px;
+  border: 1px solid #b1b1b1;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.input:hover {
+  border: 1px solid #797474;
+}
+
+.input:focus {
+  border: 1px solid #3941ff;
+  filter: drop-shadow(0px 0px 4px #3941ff);
+}
+
 .button {
-  width: 106px;
   height: 40px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  padding: 10px 28px;
 }
 
 .delete-button {
@@ -203,8 +221,25 @@ a.active {
 }
 
 .cancel-button {
+  width: 106px;
   background-color: transparent;
 }
 .cancel-button:hover {
   border: 2px solid #d9d8d8;
+}
+
+.submit-button {
+  color: #ffff;
+  background: #171313;
+}
+.submit-button:hover {
+  background: #797474;
+}
+
+.form-element {
+  margin-bottom: 20px;
+}
+
+.bold {
+  font-weight: 600;
 }
