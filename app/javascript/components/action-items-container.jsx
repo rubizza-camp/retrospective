@@ -10,7 +10,7 @@ const ActionItemsContainer = () => {
   const [actionItems, setActionItems] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [cardId, setCardId] = useState(null);
-  const columns = ['pending', 'inProgress', 'done'];
+  const columns = ['pending', 'in_progress', 'done'];
 
   useEffect(() => {
     actionItemsApi
@@ -32,7 +32,7 @@ const ActionItemsContainer = () => {
     switch (name) {
       case 'pending':
         return 'To do';
-      case 'inProgress':
+      case 'in_progress':
         return 'In-progress';
       case 'done':
         return 'Done';
@@ -52,7 +52,7 @@ const ActionItemsContainer = () => {
                     if (item.status === columnName) {
                       return (
                         <Draggable
-                          key={uuid()}
+                          key={item.id}
                           draggableId={String(item.id)}
                           index={item.id}
                         >
@@ -63,7 +63,7 @@ const ActionItemsContainer = () => {
                               {...provided.dragHandleProps}
                             >
                               <ActionItem
-                                key={uuid()}
+                                key={item.id}
                                 deleteCallback={() => {
                                   setModalOpen(true);
                                   setCardId(item.id);

@@ -10,3 +10,21 @@
   display: flex;
   justify-content: space-between;
 }
+
+.emoji {
+  position: absolute;
+  top: 34px;
+  right: 10px;
+  cursor: pointer;
+  color: #797474
+}
+
+.emojiPickerWrapper {
+  position: absolute;
+  z-index: 12;
+}
+
+.emojiPickerWrapper aside {
+  width: 320px;
+  height: 400px;
+}
