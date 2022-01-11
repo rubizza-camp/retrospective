@@ -18,14 +18,14 @@ export const App = () => {
           className={style.logo}
           src={logo}
           alt="logo"
-          onClick={() => history('')}
+          onClick={() => history('/boards')}
         />
         <div className={style.buttons}>
-          <NavLink to="/">
-            <div className={style.button}>Cards</div>
-          </NavLink>
           <NavLink to="/boards">
             <div className={style.button}> Boards</div>
+          </NavLink>
+          <NavLink to="/cards">
+            <div className={style.button}>Cards</div>
           </NavLink>
         </div>
         <div>
@@ -34,8 +34,8 @@ export const App = () => {
       </div>
       <div>
         <Routes>
-          <Route exact path="/" element={<ActionItemsContainer />} />
           <Route exact path="/boards" element={<BoardsContainer />} />
+          <Route exact path="/cards" element={<ActionItemsContainer />} />
           <Route
             exact
             path="/board/:boardSlug"
@@ -56,7 +56,7 @@ export const App = () => {
             path="/board/settings/:boardSlug"
             element={<h1> board settings</h1>}
           />
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<Navigate to="/boards" />} />
         </Routes>
       </div>
     </div>
