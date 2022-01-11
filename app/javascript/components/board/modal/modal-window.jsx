@@ -2,7 +2,7 @@ import React from 'react';
 import style from './style.module.less';
 
 const ModalWindow = ({children, visible, setVisible, setHistoryBoards}) => {
-  const closeModelWindow = () => {
+  const closeModalWindow = () => {
     setVisible(false);
     setHistoryBoards([]);
   };
@@ -10,7 +10,7 @@ const ModalWindow = ({children, visible, setVisible, setHistoryBoards}) => {
   const rootClasses = visible ? `${style.modal} ${style.active}` : style.modal;
 
   return (
-    <div className={rootClasses} onClick={closeModelWindow}>
+    <div className={rootClasses} onClick={closeModalWindow}>
       <div
         className={style.modalContent}
         onClick={(event) => event.stopPropagation()}

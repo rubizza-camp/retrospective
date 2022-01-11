@@ -1,9 +1,9 @@
-import {faCog, faSignInAlt} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import {Avatar} from '../avatar/avatar';
-import style from './style.module.css';
+import { faCog, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Avatar } from "../avatar/avatar";
+import style from "./style.module.css";
 
 export const UserMenu = () => {
   const history = useNavigate();
@@ -28,37 +28,39 @@ export const UserMenu = () => {
           lastName="lastName"
         />
       </div>
-      <div className={isOpenMenu ? style.openMenu : style.items}>
-        <div
-          className={style.item}
-          onClick={() => {
-            history('settings');
-            setIsOpenMenu(false);
-          }}
-        >
-          <FontAwesomeIcon
-            icon={faCog}
-            size="sm"
-            color="#474343"
-            style={{marginRight: '12px'}}
-          />
-          Settings
-        </div>
-        <div
-          className={style.item}
-          onClick={() => {
-            setIsOpenMenu(false);
-            alert('log out');
-          }}
-        >
-          <FontAwesomeIcon
-            icon={faSignInAlt}
-            size="sm"
-            color="#474343"
-            style={{marginRight: '12px'}}
-          />
-          Log out
-        </div>
+      <div className={isOpenMenu ? `${style.opened} opened` : "closed"}>
+        <ul>
+          <li
+            className="list-item"
+            onClick={() => {
+              history("settings");
+              setIsOpenMenu(false);
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faCog}
+              size="sm"
+              color="#474343"
+              style={{ marginRight: "12px" }}
+            />
+            Settings
+          </li>
+          <li
+            className="list-item"
+            onClick={() => {
+              setIsOpenMenu(false);
+              alert("log out");
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faSignInAlt}
+              size="sm"
+              color="#474343"
+              style={{ marginRight: "12px" }}
+            />
+            Log out
+          </li>
+        </ul>
       </div>
     </div>
   );

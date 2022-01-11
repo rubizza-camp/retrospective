@@ -47,48 +47,58 @@ const BoardsContainer = () => {
           />
         ))}
       </ModalWindow>
+      <button
+        className={style.createButton}
+        type="button"
+        onClick={() => {
+          setCreateBoardOpen(true);
+        }}
+      >
+        <FontAwesomeIcon
+          icon={faPlus}
+          size="sm"
+          color="#474343"
+          style={{marginRight: '8px'}}
+        />
+        New board
+      </button>
       <div className={style.buttons}>
         <button
-          className={style.button}
-          type="button"
-          onClick={() => {
-            setCreateBoardOpen(true);
-          }}
-        >
-          <FontAwesomeIcon
-            icon={faPlus}
-            size="sm"
-            color="#474343"
-            style={{marginRight: '8px'}}
-          />
-          New board
-        </button>
-        <button
-          className={style.button}
+          className={
+            role === 'creator'
+              ? `${style.activeButton} ${style.button}`
+              : style.button
+          }
           type="button"
           onClick={() => setRole('creator')}
         >
-          creator
+          My Boards
         </button>
         <button
-          className={style.button}
+          className={
+            role === 'participating'
+              ? `${style.activeButton} ${style.button}`
+              : style.button
+          }
           type="button"
           onClick={() => setRole('participating')}
         >
-          participating
+          Boards where I am
         </button>
       </div>
-      {startBoards.map((board) => (
-        <Board
-          key={board.id}
-          role={role}
-          setIsModal={setIsModal}
-          historyBoards={historyBoards}
-          setBoards={setStartBoards}
-          setHistoryBoards={setHistoryBoards}
-          board={board}
-        />
-      ))}
+      <div className={style.boards}>
+        {startBoards.map((board) => (
+          <Board
+            key={board.id}
+            role={role}
+            setIsModal={setIsModal}
+            historyBoards={historyBoards}
+            setBoards={setStartBoards}
+            setHistoryBoards={setHistoryBoards}
+            board={board}
+          />
+        ))}
+      </div>
       <CreateBoard
         isCreateBoardOpen={isCreateBoardOpen}
         setCreateBoardOpen={setCreateBoardOpen}

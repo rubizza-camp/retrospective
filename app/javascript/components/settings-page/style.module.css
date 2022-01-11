@@ -15,44 +15,15 @@
 }
 
 .menuButton {
-  width: 40px;
-  height: 40px;
   position: absolute;
   right: 8px;
   top: 8px;
 }
 
-.items {
-  display: none;
-}
-
-.openMenu {
-  display: block;
-  transition: all ease 0.5s;
+.opened {
   position: absolute;
   top: 48px;
-  right: 1px;
-  width: 144px;
-  background: #f7f7f7;
-}
-
-.item {
-  padding: 10px;
-  box-shadow: 0 8px 16px rgba(117, 125, 92, 0.25);
-  background: #f7f7f7;
-  cursor: pointer;
-  font-family: Inter;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 150%;
-  letter-spacing: 0.015em;
-  list-style-type: none;
-}
-
-.item:hover {
-  background: #eeeeee;
-  color: #363636;
+  right: 8px;
 }
 
 .avatarUploadButton {

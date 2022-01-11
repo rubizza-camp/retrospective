@@ -104,7 +104,7 @@ a:visited {
 }
 
 .board-container {
-  margin: 25px 0 0 208px;
+  margin: 25px 208px 0 208px;
   font-family: "Commissioner";
 }
 
@@ -243,4 +243,56 @@ a.active {
 
 .bold {
   font-weight: 600;
+}
+
+.menu-button {
+  z-index: 1;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.menu-button:hover {
+  background-color: #EFEFEF;
+}
+
+.menu-button svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.menu-button:hover svg {
+  color: #474343;
+}
+
+.opened {
+  display: block;
+  transition: all ease 0.5s;
+  padding: 16px 0;
+  background-color: white; 
+  position: absolute; 
+  right: 0;
+  width: 144px;
+  border: 1px solid #D9D8D8;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(117, 125, 92, 0.25);
+}
+
+.closed {
+  display: none;
+}
+
+.list-item {
+  padding: 10px 14px;
+  background-color: white;
+  cursor: pointer;
+  list-style-type: none;
+}
+
+.list-item:hover {
+  background-color: whitesmoke;
+  color: #363636;
 }
