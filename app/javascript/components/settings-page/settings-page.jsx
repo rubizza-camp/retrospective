@@ -1,16 +1,16 @@
-import { faEllipsisH, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef, useState } from "react";
-import style from "./style.module.css";
+import {faEllipsisH, faPlus} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import React, {useRef, useState} from 'react';
+import style from './style.module.css';
 
 export const SettingsPage = () => {
   const fileInput = useRef(null);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [dataForm, setDataForm] = useState({
-    nickName: "",
-    firstName: "",
-    lastName: "",
-    avatar: null,
+    nickName: '',
+    firstName: '',
+    lastName: '',
+    avatar: null
   });
 
   const onChangeHandler = (element) => {
@@ -18,7 +18,7 @@ export const SettingsPage = () => {
       const reader = new FileReader();
       reader.readAsDataURL(element.target.files[0]);
       reader.onloadend = () => {
-        setDataForm({ ...dataForm, avatar: reader.result });
+        setDataForm({...dataForm, avatar: reader.result});
       };
     }
   };
@@ -34,37 +34,39 @@ export const SettingsPage = () => {
         {dataForm.avatar ? (
           <div className={style.avatarForm}>
             <img src={dataForm.avatar} className={style.avatar} />
-            <div
-              className={`${style.menuButton} menu-button`}
-              onClick={(event) => {
-                event.stopPropagation();
-                setIsOpenMenu(!isOpenMenu);
-              }}
-            >
-              <FontAwesomeIcon icon={faEllipsisH} size="lg" color="#C6C6C4" />
-            </div>
-            <div className={isOpenMenu ? `${style.opened} opened` : "closed"}>
-              <ul onMouseLeave={() => setIsOpenMenu(false)}>
-                <li
-                  className="list-item"
-                  onClick={() => {
-                    setIsOpenMenu(false);
-                    fileInput.current.click();
-                  }}
-                >
-                  Change photo
-                </li>
-                <li
-                  className="list-item"
-                  onClick={() => {
-                    setIsOpenMenu(false);
-                    fileInput.current.value = null;
-                    setDataForm({ avatar: null });
-                  }}
-                >
-                  Delete
-                </li>
-              </ul>
+            <div onMouseLeave={() => setIsOpenMenu(false)}>
+              <div
+                className={`${style.menuButton} menu-button`}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setIsOpenMenu(!isOpenMenu);
+                }}
+              >
+                <FontAwesomeIcon icon={faEllipsisH} size="lg" color="#C6C6C4" />
+              </div>
+              <div className={isOpenMenu ? `${style.opened} opened` : 'closed'}>
+                <ul>
+                  <li
+                    className="list-item"
+                    onClick={() => {
+                      setIsOpenMenu(false);
+                      fileInput.current.click();
+                    }}
+                  >
+                    Change photo
+                  </li>
+                  <li
+                    className="list-item"
+                    onClick={() => {
+                      setIsOpenMenu(false);
+                      fileInput.current.value = null;
+                      setDataForm({avatar: null});
+                    }}
+                  >
+                    Delete
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         ) : (
@@ -77,7 +79,7 @@ export const SettingsPage = () => {
               icon={faPlus}
               size="sm"
               color="#474343"
-              style={{ marginRight: "8px" }}
+              style={{marginRight: '8px'}}
             />
             Upload photo
           </button>
@@ -87,7 +89,7 @@ export const SettingsPage = () => {
           accept="image/*"
           type="file"
           name="image"
-          style={{ display: "none" }}
+          style={{display: 'none'}}
           onChange={onChangeHandler}
         />
       </div>
@@ -98,7 +100,7 @@ export const SettingsPage = () => {
           value={dataForm.nickName}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, nickName: element.currentTarget.value })
+            setDataForm({...dataForm, nickName: element.currentTarget.value})
           }
         />
       </div>
@@ -109,7 +111,7 @@ export const SettingsPage = () => {
           value={dataForm.firstName}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, firstName: element.currentTarget.value })
+            setDataForm({...dataForm, firstName: element.currentTarget.value})
           }
         />
       </div>
@@ -120,7 +122,7 @@ export const SettingsPage = () => {
           value={dataForm.lastName}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, lastName: element.currentTarget.value })
+            setDataForm({...dataForm, lastName: element.currentTarget.value})
           }
         />
       </div>
