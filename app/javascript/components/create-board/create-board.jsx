@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Picker from 'emoji-picker-react';
 import {faSmile} from '@fortawesome/free-regular-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {getBoardDateName} from '../../utils/get-date';
 import style from './style.module.css';
 
 const EmojiIcon = ({emojiColumnName, formData, setEmojiData}) => {
@@ -26,13 +27,19 @@ const EmojiIcon = ({emojiColumnName, formData, setEmojiData}) => {
 
 export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
   const [formData, setformData] = useState({
-    boardName: '',
-    firstColumnName: '',
-    firstColumnEmoji: null,
-    secondColumnName: '',
-    secondColumnEmoji: null,
-    thirdColumnName: '',
-    thirdColumnEmoji: null
+    boardName: getBoardDateName(Date.now()),
+    firstColumnName: 'Mad',
+    firstColumnEmoji: {
+      emoji: '😔',
+    },
+    secondColumnName: 'Sad',
+    secondColumnEmoji: {
+      emoji: '😡'
+    },
+    thirdColumnName: 'Glad',
+    thirdColumnEmoji: {
+      emoji: '🤗'
+    }
   });
 
   const [emojiData, setEmojiData] = useState({
@@ -78,6 +85,7 @@ export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
                   boardName: element.currentTarget.value
                 })
               }
+              required
             />
           </div>
           <div className="form-element">
@@ -92,6 +100,7 @@ export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
                   firstColumnName: element.currentTarget.value
                 })
               }
+              required
             />
             <EmojiIcon
               emojiColumnName="firstColumnEmoji"
@@ -111,6 +120,7 @@ export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
                   secondColumnName: element.currentTarget.value
                 })
               }
+              required
             />
             <EmojiIcon
               emojiColumnName="secondColumnEmoji"
@@ -130,6 +140,7 @@ export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
                   thirdColumnName: element.currentTarget.value
                 })
               }
+              required
             />
             <EmojiIcon
               emojiColumnName="thirdColumnEmoji"
