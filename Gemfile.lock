@@ -497,6 +497,7 @@ DEPENDENCIES
   rails-assets-bulma!
   rails-controller-testing
   rails-erd
+  rake
   react-rails
   redis (~> 4.2)
   rspec-rails (~> 4.0.1)
@@ -517,7 +518,7 @@ DEPENDENCIES
   webpacker (~> 5)
 
 RUBY VERSION
-   ruby 2.6.6p146
+   ruby 2.7.0p0
 
 BUNDLED WITH
-   2.2.25
+   2.3.5

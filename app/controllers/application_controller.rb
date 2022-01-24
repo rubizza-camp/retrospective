@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   before_action :set_raven_context
+  # before_action :developer, unless: :user_signed_in?
   before_action :store_user_location!, if: :storable_location?
   before_action :authenticate_user!, except: %i[sign_in sign_up]
   authorize :user, through: :current_or_guest_user
@@ -10,6 +11,11 @@ class ApplicationController < ActionController::Base
   rescue_from ActionPolicy::Unauthorized do |ex|
     redirect_to root_path, alert: ex.result.message
   end
+
+  # def developer
+  #   @user = User.first
+  #   sign_in_and_redirect @user, event: :authentication
+  # end
 
   private
 

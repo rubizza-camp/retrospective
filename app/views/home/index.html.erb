@@ -1,17 +1,16 @@
 
-<% if user_signed_in? %>
+<%- if user_signed_in? %>
+  <p> <%= link_to 'Logout', destroy_user_session_path, method: :delete %></p>
   <div id='root'></div>
-<% else %>
-  <% if ENV.fetch('SKIP_ALFRED', false) == 'true' %>
+<%- else %>
+  <%- if ENV.fetch('SKIP_ALFRED', false) == 'true' %>
     <%= link_to 'Sign in as Developer', user_developer_omniauth_callback_path %>
     <%= '|' if providers.any? %>
   <% end %>
 
-  <% providers.each do |provider| %>
+  <%- providers.each do |provider| %>
     <%= link_to "Sign in with #{provider.capitalize}", send("user_#{provider}_omniauth_authorize_path") %>
     <%= '|' unless provider == providers.last %>
   <% end %>
 <% end %>
 
-<%= javascript_pack_tag 'application' %>
-<%= stylesheet_pack_tag 'application' %>

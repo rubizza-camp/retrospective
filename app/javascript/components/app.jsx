@@ -10,7 +10,6 @@ import {UserMenu} from './user-menu/user-menu';
 
 export const App = () => {
   const history = useNavigate();
-
   return (
     <div>
       <div className={style.header}>
