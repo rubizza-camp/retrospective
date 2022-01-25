@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# https://github.com/rails/rails/issues/29112
+Rails.application.eager_load!
+ActiveRecord::Base.descendants.each(&:reset_column_information)
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 
