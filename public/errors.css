@@ -34,7 +34,6 @@ body {
 }
 
 .error .error-image h1 {
-  font-family: 'Montserrat', sans-serif;
   font-size: 146px;
   font-weight: 700;
   margin: 0px;
@@ -61,7 +60,6 @@ span.error-500{
   }
 
 .error h2 {
-  font-family: 'Montserrat', sans-serif;
   font-size: 22px;
   font-weight: 700;
   margin: 0;
@@ -70,13 +68,11 @@ span.error-500{
 }
 
 .error p {
-  font-family: 'Montserrat', sans-serif;
   color: #787878;
   font-weight: 300;
 }
 
 .error a {
-  font-family: 'Montserrat', sans-serif;
   display: inline-block;
   padding: 12px 30px;
   font-weight: 700;
