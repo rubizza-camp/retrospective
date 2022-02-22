@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { BoardType } from "../../typings/board";
 import { getDate } from "../../utils/get-date";
 import { boardApi } from "../api/boards-api";
 import { Avatar } from "../avatar/avatar";
 import { MenuIcon } from "./menu-icon/menu-icon";
 import style from "./style.module.less";
 
-const Board = ({
+type Props = {
+  setHistoryBoards: (boards: Array<BoardType>) => void
+  setBoards: (boards: Array<BoardType>) => void
+  setIsModal: (isModal: boolean) => void
+  role: string
+  board: BoardType
+  historyBoards: Array<BoardType>
+};
+
+const Board: React.FC<Props> = ({
   role,
   board,
   setBoards,

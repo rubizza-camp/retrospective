@@ -1,5 +1,5 @@
-import {enGB} from 'date-fns/locale';
-import {formatRelative, subDays, format} from 'date-fns';
+import { enGB } from 'date-fns/locale';
+import { formatRelative, subDays, format } from 'date-fns';
 
 const formatRelativeLocale = {
   lastWeek: " 'Last' eeee, 'at' HH:mm",
@@ -12,16 +12,16 @@ const formatRelativeLocale = {
 
 const locale = {
   ...enGB,
-  formatRelative: (token) => formatRelativeLocale[token]
+  formatRelative: (token: "lastWeek" | "yesterday" | "today" | "tomorrow" | "nextWeek" | "other") => formatRelativeLocale[token]
 };
 
-export const getDate = (createdAt) => {
+export const getDate = (createdAt: string | number | Date) => {
   return formatRelative(subDays(new Date(createdAt), 0), new Date(), {
     locale
   });
 };
 
-export const getBoardDateName = (date) => {
+export const getBoardDateName = (date: number | Date) => {
   if (!date) return date;
   return format(date, "dd-MM-yyyy");
 };

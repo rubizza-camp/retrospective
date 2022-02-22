@@ -1,12 +1,12 @@
 import React from 'react';
-import {Navigate, NavLink, Route, Routes, useNavigate} from 'react-router-dom';
-import logo from '../../assets/images/logo';
+import { Navigate, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import logo from '../../assets/images/logo.png';
 import ActionItemsContainer from './action-items-container';
 import BoardsContainer from './boards-container';
-import {SettingsPage} from './settings-page/settings-page';
+import { SettingsPage } from './settings-page/settings-page';
 import './style.less';
-import style from './style.module.css';
-import {UserMenu} from './user-menu/user-menu';
+import style from './style.module.less';
+import { UserMenu } from './user-menu/user-menu';
 
 export const App = () => {
   const history = useNavigate();
@@ -33,15 +33,14 @@ export const App = () => {
       </div>
       <div>
         <Routes>
-          <Route exact path="/boards" element={<BoardsContainer />} />
-          <Route exact path="/cards" element={<ActionItemsContainer />} />
+          <Route path="/boards" element={<BoardsContainer />} />
+          <Route path="/cards" element={<ActionItemsContainer />} />
           <Route
-            exact
             path="/board/:boardSlug"
             element={
-              <div style={{display: 'flex'}}>
+              <div style={{ display: 'flex' }}>
                 <NavLink
-                  style={{margin: '20px'}}
+                  style={{ margin: '20px' }}
                   to="/board/settings/:boardSlug"
                 >
                   <div className={style.button}>Board settings</div>
@@ -49,9 +48,8 @@ export const App = () => {
               </div>
             }
           />
-          <Route exact path="/settings" element={<SettingsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route
-            exact
             path="/board/settings/:boardSlug"
             element={<h1> board settings</h1>}
           />

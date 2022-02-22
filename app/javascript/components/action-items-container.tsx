@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from 'react';
-import {Droppable, Draggable, DragDropContext} from 'react-beautiful-dnd';
-import uuid from 'uuid';
+import React, { useEffect, useState } from 'react';
+import { Droppable, Draggable, DragDropContext, DropResult } from 'react-beautiful-dnd';
 
-import {ActionItem} from './action/action-item';
-import {actionItemsApi} from './api/action-items-api';
+import { ActionItemType, ACTION_ITEM_STATUS } from '../typings/actionItem'
+import { ActionItem } from './action/action-item';
+import { actionItemsApi } from './api/action-items-api';
 import './style.less';
 
-const ActionItemsContainer = () => {
-  const [actionItems, setActionItems] = useState([]);
+const ActionItemsContainer: React.FC = () => {
+  const [actionItems, setActionItems] = useState<Array<ActionItemType>>([]);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [cardId, setCardId] = useState(null);
-  const columns = ['pending', 'in_progress', 'done'];
+  const [cardId, setCardId] = useState<number | null>(null);
+  const columns = [ACTION_ITEM_STATUS.ToDo, ACTION_ITEM_STATUS.InProgress, ACTION_ITEM_STATUS.Done];
 
   useEffect(() => {
     actionItemsApi
@@ -18,8 +18,8 @@ const ActionItemsContainer = () => {
       .then((response) => setActionItems(response));
   }, []);
 
-  const handleOnDragEnd = (items) => (result) => {
-    const {destination} = result;
+  const handleOnDragEnd = (items: Array<ActionItemType>) => (result: DropResult) => {
+    const { destination } = result;
 
     if (!destination) {
       return;
@@ -28,13 +28,13 @@ const ActionItemsContainer = () => {
     console.log(items, result);
   };
 
-  const getColumnName = (name) => {
+  const getColumnName = (name: string) => {
     switch (name) {
-      case 'pending':
+      case ACTION_ITEM_STATUS.ToDo:
         return 'To do';
-      case 'in_progress':
+      case ACTION_ITEM_STATUS.InProgress:
         return 'In-progress';
-      case 'done':
+      case ACTION_ITEM_STATUS.Done:
         return 'Done';
     }
   };
@@ -42,8 +42,8 @@ const ActionItemsContainer = () => {
   return (
     <div className="items-container">
       <DragDropContext onDragEnd={handleOnDragEnd(actionItems)}>
-        {columns.map((columnName) => (
-          <div key={uuid()} className="items-column">
+        {columns.map((columnName, index) => (
+          <div key={index} className="items-column">
             <span className="column-header">{getColumnName(columnName)}</span>
             <Droppable droppableId={columnName}>
               {(provided) => (

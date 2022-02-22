@@ -1,7 +1,16 @@
 import React from 'react';
+import { BoardType } from '../../../typings/board';
 import style from './style.module.less';
 
-const ModalWindow = ({children, visible, setVisible, setHistoryBoards}) => {
+
+type Props = {
+  visible: boolean
+  setVisible: (isModal: boolean) => void
+  setHistoryBoards: (board: Array<BoardType> | []) => void
+};
+
+
+const ModalWindow: React.FC<Props> = ({ children, visible, setVisible, setHistoryBoards }) => {
   const closeModalWindow = () => {
     setVisible(false);
     setHistoryBoards([]);

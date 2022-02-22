@@ -1,19 +1,22 @@
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import React, {useEffect, useState} from 'react';
-import {boardApi} from './api/boards-api';
-import Board from './board/board';
-import ModalWindow from './board/modal/modal-window';
-import {CreateBoard} from './create-board/create-board';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect, useState } from 'react';
+import { boardApi } from './api/boards-api';
 import style from './board/style.module.less';
 import './style.less';
+import { BoardType } from '../typings/board';
+import ModalWindow from './board/modal/modal-window';
+import Board from './board/board';
+import { CreateBoard } from './create-board/create-board';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-const BoardsContainer = () => {
-  const [startBoards, setStartBoards] = useState([]);
-  const [historyBoards, setHistoryBoards] = useState([]);
+const BoardsContainer: React.FC = () => {
+  const [startBoards, setStartBoards] = useState<Array<BoardType> | []>([]);
+  const [historyBoards, setHistoryBoards] = useState<Array<BoardType> | []>([]);
   const [isModal, setIsModal] = useState(false);
   const [role, setRole] = useState('creator');
   const [isCreateBoardOpen, setCreateBoardOpen] = useState(false);
+
 
   useEffect(() => {
     if (role === 'creator') {
@@ -43,7 +46,6 @@ const BoardsContainer = () => {
             setBoards={setStartBoards}
             setHistoryBoards={setHistoryBoards}
             board={board}
-            users={board.users}
           />
         ))}
       </ModalWindow>
@@ -55,10 +57,10 @@ const BoardsContainer = () => {
         }}
       >
         <FontAwesomeIcon
-          icon={faPlus}
+          icon={faPlus as IconProp}
           size="sm"
           color="#474343"
-          style={{marginRight: '8px'}}
+          style={{ marginRight: '8px' }}
         />
         New board
       </button>

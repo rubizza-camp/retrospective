@@ -1,12 +1,17 @@
 import React, { useState } from "react";
+import { ActionItemType } from "../../typings/actionItem";
 import { getFullnameOrNickname } from "../../utils/helpers";
 import { Avatar } from "../avatar/avatar";
 import style from "./style.module.less";
 
-export const ActionItem = ({ item, deleteCallback }) => {
+type Props = {
+  item: ActionItemType;
+  deleteCallback: () => void;
+};
+
+export const ActionItem: React.FC<Props> = ({ item, deleteCallback }) => {
   const [isHidden, setIsHidden] = useState(false);
   const [isDeleteButtonVisible, setDeleteButtonVisible] = useState(false);
-
   return (
     <div
       className={`${style[item.status]} ${style.item}`}
@@ -23,7 +28,7 @@ export const ActionItem = ({ item, deleteCallback }) => {
           width={24}
           height={24}
           avatar=""
-          id="3"
+          id={3}
           firstName="board title"
         />
         <span className={style.title}>board.title</span>

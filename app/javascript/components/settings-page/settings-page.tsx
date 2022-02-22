@@ -1,29 +1,40 @@
-import {faEllipsisH, faPlus} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import React, {useRef, useState} from 'react';
-import style from './style.module.css';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { MutableRefObject, useRef, useState } from 'react';
+import style from './style.module.less';
 
-export const SettingsPage = () => {
-  const fileInput = useRef(null);
+type DataFormType = {
+  nickName: string
+  firstName: string
+  lastName: string
+  avatar: string
+}
+
+export const SettingsPage: React.FC = () => {
+  const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [dataForm, setDataForm] = useState({
+  const [dataForm, setDataForm] = useState<DataFormType>({
     nickName: '',
     firstName: '',
     lastName: '',
-    avatar: null
+    avatar: ''
   });
 
-  const onChangeHandler = (element) => {
+
+  const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {
     if (element.target.files && element.target.files.length > 0) {
       const reader = new FileReader();
       reader.readAsDataURL(element.target.files[0]);
       reader.onloadend = () => {
-        setDataForm({...dataForm, avatar: reader.result});
+        if (typeof (reader.result) === "string")
+          setDataForm({ ...dataForm, avatar: reader.result });
       };
     }
   };
 
-  const handleSubmit = (event) => {
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     alert(JSON.stringify(dataForm));
     event.preventDefault();
   };
@@ -42,7 +53,7 @@ export const SettingsPage = () => {
                   setIsOpenMenu(!isOpenMenu);
                 }}
               >
-                <FontAwesomeIcon icon={faEllipsisH} size="lg" color="#C6C6C4" />
+                <FontAwesomeIcon icon={faEllipsisH as IconProp} size="lg" color="#C6C6C4" />
               </div>
               <div className={isOpenMenu ? `${style.opened} opened` : 'closed'}>
                 <ul>
@@ -50,7 +61,7 @@ export const SettingsPage = () => {
                     className="list-item"
                     onClick={() => {
                       setIsOpenMenu(false);
-                      fileInput.current.click();
+                      fileInput.current?.click();
                     }}
                   >
                     Change photo
@@ -59,8 +70,7 @@ export const SettingsPage = () => {
                     className="list-item"
                     onClick={() => {
                       setIsOpenMenu(false);
-                      fileInput.current.value = null;
-                      setDataForm({avatar: null});
+                      setDataForm({ ...dataForm, avatar: '' });
                     }}
                   >
                     Delete
@@ -73,13 +83,13 @@ export const SettingsPage = () => {
           <button
             type="button"
             className={style.avatarUploadButton}
-            onClick={() => fileInput.current.click()}
+            onClick={() => fileInput.current?.click()}
           >
             <FontAwesomeIcon
-              icon={faPlus}
+              icon={faPlus as IconProp}
               size="sm"
               color="#474343"
-              style={{marginRight: '8px'}}
+              style={{ marginRight: '8px' }}
             />
             Upload photo
           </button>
@@ -89,8 +99,9 @@ export const SettingsPage = () => {
           accept="image/*"
           type="file"
           name="image"
-          style={{display: 'none'}}
+          style={{ display: 'none' }}
           onChange={onChangeHandler}
+          defaultValue={dataForm.avatar}
         />
       </div>
       <div className="form-element">
@@ -100,7 +111,7 @@ export const SettingsPage = () => {
           value={dataForm.nickName}
           type="text"
           onChange={(element) =>
-            setDataForm({...dataForm, nickName: element.currentTarget.value})
+            setDataForm({ ...dataForm, nickName: element.currentTarget.value })
           }
         />
       </div>
@@ -111,7 +122,7 @@ export const SettingsPage = () => {
           value={dataForm.firstName}
           type="text"
           onChange={(element) =>
-            setDataForm({...dataForm, firstName: element.currentTarget.value})
+            setDataForm({ ...dataForm, firstName: element.currentTarget.value })
           }
         />
       </div>
@@ -122,7 +133,7 @@ export const SettingsPage = () => {
           value={dataForm.lastName}
           type="text"
           onChange={(element) =>
-            setDataForm({...dataForm, lastName: element.currentTarget.value})
+            setDataForm({ ...dataForm, lastName: element.currentTarget.value })
           }
         />
       </div>

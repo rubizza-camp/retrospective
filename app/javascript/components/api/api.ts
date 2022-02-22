@@ -1,17 +1,17 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import applyCaseMiddleware from 'axios-case-converter';
 
 axios.defaults.withCredentials = true;
 
+type HeadersInit = { [key: string]: string | null | undefined };
+
 const createAPI = () => {
-  let headers = {};
+  let headers: HeadersInit = {};
   if (sessionStorage.user) {
     headers = JSON.parse(sessionStorage.user);
   }
 
-  headers['X-CSRF-Token'] = document
-    .querySelector(`meta[name='csrf-token']`)
-    .getAttribute('content');
+  headers['X-CSRF-Token'] = document.querySelector(`meta[name='csrf-token']`)?.getAttribute('content')
 
   const api = applyCaseMiddleware(
     axios.create({
@@ -21,11 +21,11 @@ const createAPI = () => {
     })
   );
 
-  const onSuccess = (response) => {
-    return response.data;
+  const onSuccess = (response: AxiosResponse) => {
+    return response
   };
 
-  const onFail = (error) => {
+  const onFail = (error: AxiosError) => {
     if (error.response) {
       alert(error.response.data.errors.fullMessages);
     } else {

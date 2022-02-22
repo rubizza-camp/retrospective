@@ -1,71 +1,86 @@
-import React, {useState} from 'react';
-import Picker from 'emoji-picker-react';
-import {faSmile} from '@fortawesome/free-regular-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {getBoardDateName} from '../../utils/get-date';
-import style from './style.module.css';
+import React, { useState } from "react";
+import Picker, { IEmojiData } from "emoji-picker-react";
+import { faSmile } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getBoardDateName } from "../../utils/get-date";
+import style from "./style.module.less";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { EmojiIconProps, EmojiDataStateType } from "../../typings/emoji";
 
-const EmojiIcon = ({emojiColumnName, formData, setEmojiData}) => {
+const EmojiIcon: React.FC<EmojiIconProps> = ({
+  emojiColumnName,
+  formData,
+  setEmojiData,
+}) => {
   return (
     <a
       className={style.emoji}
       onClick={() => {
         setEmojiData({
           emojiColumnName,
-          emojiPickerOpen: true
+          emojiPickerOpen: true,
         });
       }}
     >
       {formData[emojiColumnName] ? (
         formData[emojiColumnName].emoji
       ) : (
-        <FontAwesomeIcon icon={faSmile} size="lg" />
+        <FontAwesomeIcon icon={faSmile as IconProp} size="lg" />
       )}
     </a>
   );
 };
 
-export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
+type CreateBoardProps = {
+  isCreateBoardOpen: boolean;
+  setCreateBoardOpen: (isCreateBoardOpen: boolean) => void;
+};
+
+export const CreateBoard: React.FC<CreateBoardProps> = ({
+  isCreateBoardOpen,
+  setCreateBoardOpen,
+}) => {
   const [formData, setformData] = useState({
     boardName: getBoardDateName(Date.now()),
-    firstColumnName: 'Mad',
+    firstColumnName: "Mad",
     firstColumnEmoji: {
-      emoji: '😔',
+      emoji: "😔",
     },
-    secondColumnName: 'Sad',
+    secondColumnName: "Sad",
     secondColumnEmoji: {
-      emoji: '😡'
+      emoji: "😡",
     },
-    thirdColumnName: 'Glad',
+    thirdColumnName: "Glad",
     thirdColumnEmoji: {
-      emoji: '🤗'
-    }
+      emoji: "🤗",
+    },
   });
 
-  const [emojiData, setEmojiData] = useState({
-    emojiColumnName: '',
-    emojiPickerOpen: false
+  const [emojiData, setEmojiData] = useState<EmojiDataStateType>({
+    emojiColumnName: "",
+    emojiPickerOpen: false,
   });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent) => {
     alert(JSON.stringify(formData));
     event.preventDefault();
     setCreateBoardOpen(false);
   };
 
-  const onEmojiClick = (name) => (event, emojiObject) => {
-    setformData({
-      ...formData,
-      [name]: emojiObject
-    });
-    setEmojiData({
-      emojiColumnName: '',
-      emojiPickerOpen: false
-    });
-  };
+  const onEmojiClick =
+    (name: string) => (event: MouseEvent, emojiObject: IEmojiData) => {
+      setformData({
+        ...formData,
+        [name]: emojiObject,
+      });
+      setEmojiData({
+        emojiColumnName: "",
+        emojiPickerOpen: false,
+      });
+    };
 
   return (
-    <div className={isCreateBoardOpen ? 'modal-visible' : 'modal-hidden'}>
+    <div className={isCreateBoardOpen ? "modal-visible" : "modal-hidden"}>
       <div className={style.formWrapper}>
         {emojiData.emojiPickerOpen && (
           <div className={style.emojiPickerWrapper}>
@@ -82,7 +97,7 @@ export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
               onChange={(element) =>
                 setformData({
                   ...formData,
-                  boardName: element.currentTarget.value
+                  boardName: element.currentTarget.value,
                 })
               }
               required
@@ -97,7 +112,7 @@ export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
               onChange={(element) =>
                 setformData({
                   ...formData,
-                  firstColumnName: element.currentTarget.value
+                  firstColumnName: element.currentTarget.value,
                 })
               }
               required
@@ -117,7 +132,7 @@ export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
               onChange={(element) =>
                 setformData({
                   ...formData,
-                  secondColumnName: element.currentTarget.value
+                  secondColumnName: element.currentTarget.value,
                 })
               }
               required
@@ -137,7 +152,7 @@ export const CreateBoard = ({isCreateBoardOpen, setCreateBoardOpen}) => {
               onChange={(element) =>
                 setformData({
                   ...formData,
-                  thirdColumnName: element.currentTarget.value
+                  thirdColumnName: element.currentTarget.value,
                 })
               }
               required

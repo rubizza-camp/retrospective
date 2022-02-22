@@ -1,8 +1,18 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
-export const MenuIcon = ({
+type Props = {
+  role: string
+  isOpenMenu: boolean
+  setIsOpenMenu: (isOpenMenu: boolean) => void
+  historyBoard: () => void
+  deleteBoard: () => void
+  continueBoard: () => void
+};
+
+export const MenuIcon: React.FC<Props> = ({
   role,
   setIsOpenMenu,
   isOpenMenu,
@@ -10,15 +20,15 @@ export const MenuIcon = ({
   deleteBoard,
   continueBoard,
 }) => {
-  const onClickHandler = (event) => {
-    event.stopPropagation();
+  const onClickHandler = () => {
     setIsOpenMenu(!isOpenMenu);
   };
+
 
   return (
     <div onMouseLeave={() => setIsOpenMenu(false)}>
       <div className="menu-button" onClick={onClickHandler}>
-        <FontAwesomeIcon icon={faEllipsisH} size="lg" color="#C6C6C4" />
+        <FontAwesomeIcon icon={faEllipsisH as IconProp} size="lg" color="#C6C6C4" />
       </div>
       <div className={isOpenMenu ? "opened" : "closed"}>
         <ul>
