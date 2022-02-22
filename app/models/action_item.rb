@@ -6,6 +6,7 @@ class ActionItem < ApplicationRecord
   belongs_to :author, class_name: 'User'
   belongs_to :assignee, class_name: 'User', optional: true
   belongs_to :board
+  delegate :title, to: :board, prefix: :board
 
   validates_presence_of :body, :status
 

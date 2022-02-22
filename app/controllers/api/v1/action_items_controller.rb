@@ -9,7 +9,7 @@ module API
       skip_verify_authorized only: %i[index]
 
       def index
-        action_items = current_user.action_items.includes(%i[author assignee])
+        action_items = current_user.action_items.includes(%i[author assignee board])
                                    .order(status: :desc, created_at: :asc)
         render json: action_items
       end

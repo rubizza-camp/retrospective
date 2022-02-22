@@ -12,7 +12,7 @@ RSpec.describe API::V1::ActionItemsController, type: :controller do
   end
 
   let_it_be(:item_attrs) do
-    %w[id body times_moved status author assignee]
+    %w[id body times_moved status author assignee board_id board_title]
   end
 
   before do
