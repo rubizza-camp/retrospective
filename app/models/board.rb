@@ -33,6 +33,10 @@ class Board < ApplicationRecord
     slug
   end
 
+  def next_board
+    Board.where("id > ?", id).where.not(previous_board_id: nil).order("id ASC").first
+  end
+
   private
 
   def set_slug
