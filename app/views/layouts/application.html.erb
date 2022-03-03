@@ -14,9 +14,9 @@
 
   <body>
       <p id="notice" class="alert"><%= notice %></p>
-      <p id="alert" class="alert"><%= alert %></p>   
+      <p id="alert" class="alert"><%= alert %></p>
       <% if user_signed_in? %>
-        <p class="logoutButton"><%= link_to 'Logout', destroy_user_session_path, method: :delete %></p>
+        <p class="logout-button"><%= link_to 'Logout', destroy_user_session_path, method: :delete, id: "logoutBtn"%></p>
         <div id='root'></div>
       <% else %>
         <div class="wrapper">

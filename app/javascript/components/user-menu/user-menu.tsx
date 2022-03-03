@@ -50,7 +50,7 @@ export const UserMenu: React.FC = () => {
             className="list-item"
             onClick={() => {
               setIsOpenMenu(false);
-              alert("log out");
+              document.getElementById("logoutBtn")?.click()
             }}
           >
             <FontAwesomeIcon
