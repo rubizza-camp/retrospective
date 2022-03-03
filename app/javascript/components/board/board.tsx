@@ -68,7 +68,7 @@ const Board: React.FC<Props> = ({
       <div className={style.header}>
         <Avatar isSquare avatar="" id={board.id} firstName={board.title} />
         <span className={style.title}>
-          <NavLink to={`/board/${board.slug}`}>{board.title}</NavLink>
+          <NavLink to={`/board/${board.id}`}>{board.title}</NavLink>
         </span>
         {!historyBoards.length && isMenuButtonVisisble && (
           <MenuIcon

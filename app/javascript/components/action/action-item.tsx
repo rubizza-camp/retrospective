@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { ActionItemType } from "../../typings/actionItem";
 import { getFullnameOrNickname } from "../../utils/helpers";
 import { Avatar } from "../avatar/avatar";
@@ -28,10 +29,10 @@ export const ActionItem: React.FC<Props> = ({ item, deleteCallback }) => {
           width={24}
           height={24}
           avatar=""
-          id={3}
-          firstName="board title"
+          id={item.boardId}
+          firstName={item.boardTitle}
         />
-        <span className={style.title}>board.title</span>
+        <NavLink className={style.title} to={`/board/${item.boardId}`}>{item.boardTitle}</NavLink>
         <span
           className={
             isDeleteButtonVisible ? style.closeButtonVisible : style.closeButton

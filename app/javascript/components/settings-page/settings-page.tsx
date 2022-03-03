@@ -1,7 +1,7 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { MutableRefObject, useRef, useState } from 'react';
+import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import style from './style.module.less';
 
 type DataFormType = {
@@ -15,12 +15,11 @@ export const SettingsPage: React.FC = () => {
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [dataForm, setDataForm] = useState<DataFormType>({
-    nickName: '',
-    firstName: '',
-    lastName: '',
-    avatar: ''
+    nickName: 'nickName',
+    firstName: 'firstName',
+    lastName: 'lastName',
+    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqHEFKxyLryJi0Xsr6eXPOR8dPmRF_fFdN1w&usqp=CAU'
   });
-
 
   const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {
     if (element.target.files && element.target.files.length > 0) {
@@ -101,7 +100,6 @@ export const SettingsPage: React.FC = () => {
           name="image"
           style={{ display: 'none' }}
           onChange={onChangeHandler}
-          defaultValue={dataForm.avatar}
         />
       </div>
       <div className="form-element">

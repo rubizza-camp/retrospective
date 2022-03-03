@@ -14,4 +14,6 @@ export type ActionItemType = {
   status: ACTION_ITEM_STATUS;
   author: User;
   assignee: User;
+  boardTitle: string;
+  boardId: number;
 };

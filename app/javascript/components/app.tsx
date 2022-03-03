@@ -36,12 +36,12 @@ export const App = () => {
           <Route path="/boards" element={<BoardsContainer />} />
           <Route path="/cards" element={<ActionItemsContainer />} />
           <Route
-            path="/board/:boardSlug"
+            path="/board/:boardId"
             element={
               <div style={{ display: 'flex' }}>
                 <NavLink
                   style={{ margin: '20px' }}
-                  to="/board/settings/:boardSlug"
+                  to="/board/settings/:boardId"
                 >
                   <div className={style.button}>Board settings</div>
                 </NavLink>
@@ -50,7 +50,7 @@ export const App = () => {
           />
           <Route path="/settings" element={<SettingsPage />} />
           <Route
-            path="/board/settings/:boardSlug"
+            path="/board/settings/:boardId"
             element={<h1> board settings</h1>}
           />
           <Route path="*" element={<Navigate to="/boards" />} />
