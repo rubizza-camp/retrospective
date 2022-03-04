@@ -5,9 +5,10 @@ require 'rails_helper'
 RSpec.describe API::V1::BoardsController, type: :controller do
   let_it_be(:author) { create(:user) }
   let_it_be(:board1) { create(:board) }
-  let_it_be(:board_attrs) do %w[title id slug created_at users_count 
-    private boards_count action_items column_emojis 
-    next_board previous_board previous_action_items] 
+  let_it_be(:board_attrs) do 
+    %w[title id slug created_at users_count
+      private boards_count action_items column_emojis
+      next_board previous_board previous_action_items]
   end
 
   before { login_as author }
