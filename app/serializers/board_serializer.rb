@@ -17,13 +17,13 @@ class BoardSerializer < ActiveModel::Serializer
   end
 
   def previous_board_slug
-    return nil unless object.previous_board
+    return unless object.previous_board
 
     object.previous_board&.slug
   end
 
   def next_board_slug
-    return nil unless object.previous_board
+    return unless object.previous_board
 
     object.next_board&.slug
   end
