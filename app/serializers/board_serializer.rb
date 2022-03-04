@@ -24,7 +24,7 @@ class BoardSerializer < ActiveModel::Serializer
 
   def next_board_slug
     return nil unless object.previous_board
-    
+
     object.next_board&.slug
   end
 
