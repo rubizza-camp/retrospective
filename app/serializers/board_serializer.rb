@@ -2,14 +2,20 @@
 
 class BoardSerializer < ActiveModel::Serializer
   USERS_LIMIT = 4
-
+  
+  # rubocop:disable Layout/LineLength
   attributes :id, :title, :slug, :created_at, :users_count, :private, :boards_count, :column_emojis, :next_board, :previous_board
+  # rubocop:enable Layout/LineLength
   attribute :users, if: :include_users?
   attribute :previous_action_items
   has_many :action_items
 
   def previous_action_items
-    object.previous_board == nil ? [] : object.previous_board.action_items
+    if object.previous_board.nil? 
+      []
+    else
+      object.previous_board.action_items
+    end
   end
 
   def users
