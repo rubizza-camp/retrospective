@@ -11,27 +11,18 @@ class BoardSerializer < ActiveModel::Serializer
   has_many :action_items
 
   def previous_action_items
-    if object.previous_board.nil?
-      []
-    else
-      object.previous_board.action_items
-    end
+    return [] unless object.previous_board
+    object.previous_board.action_items
   end
 
   def previous_board_slug
-    if object.previous_board.nil?
-      object.previous_board&.slug = null
-    else
-      object.previous_board&.slug
-    end
+    return nil unless object.previous_board
+    object.previous_board&.slug
   end
-  
+
   def next_board_slug
-    if object.next_board.nil?
-      object.next_board&.slug = null
-    else
-      object.next_board&.slug
-    end
+    return nil unless object.previous_board
+    object.next_board&.slug
   end
 
   def users
