@@ -34,7 +34,7 @@ class Board < ApplicationRecord
   end
 
   def next_board
-    Board.where('id > ?', id).where.not(previous_board_id: nil).order('id ASC').first
+    Board.where('previous_board_id = ?', id).first
   end
 
   private
