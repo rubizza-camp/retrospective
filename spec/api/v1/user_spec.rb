@@ -32,4 +32,9 @@ describe 'User API', type: :request do
       end
     end
   end
+
+  describe 'GET /api/v1/action_items/index' do
+    before { login_as assignee }  
+
+  end
 end
