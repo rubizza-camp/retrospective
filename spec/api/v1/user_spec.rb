@@ -33,8 +33,19 @@ describe 'User API', type: :request do
     end
   end
 
-  describe 'GET /api/v1/action_items/index' do
-    before { login_as assignee }  
+  describe 'GET /api/v1/user' do
+    let_it_be(:user) { create(:user) }
 
+    let_it_be(:user_attrs) do
+      %w[id email avatar nickname first_name last_name name]
+    end
+
+    before { login_as user } 
+
+    it 'return user' do
+      get '/api/v1/user'
+
+      expect(json_body.keys).to match_array(user_attrs)
+    end
   end
 end
