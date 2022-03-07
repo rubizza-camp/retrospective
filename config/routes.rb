@@ -84,7 +84,7 @@ Rails.application.routes.draw do
         put 'toggle_ready_status', on: :member
       end
 
-      get 'user', to: 'users#index'
+      get 'user', to: 'users#show'
       post 'suggestions', to: 'users#suggestions'
     end
   end

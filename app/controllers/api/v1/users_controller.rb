@@ -3,9 +3,9 @@
 module API
   module V1
     class UsersController < API::V1::BaseController
-      skip_verify_authorized only: %i[index suggestions]
+      skip_verify_authorized only: %i[show suggestions]
 
-      def index
+      def show
         render json: @current_user
       end
 
