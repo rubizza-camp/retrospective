@@ -40,7 +40,7 @@ describe 'User API', type: :request do
       %w[id email avatar nickname first_name last_name name]
     end
 
-    before { login_as user } 
+    before { login_as user }
 
     it 'return user' do
       get '/api/v1/user'
