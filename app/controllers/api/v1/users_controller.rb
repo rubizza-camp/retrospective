@@ -3,7 +3,11 @@
 module API
   module V1
     class UsersController < API::V1::BaseController
-      skip_verify_authorized only: :suggestions
+      skip_verify_authorized only: %i[show suggestions]
+
+      def show
+        render json: @current_user
+      end
 
       # app/graphql/queries/suggestions.rb
       def suggestions
