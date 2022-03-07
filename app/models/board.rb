@@ -6,6 +6,7 @@ class Board < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
   has_many :board_permissions_users, dependent: :destroy
+  has_one :next_board, class_name: 'Board', foreign_key: 'previous_board_id'
   validates_presence_of :title
 
   after_create :send_action_items
@@ -31,10 +32,6 @@ class Board < ApplicationRecord
 
   def to_param
     slug
-  end
-
-  def next_board
-    Board.where('previous_board_id = ?', id).first
   end
 
   private
