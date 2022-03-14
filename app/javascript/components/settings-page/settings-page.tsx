@@ -15,11 +15,21 @@ export const SettingsPage: React.FC = () => {
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [dataForm, setDataForm] = useState<DataFormType>({
-    nickName: 'nickName',
-    firstName: 'firstName',
-    lastName: 'lastName',
-    avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqHEFKxyLryJi0Xsr6eXPOR8dPmRF_fFdN1w&usqp=CAU'
+    nickName: '',
+    firstName: '',
+    lastName: '',
+    avatar: ''
   });
+
+  useEffect(() => {
+    setDataForm({
+      nickName: 'nickName',
+      firstName: 'firstName',
+      lastName: 'lastName',
+      avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqHEFKxyLryJi0Xsr6eXPOR8dPmRF_fFdN1w&usqp=CAU'
+    })
+
+  }, [])
 
   const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {
     if (element.target.files && element.target.files.length > 0) {
@@ -60,7 +70,9 @@ export const SettingsPage: React.FC = () => {
                     className="list-item"
                     onClick={() => {
                       setIsOpenMenu(false);
-                      fileInput.current?.click();
+                      if (typeof (fileInput.current) !== "string") {
+                        fileInput.current?.click();
+                      }
                     }}
                   >
                     Change photo
@@ -69,6 +81,9 @@ export const SettingsPage: React.FC = () => {
                     className="list-item"
                     onClick={() => {
                       setIsOpenMenu(false);
+                      if (fileInput.current) {
+                        fileInput.current.value = ''
+                      }
                       setDataForm({ ...dataForm, avatar: '' });
                     }}
                   >
@@ -82,7 +97,11 @@ export const SettingsPage: React.FC = () => {
           <button
             type="button"
             className={style.avatarUploadButton}
-            onClick={() => fileInput.current?.click()}
+            onClick={() => {
+              if (typeof (fileInput.current) !== "string") {
+                fileInput.current?.click()
+              }
+            }}
           >
             <FontAwesomeIcon
               icon={faPlus as IconProp}
