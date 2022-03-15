@@ -2,6 +2,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
 type DataFormType = {
@@ -22,13 +23,14 @@ export const SettingsPage: React.FC = () => {
   });
 
   useEffect(() => {
-    setDataForm({
-      nickName: 'nickName',
-      firstName: 'firstName',
-      lastName: 'lastName',
-      avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqHEFKxyLryJi0Xsr6eXPOR8dPmRF_fFdN1w&usqp=CAU'
-    })
-
+    userApi.getUser().then((user) => {
+      setDataForm({
+        nickName: user.nickname,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        avatar: user.avatar?.thumb.url
+      })
+    });
   }, [])
 
   const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {

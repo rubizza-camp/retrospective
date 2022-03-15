@@ -1,14 +1,23 @@
 import { faCog, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "../avatar/avatar";
 import style from "./style.module.less";
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { userApi } from "../api/user-api";
+import { User } from "../../typings/user";
 
 export const UserMenu: React.FC = () => {
   const history = useNavigate();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    userApi.getUser().then((response) => {
+      setUser(response)
+    });
+  }, [])
 
   return (
     <div
@@ -16,19 +25,19 @@ export const UserMenu: React.FC = () => {
         setIsOpenMenu(false);
       }}
     >
-      <div
+      {user && <div
         className={style.userMenu}
         onClick={() => setIsOpenMenu(!isOpenMenu)}
       >
-        <div className={style.userName}>Name user</div>
+        <div className={style.userName}>{user.name}</div>
         <Avatar
           isSquare
-          avatar="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqHEFKxyLryJi0Xsr6eXPOR8dPmRF_fFdN1w&usqp=CAU"
-          id={2}
-          firstName="firstName"
-          lastName="lastName"
+          avatar={user.avatar?.thumb.url}
+          id={user.id}
+          firstName={user.firstName}
+          lastName={user.lastName}
         />
-      </div>
+      </div>}
       <div className={isOpenMenu ? `${style.opened} opened` : "closed"}>
         <ul>
           <li
