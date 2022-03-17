@@ -2,6 +2,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { api } from '../api/api';
 import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
@@ -45,8 +46,10 @@ export const SettingsPage: React.FC = () => {
   };
 
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    alert(JSON.stringify(dataForm));
+  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
+    // alert(JSON.stringify(dataForm));
+    let user = await api.patch(`users/1/update`, {dataForm});
+    console.log(user)
     event.preventDefault();
   };
 
