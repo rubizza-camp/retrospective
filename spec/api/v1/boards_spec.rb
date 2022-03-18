@@ -8,7 +8,7 @@ RSpec.describe API::V1::BoardsController, type: :controller do
   let_it_be(:board_attrs) do
     %w[title id slug created_at users_count
        private boards_count action_items column_emojis
-       next_board_slug previous_board_slug previous_action_items]
+       next_board_slug previous_board_slug previous_action_items column_names cards_by_type]
   end
 
   before { login_as author }
