@@ -53,10 +53,10 @@ describe 'User API', type: :request do
     let_it_be(:user) { create(:user) }
 
     before { login_as user }
-  
+
     context '# check success update' do
       it 'returns status code 204' do
-        patch '/api/v1/user', params: { data_form: { nickname: 'new nick'} }
+        patch '/api/v1/user', params: { data_form: { nickname: 'new nick' } }
 
         expect(response).to have_http_status(204)
         expect(user.nickname).to eq('new nick')
