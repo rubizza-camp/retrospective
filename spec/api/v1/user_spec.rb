@@ -48,4 +48,20 @@ describe 'User API', type: :request do
       expect(json_body.keys).to match_array(user_attrs)
     end
   end
+
+  describe 'PATCH /api/v1/user' do
+    let_it_be(:user) { create(:user) }
+
+    before { login_as user }
+    
+    context '# check success update' do
+      it 'returns status code 204' do
+        patch '/api/v1/user',  params: { data_form: { nickname: 'new nick', first_name: 'new name'} }
+
+        expect(response).to have_http_status(204)
+        expect(user.nickname).to eq('new nick')
+        expect(user.first_name).to eq('new name')
+      end
+    end
+  end
 end
