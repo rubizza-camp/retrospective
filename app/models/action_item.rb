@@ -12,20 +12,30 @@ class ActionItem < ApplicationRecord
 
   aasm column: 'status' do
     state :pending, initial: true
-    state :closed
+    state :in_progress
     state :done
+    state :closed
 
-    event :close do
+    event :closed do
       transitions from: :pending, to: :closed
+      transitions from: :in_progress, to: :closed
+      transitions from: :done, to: :closed
     end
 
-    event :complete do
+    event :done do
       transitions from: :pending, to: :done
+      transitions from: :in_progress, to: :done
     end
 
-    event :reopen do
+    event :in_progress do
+      transitions from: :pending, to: :in_progress
+      transitions from: :done, to: :in_progress
+    end
+
+    event :pending do
       transitions from: :closed, to: :pending
       transitions from: :done, to: :pending
+      transitions from: :in_progress, to: :pending
     end
   end
 

@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { Droppable, Draggable, DragDropContext, DropResult } from 'react-beautiful-dnd';
 
 import { ActionItemType, ACTION_ITEM_STATUS } from '../typings/actionItem'
-import { ActionItem } from './action/action-item';
-import { actionItemsApi } from './api/action-items-api';
-import './style.less';
+import { ActionItem } from "./action/action-item";
+import { actionItemsApi } from "./api/action-items-api";
+import "./style.less";
 
 const ActionItemsContainer: React.FC = () => {
   const [actionItems, setActionItems] = useState<Array<ActionItemType>>([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [cardId, setCardId] = useState<number | null>(null);
-  const columns = [ACTION_ITEM_STATUS.ToDo, ACTION_ITEM_STATUS.InProgress, ACTION_ITEM_STATUS.Done];
+  const columns = [
+    ACTION_ITEM_STATUS.ToDo,
+    ACTION_ITEM_STATUS.InProgress,
+    ACTION_ITEM_STATUS.Done,
+  ];
 
   useEffect(() => {
     actionItemsApi
@@ -19,23 +23,25 @@ const ActionItemsContainer: React.FC = () => {
   }, []);
 
   const handleOnDragEnd = (items: Array<ActionItemType>) => (result: DropResult) => {
-    const { destination } = result;
+    const { destination, draggableId } = result;
 
     if (!destination) {
       return;
     }
 
-    console.log(items, result);
+    actionItemsApi
+      .changeActionItemStatus(Number(draggableId), destination.droppableId)
+      .then((response) => setActionItems(response));
   };
 
   const getColumnName = (name: string) => {
     switch (name) {
       case ACTION_ITEM_STATUS.ToDo:
-        return 'To do';
+        return "To do";
       case ACTION_ITEM_STATUS.InProgress:
-        return 'In-progress';
+        return "In progress";
       case ACTION_ITEM_STATUS.Done:
-        return 'Done';
+        return "Done";
     }
   };
 
@@ -85,18 +91,19 @@ const ActionItemsContainer: React.FC = () => {
           </div>
         ))}
       </DragDropContext>
-      <div className={isModalOpen ? 'modal-visible' : 'modal-hidden'}>
+      <div className={isModalOpen ? "modal-visible" : "modal-hidden"}>
         <div className="modal-content">
           <div>
             <h4>Delete file permanently?</h4>
           </div>
           <div>
             <button
-              type="button"
               className="button delete-button"
               onClick={() => {
                 setModalOpen(false);
-                alert(`delete id ${cardId}`);
+                actionItemsApi
+                  .changeActionItemStatus(Number(cardId), 'closed')
+                  .then((response) => setActionItems(response));
               }}
             >
               Delete

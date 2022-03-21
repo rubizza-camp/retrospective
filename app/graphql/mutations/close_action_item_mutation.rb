@@ -11,11 +11,11 @@ module Mutations
     def resolve(id:, board_slug:)
       action_item = ActionItem.find(id)
       board = Board.find_by!(slug: board_slug)
-      authorize! action_item, to: :close?,
+      authorize! action_item, to: :closed?,
                               context: { user: context[:current_user],
                                          board: board }
 
-      if action_item.close!
+      if action_item.closed!
         RetrospectiveSchema.subscriptions.trigger('action_item_updated', { board_slug: board.slug },
                                                   action_item)
         { action_item: action_item }

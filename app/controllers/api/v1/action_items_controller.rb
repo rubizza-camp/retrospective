@@ -50,40 +50,20 @@ module API
         end
       end
 
-      # app/graphql/mutations/close_action_item_mutation.rb
-      def close
-        authorize! @action_item, context: { user: current_user, board: @board }
+      def status
+        statuses = %w[closed done pending in_progress]
+        current_status = params[:status]
+        policy_status = "#{current_status}?".to_sym
 
-        if @action_item.close!
+        authorize! @action_item, to: policy_status, context: { user: current_user, board: @board }
+
+        if statuses.include?(current_status) && @action_item.send("#{current_status}!")
           prepare_and_make_response(@action_item)
         else
           render_json_error(@action_item.errors.full_messages)
         end
       end
 
-      # app/graphql/mutations/complete_action_item_mutation.rb
-      def complete
-        authorize! @action_item, context: { user: current_user, board: @board }
-
-        if @action_item.complete!
-          prepare_and_make_response(@action_item)
-        else
-          render_json_error(@action_item.errors.full_messages)
-        end
-      end
-
-      # app/graphql/mutations/reopen_action_item_mutation.rb
-      def reopen
-        authorize! @action_item, context: { user: current_user, board: @board }
-
-        if @action_item.reopen!
-          prepare_and_make_response(@action_item)
-        else
-          render_json_error(@action_item.errors.full_messages)
-        end
-      end
-
-      # app/graphql/mutations/move_action_item_mutation.rb
       def move
         authorize! @action_item, context: { user: current_user, board: @board }
 
@@ -97,7 +77,7 @@ module API
       private
 
       def action_item_params
-        params.permit(:body, :assignee_id)
+        params.permit(:body, :assignee_id, :status)
       end
 
       def prepare_and_make_response(action_item, board = nil)

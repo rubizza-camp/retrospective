@@ -48,8 +48,8 @@ RSpec.describe ActionItem, type: :model do
         it { is_expected.to_not allow_transition_to(:pending) }
       end
 
-      it { is_expected.to transition_from(:pending).to(:closed).on_event(:close) }
-      it { is_expected.to transition_from(:pending).to(:done).on_event(:complete) }
+      it { is_expected.to transition_from(:pending).to(:closed).on_event(:closed) }
+      it { is_expected.to transition_from(:pending).to(:done).on_event(:done) }
     end
 
     context 'status: closed' do
@@ -63,7 +63,7 @@ RSpec.describe ActionItem, type: :model do
         it { is_expected.to allow_transition_to(:pending) }
       end
 
-      it { is_expected.to transition_from(:closed).to(:pending).on_event(:reopen) }
+      it { is_expected.to transition_from(:closed).to(:pending).on_event(:pending) }
     end
 
     context 'status: done' do
@@ -72,12 +72,12 @@ RSpec.describe ActionItem, type: :model do
       it { is_expected.to have_state(:done) }
 
       context 'allowed transitions' do
-        it { is_expected.to_not allow_transition_to(:closed) }
+        it { is_expected.to allow_transition_to(:closed) }
         it { is_expected.to_not allow_transition_to(:done) }
         it { is_expected.to allow_transition_to(:pending) }
       end
 
-      it { is_expected.to transition_from(:done).to(:pending).on_event(:reopen) }
+      it { is_expected.to transition_from(:done).to(:pending).on_event(:pending) }
     end
   end
 

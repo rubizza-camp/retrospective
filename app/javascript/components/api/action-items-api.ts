@@ -7,24 +7,8 @@ export const actionItemsApi = {
     return actionItems.data;
   },
 
-
-  async closeActionItem(id: number) {
-    await api.put(`action_items/${id}/close`);
-    return this.getActionItems();
-  },
-
-  async completeActionItem(id: number) {
-    await api.put(`action_items/${id}/complete`);
-    return this.getActionItems();
-  },
-
-  async reopenActionItem(id: number) {
-    await api.put(`action_items/${id}/reopen`);
-    return this.getActionItems();
-  },
-
-  async moveActionItem(id: number) {
-    await api.put(`action_items/${id}/move`);
+  async changeActionItemStatus(id: number, status: string) {
+    await api.put(`action_items/${id}/${status}`);
     return this.getActionItems();
   }
 };

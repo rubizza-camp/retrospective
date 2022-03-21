@@ -11,10 +11,10 @@ module Mutations
     def resolve(id:, board_slug:)
       action_item = ActionItem.find(id)
       board = Board.find_by!(slug: board_slug)
-      authorize! action_item, to: :reopen?, context: { user: context[:current_user],
-                                                       board: board }
+      authorize! action_item, to: :pending?, context: { user: context[:current_user],
+                                                        board: board }
 
-      if action_item.reopen!
+      if action_item.pending!
         RetrospectiveSchema.subscriptions.trigger('action_item_updated', { board_slug: board.slug },
                                                   action_item)
         { action_item: action_item }

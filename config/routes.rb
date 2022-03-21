@@ -52,10 +52,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :action_items, only: %i[index create update destroy] do
         member do
-          put 'close'
-          put 'complete'
           put 'move'
-          put 'reopen'
+          put ':status', to: 'action_items#status'
         end
       end
 

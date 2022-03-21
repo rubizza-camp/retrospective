@@ -89,8 +89,8 @@ RSpec.describe ActionItemPolicy do
     end
   end
 
-  describe '#close?' do
-    subject { policy.apply(:close?) }
+  describe '#closed?' do
+    subject { policy.apply(:closed?) }
 
     context 'with permission' do
       let_it_be(:close_permission) { create(:permission, identifier: 'close_action_items') }
@@ -99,17 +99,17 @@ RSpec.describe ActionItemPolicy do
       end
 
       it 'if aasm state may transition to closed' do
-        allow(action_item).to receive(:may_close?).and_return(true)
+        allow(action_item).to receive(:may_closed?).and_return(true)
 
         is_expected.to eq true
-        expect(action_item).to have_received(:may_close?)
+        expect(action_item).to have_received(:may_closed?)
       end
 
       it 'if aasm state may not transition to closed?' do
-        allow(action_item).to receive(:may_close?).and_return(false)
+        allow(action_item).to receive(:may_closed?).and_return(false)
 
         is_expected.to eq false
-        expect(action_item).to have_received(:may_close?)
+        expect(action_item).to have_received(:may_closed?)
       end
     end
 
@@ -118,9 +118,9 @@ RSpec.describe ActionItemPolicy do
     end
   end
 
-  describe '#complete?' do
+  describe '#done?' do
     let(:action_item) { build_stubbed(:action_item, board: board, status: 'pending') }
-    subject { policy.apply(:complete?) }
+    subject { policy.apply(:done?) }
 
     context 'with permission' do
       let_it_be(:complete_permission) { create(:permission, identifier: 'complete_action_items') }
@@ -128,18 +128,18 @@ RSpec.describe ActionItemPolicy do
         create(:board_permissions_user, permission: complete_permission, user: user, board: board)
       end
 
-      it 'if aasm state may transition to completed' do
-        allow(action_item).to receive(:may_complete?).and_return(true)
+      it 'if aasm state may transition to done' do
+        allow(action_item).to receive(:may_done?).and_return(true)
 
         is_expected.to eq true
-        expect(action_item).to have_received(:may_complete?)
+        expect(action_item).to have_received(:may_done?)
       end
 
-      it 'if aasm state may not transition to completed' do
-        allow(action_item).to receive(:may_complete?).and_return(false)
+      it 'if aasm state may not transition to done' do
+        allow(action_item).to receive(:may_done?).and_return(false)
 
         is_expected.to eq false
-        expect(action_item).to have_received(:may_complete?)
+        expect(action_item).to have_received(:may_done?)
       end
     end
 
@@ -148,9 +148,9 @@ RSpec.describe ActionItemPolicy do
     end
   end
 
-  describe '#reopen?' do
+  describe '#pending?' do
     let(:action_item) { build_stubbed(:action_item, board: board, status: 'closed') }
-    subject { policy.apply(:reopen?) }
+    subject { policy.apply(:pending?) }
 
     context 'with permission' do
       let_it_be(:reopen_permission) { create(:permission, identifier: 'reopen_action_items') }
@@ -159,17 +159,17 @@ RSpec.describe ActionItemPolicy do
       end
 
       it 'if aasm state may transition to pending' do
-        allow(action_item).to receive(:may_reopen?).and_return(true)
+        allow(action_item).to receive(:may_pending?).and_return(true)
 
         is_expected.to eq true
-        expect(action_item).to have_received(:may_reopen?)
+        expect(action_item).to have_received(:may_pending?)
       end
 
       it 'if aasm state may not transition to completed' do
-        allow(action_item).to receive(:may_reopen?).and_return(false)
+        allow(action_item).to receive(:may_pending?).and_return(false)
 
         is_expected.to eq false
-        expect(action_item).to have_received(:may_reopen?)
+        expect(action_item).to have_received(:may_pending?)
       end
     end
 

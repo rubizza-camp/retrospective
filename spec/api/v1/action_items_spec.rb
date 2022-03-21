@@ -99,15 +99,17 @@ RSpec.describe API::V1::ActionItemsController, type: :controller do
     end
   end
 
-  describe 'PUT /api/v1/action_items/:id/close' do
+  describe 'PUT /api/v1/action_items/:id/:status' do
     let_it_be(:action_item) { create(:action_item, board: board) }
 
-    subject(:response) { put :close, params: { id: action_item.id, board_slug: board.slug } }
+    # rubocop:disable Layout/LineLength
+    subject(:response) { put :status, params: { id: action_item.id, board_slug: board.slug, status: 'done' } }
+    # rubocop:enable Layout/LineLength
 
     it { is_expected.to have_http_status(:ok) }
 
-    it 'action item became closed' do
-      expect { subject }.to change { action_item.reload.status }.from('pending').to('closed')
+    it 'action item changed status' do
+      expect { subject }.to change { action_item.reload.status }.from('pending').to('done')
     end
 
     it 'return closed action item' do
@@ -116,42 +118,6 @@ RSpec.describe API::V1::ActionItemsController, type: :controller do
 
     it 'broadcast closed item' do
       expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
-    end
-  end
-
-  describe 'PUT /api/v1/action_items/:id/compete' do
-    let_it_be(:action_item) { create(:action_item, board: board) }
-
-    subject(:response) { put :complete, params: { id: action_item.id, board_slug: board.slug } }
-
-    it { is_expected.to have_http_status(:ok) }
-
-    it 'action item became competed' do
-      expect { subject }.to change { action_item.reload.status }.from('pending').to('done')
-    end
-
-    it 'return completed action item' do
-      expect(json_body.keys).to match_array(item_attrs)
-    end
-
-    it 'broadcast completed item' do
-      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
-    end
-  end
-
-  describe 'PUT /api/v1/action_items/:id/reopen' do
-    let_it_be(:action_item) { create(:action_item, board: board, status: 'done') }
-
-    subject(:response) { put :reopen, params: { id: action_item.id, board_slug: board.slug } }
-
-    it { is_expected.to have_http_status(:ok) }
-
-    it 'action item became reopen' do
-      expect { subject }.to change { action_item.reload.status }.from('done').to('pending')
-    end
-
-    it 'return reopened action item' do
-      expect(json_body.keys).to match_array(item_attrs)
     end
   end
 
