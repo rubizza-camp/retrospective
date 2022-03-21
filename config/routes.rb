@@ -85,7 +85,7 @@ Rails.application.routes.draw do
       end
 
       resource :user, only: %i[show update]
-      
+
       post 'suggestions', to: 'users#suggestions'
     end
   end
