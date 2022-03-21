@@ -7,7 +7,7 @@ import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
 type DataFormType = {
-  nickName: string
+  nickname: string
   firstName: string
   lastName: string
   avatar: string
@@ -17,7 +17,7 @@ export const SettingsPage: React.FC = () => {
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [dataForm, setDataForm] = useState<DataFormType>({
-    nickName: '',
+    nickname: '',
     firstName: '',
     lastName: '',
     avatar: ''
@@ -26,7 +26,7 @@ export const SettingsPage: React.FC = () => {
   useEffect(() => {
     userApi.getUser().then((user) => {
       setDataForm({
-        nickName: user.nickname,
+        nickname: user.nickname,
         firstName: user.firstName,
         lastName: user.lastName,
         avatar: user.avatar?.thumb.url
@@ -48,7 +48,7 @@ export const SettingsPage: React.FC = () => {
 
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
     // alert(JSON.stringify(dataForm));
-    let user = await api.patch(`users/1/update`, {dataForm});
+    let user = await api.patch(`user`, {dataForm});
     console.log(user)
     event.preventDefault();
   };
@@ -127,13 +127,13 @@ export const SettingsPage: React.FC = () => {
         />
       </div>
       <div className="form-element">
-        <div>Nickname</div>
+        <div>nickname</div>
         <input
           className="input"
-          value={dataForm.nickName}
+          value={dataForm.nickname}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, nickName: element.currentTarget.value })
+            setDataForm({ ...dataForm, nickname: element.currentTarget.value })
           }
         />
       </div>
