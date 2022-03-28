@@ -56,9 +56,9 @@ describe 'User API', type: :request do
 
     context '# check success update' do
       it 'returns status code 204' do
-        patch '/api/v1/user', params: { data_form: { nickname: 'new nick' } }
+        patch '/api/v1/user', params: { user: { nickname: 'new nick' } }
 
-        expect(response).to have_http_status(204)
+        expect(response).to have_http_status(:ok)
         expect(user.nickname).to eq('new nick')
       end
     end
