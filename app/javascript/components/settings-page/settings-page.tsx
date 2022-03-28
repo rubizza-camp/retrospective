@@ -6,59 +6,68 @@ import { api } from '../api/api';
 import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
-type DataFormType = {
-  nickname: string
-  firstName: string
-  lastName: string
-  avatar: string
-}
 
 export const SettingsPage: React.FC = () => {
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [dataForm, setDataForm] = useState<DataFormType>({
-    nickname: '',
-    firstName: '',
-    lastName: '',
-    avatar: ''
-  });
+  const [avatar, setAvatar] = useState<string>('');
+  const [nickname, setNickname] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+
 
   useEffect(() => {
     userApi.getUser().then((user) => {
-      setDataForm({
-        nickname: user.nickname,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        avatar: user.avatar?.thumb.url
-      })
-    });
+      setNickname(user.nickname)
+      setFirstName(user.firstName)
+      setLastName(user.lastName)
+      setAvatar(user.avatar?.thumb.url)
+    })
   }, [])
 
   const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {
     if (element.target.files && element.target.files.length > 0) {
       const reader = new FileReader();
-      reader.readAsDataURL(element.target.files[0]);
-      reader.onloadend = () => {
+      const selectedImage = element.target.files[0]
+      reader.onload = () => {
         if (typeof (reader.result) === "string")
-          setDataForm({ ...dataForm, avatar: reader.result });
+          setAvatar(reader.result)
       };
+      reader.readAsDataURL(selectedImage);
     }
   };
 
 
-  const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) => {
-    // alert(JSON.stringify(dataForm));
-    let user = await api.patch(`user`, {dataForm});
-    console.log(user)
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // const formData = new FormData()
+    // if (avatar && lastName && firstName && nickname) {
+    //   formData.append('user[avatar]', avatar)
+    //   formData.append('user[lastName]', lastName)
+    //   formData.append('user[firstName]', firstName)
+    //   formData.append('user[nickname]', nickname)
+    // }
+    // console.log(formData);
+
+    let response = await api.patch(`user`, {
+      user:
+        { lastName, firstName, nickname, avatar: { src: avatar, width: '400px' } }
+      // formData
+    });
+    setNickname(response.data.data.user.nickname)
+    setFirstName(response.data.data.user.firstName)
+    setLastName(response.data.data.user.lastName)
+    setAvatar(response.data.data.user.avatar?.thumb.url)
+
+    console.log(response.data.data)
   };
 
   return (
     <form className={style.container} onSubmit={handleSubmit}>
       <div>
-        {dataForm.avatar ? (
+        {avatar ? (
           <div className={style.avatarForm}>
-            <img src={dataForm.avatar} className={style.avatar} />
+            <img src={avatar} className={style.avatar} />
             <div onMouseLeave={() => setIsOpenMenu(false)}>
               <div
                 className={`${style.menuButton} menu-button`}
@@ -89,7 +98,7 @@ export const SettingsPage: React.FC = () => {
                       if (fileInput.current) {
                         fileInput.current.value = ''
                       }
-                      setDataForm({ ...dataForm, avatar: '' });
+                      setAvatar('');
                     }}
                   >
                     Delete
@@ -130,10 +139,10 @@ export const SettingsPage: React.FC = () => {
         <div>nickname</div>
         <input
           className="input"
-          value={dataForm.nickname}
+          value={nickname}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, nickname: element.currentTarget.value })
+            setNickname(element.currentTarget.value)
           }
         />
       </div>
@@ -141,10 +150,10 @@ export const SettingsPage: React.FC = () => {
         <div>First name</div>
         <input
           className="input"
-          value={dataForm.firstName}
+          value={firstName}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, firstName: element.currentTarget.value })
+            setFirstName(element.currentTarget.value)
           }
         />
       </div>
@@ -152,10 +161,10 @@ export const SettingsPage: React.FC = () => {
         <div>Last name</div>
         <input
           className="input"
-          value={dataForm.lastName}
+          value={lastName}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, lastName: element.currentTarget.value })
+            setLastName(element.currentTarget.value)
           }
         />
       </div>
