@@ -11,8 +11,6 @@ RSpec.shared_examples :omniauth_callback do |provider|
     request.env['devise.mapping'] = Devise.mappings[:user]
     request.env['omniauth.auth'] = auth_hash
     session['user_return_to'] = '/wherever' # sign_in_and_redirect @user
-
-    allow_any_instance_of(AvatarUploader).to receive(:download!) # remote_avatar_url
   end
 
   context 'when provider sent invalid oauth data for user authentication' do

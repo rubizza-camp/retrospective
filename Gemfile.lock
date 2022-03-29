@@ -123,13 +123,6 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (~> 1.5)
       xpath (~> 3.2)
-    carrierwave (2.1.0)
-      activemodel (>= 5.0.0)
-      activesupport (>= 5.0.0)
-      addressable (~> 2.6)
-      image_processing (~> 1.1)
-      mimemagic (>= 0.3.0)
-      mini_mime (>= 0.1.3)
     case_transform (0.2)
       activesupport
     childprocess (3.0.0)
@@ -208,9 +201,6 @@ GEM
     hashie (4.1.0)
     i18n (1.9.1)
       concurrent-ruby (~> 1.0)
-    image_processing (1.12.1)
-      mini_magick (>= 4.9.5, < 5)
-      ruby-vips (>= 2.0.17, < 3)
     io-like (0.3.0)
     ipaddress (0.8.3)
     jbuilder (2.9.1)
@@ -246,7 +236,6 @@ GEM
     mimemagic (0.3.10)
       nokogiri (~> 1)
       rake
-    mini_magick (4.11.0)
     mini_mime (1.0.2)
     mini_portile2 (2.7.1)
     minitest (5.15.0)
@@ -386,8 +375,6 @@ GEM
     ruby-graphviz (1.2.4)
     ruby-next-core (0.10.5)
     ruby-progressbar (1.10.1)
-    ruby-vips (2.0.17)
-      ffi (~> 1.9)
     ruby2_keywords (0.0.2)
     rubyzip (2.3.0)
     sass-rails (6.0.0)
@@ -469,7 +456,6 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   bullet
   capybara (>= 2.15)
-  carrierwave (>= 2.0.0.rc, < 3.0)
   chromedriver-helper
   coffee-rails (~> 5.0)
   database_cleaner
