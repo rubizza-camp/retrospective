@@ -55,11 +55,7 @@ describe 'User API', type: :request do
     before { login_as user }
 
     context '# check success update' do
-<<<<<<< HEAD
       it 'returns status code 200' do
-=======
-      it 'returns status code 204' do
->>>>>>> 8b87ea6a8e35f96a207e49f26d69a1b71a169d82
         patch '/api/v1/user', params: { user: { nickname: 'new nick' } }
 
         expect(response).to have_http_status(:ok)
