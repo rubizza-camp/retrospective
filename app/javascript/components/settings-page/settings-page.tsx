@@ -51,7 +51,7 @@ export const SettingsPage: React.FC = () => {
 
     let response = await api.patch(`user`, {
       user:
-        { lastName, firstName, nickname, avatar: { src: avatar, width: '400px' } }
+        { lastName, firstName, nickname, avatar }
       // formData
     });
     setNickname(response.data.data.user.nickname)

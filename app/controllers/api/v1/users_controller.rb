@@ -34,10 +34,10 @@ module API
       def user_params
         params.require(:user).permit(:nickname, :first_name, :last_name, :avatar)
       end
+
       def prepare_and_make_response(user)
         payload = serialize_resource(user)
 
-        CardsChannel.broadcast_to(user, payload)
         render json: payload
       end
     end
