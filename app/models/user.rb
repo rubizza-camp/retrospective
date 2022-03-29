@@ -31,7 +31,6 @@ class User < ApplicationRecord
       u.provider = provider
       u.uid = uid
       u.email = info[:email]
-      u.remote_avatar_url = info[:image] || info[:avatar_url] if u.changed?
 
       u.send :new_user_settings, info
       u.save
