@@ -4,7 +4,7 @@ import { getInitials } from "../../utils/helpers";
 import style from "./style.module.less";
 
 type Props = {
-  avatar: string;
+  avatar: string | null;
   id: number;
   isSquare: boolean;
   firstName: string;

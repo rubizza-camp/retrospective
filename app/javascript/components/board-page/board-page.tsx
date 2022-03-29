@@ -4,14 +4,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BoardType } from '../../typings/board';
+import { User } from '../../typings/user';
 import { boardApi } from '../api/boards-api';
 import { Avatar } from '../avatar/avatar';
 import { UserMenu } from '../user-menu/user-menu';
 import style from './style.module.less';
 
+type PropsType = {
+  user: User
+}
 
 
-export const BoardPage: React.FC = () => {
+export const BoardPage: React.FC<PropsType> = ({ user }) => {
   const history = useNavigate();
   const params = useParams();
 
@@ -97,7 +101,7 @@ export const BoardPage: React.FC = () => {
                   height={48}
                   key={user.id}
                   isSquare={false}
-                  avatar={user.avatar?.thumb.url}
+                  avatar={user.avatar}
                   id={user.id}
                   firstName={user.firstName}
                   lastName={user.lastName}
@@ -115,7 +119,7 @@ export const BoardPage: React.FC = () => {
               }}
             />
           </div>
-          <UserMenu />
+          <UserMenu user={user} />
         </div>}
       <div className={style.itemsContainer}>
         {generateColumns()}

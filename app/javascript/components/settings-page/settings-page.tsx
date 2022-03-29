@@ -2,26 +2,33 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { User } from '../../typings/user';
 import { api } from '../api/api';
 import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
+type PropsType = {
+  user: User
+  setUser: ({ }: User) => void
+}
 
-export const SettingsPage: React.FC = () => {
+
+export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [avatar, setAvatar] = useState<string>('');
-  const [nickname, setNickname] = useState<string>('');
-  const [firstName, setFirstName] = useState<string>('');
-  const [lastName, setLastName] = useState<string>('');
+  const [avatar, setAvatar] = useState<string | null>(user.avatar);
+  const [nickname, setNickname] = useState<string>(user.nickname);
+  const [firstName, setFirstName] = useState<string>(user.firstName);
+  const [lastName, setLastName] = useState<string>(user.lastName);
 
 
   useEffect(() => {
     userApi.getUser().then((user) => {
+      setUser({ ...user })
       setNickname(user.nickname)
       setFirstName(user.firstName)
       setLastName(user.lastName)
-      setAvatar(user.avatar?.thumb.url)
+      setAvatar(user.avatar)
     })
   }, [])
 
@@ -40,26 +47,18 @@ export const SettingsPage: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const formData = new FormData()
-    // if (avatar && lastName && firstName && nickname) {
-    //   formData.append('user[avatar]', avatar)
-    //   formData.append('user[lastName]', lastName)
-    //   formData.append('user[firstName]', firstName)
-    //   formData.append('user[nickname]', nickname)
-    // }
-    // console.log(formData);
 
     let response = await api.patch(`user`, {
       user:
-        { lastName, firstName, nickname, avatar: { src: avatar, width: '400px' } }
-      // formData
+        { lastName, firstName, nickname, avatar }
     });
+    setUser({ ...response.data.data.user })
     setNickname(response.data.data.user.nickname)
     setFirstName(response.data.data.user.firstName)
     setLastName(response.data.data.user.lastName)
-    setAvatar(response.data.data.user.avatar?.thumb.url)
+    setAvatar(response.data.data.user.avatar)
 
-    console.log(response.data.data)
+    console.log(response.data.data.user)
   };
 
   return (
