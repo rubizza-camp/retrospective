@@ -13,6 +13,7 @@ type PropsType = {
 }
 
 
+
 export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
   const [isOpenMenu, setIsOpenMenu] = useState(false);
@@ -21,15 +22,10 @@ export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
   const [firstName, setFirstName] = useState<string>(user.firstName);
   const [lastName, setLastName] = useState<string>(user.lastName);
 
-
   useEffect(() => {
     userApi.getUser().then((user) => {
-      setUser({ ...user })
-      setNickname(user.nickname)
-      setFirstName(user.firstName)
-      setLastName(user.lastName)
-      setAvatar(user.avatar.url)
-    })
+      setUser(user)
+    });
   }, [])
 
   const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,15 +47,8 @@ export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
     let response = await api.patch(`user`, {
       user:
         { lastName, firstName, nickname, avatar }
-      // formData
     });
     setUser({ ...response.data.data.user })
-    setNickname(response.data.data.user.nickname)
-    setFirstName(response.data.data.user.firstName)
-    setLastName(response.data.data.user.lastName)
-    setAvatar(response.data.data.user.avatar)
-
-    console.log(response.data.data.user)
   };
 
   return (
@@ -98,7 +87,7 @@ export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
                       if (fileInput.current) {
                         fileInput.current.value = ''
                       }
-                      setAvatar('');
+                      setAvatar(null);
                     }}
                   >
                     Delete
