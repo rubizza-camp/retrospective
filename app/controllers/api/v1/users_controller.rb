@@ -11,7 +11,7 @@ module API
 
       def update
         if @current_user.update(user_params)
-          prepare_and_make_response(@current_user)
+          render json: @current_user
         else
           render_json_error(@current_user.errors.full_messages)
         end

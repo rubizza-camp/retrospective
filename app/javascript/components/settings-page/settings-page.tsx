@@ -3,7 +3,6 @@ import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { User } from '../../typings/user';
-import { api } from '../api/api';
 import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
@@ -43,12 +42,8 @@ export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    let response = await api.patch(`user`, {
-      user:
-        { lastName, firstName, nickname, avatar }
-    });
-    setUser({ ...response.data.data.user })
+    let user = await userApi.updateUser(lastName, firstName, nickname, avatar)
+    setUser(user)
   };
 
   return (
