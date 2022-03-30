@@ -32,7 +32,7 @@ module API
       private
 
       def user_params
-        params.require(:user).permit!
+        params.require(:user).permit(:nickname, :first_name, :last_name, :avatar)
       end
 
       def prepare_and_make_response(user)
