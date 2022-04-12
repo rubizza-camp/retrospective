@@ -1,23 +1,19 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faCog, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../typings/user";
+import { getFullnameOrNickname } from '../../utils/helpers';
 import { Avatar } from "../avatar/avatar";
 import style from "./style.module.less";
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { userApi } from "../api/user-api";
-import { User } from "../../typings/user";
+type PropsType = {
+  user: User
+}
 
-export const UserMenu: React.FC = () => {
+export const UserMenu: React.FC<PropsType> = ({ user }) => {
   const history = useNavigate();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    userApi.getUser().then((response) => {
-      setUser(response)
-    });
-  }, [])
 
   return (
     <div
@@ -29,10 +25,16 @@ export const UserMenu: React.FC = () => {
         className={style.userMenu}
         onClick={() => setIsOpenMenu(!isOpenMenu)}
       >
-        <div className={style.userName}>{user.name}</div>
+        <div className={style.userName}>
+          {getFullnameOrNickname(
+            user.firstName,
+            user.lastName,
+            user.nickname
+          )}
+        </div>
         <Avatar
           isSquare
-          avatar={user.avatar?.thumb.url}
+          avatar={user.avatar.url}
           id={user.id}
           firstName={user.firstName}
           lastName={user.lastName}

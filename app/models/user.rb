@@ -22,7 +22,7 @@ class User < ApplicationRecord
   validates :uid, presence: true, uniqueness: { scope: :provider }
   validates :nickname, presence: true, uniqueness: true
 
-  mount_uploader :avatar, AvatarUploader
+  mount_base64_uploader :avatar, AvatarUploader
 
   def self.from_omniauth(provider, uid, info)
     user = find_by(provider: provider, uid: uid) || find_by(email: info[:email]) || new
@@ -31,7 +31,6 @@ class User < ApplicationRecord
       u.provider = provider
       u.uid = uid
       u.email = info[:email]
-      u.remote_avatar_url = info[:image] || info[:avatar_url] if u.changed?
 
       u.send :new_user_settings, info
       u.save

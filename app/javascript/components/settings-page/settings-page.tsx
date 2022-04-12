@@ -2,60 +2,56 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { User } from '../../typings/user';
 import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
-type DataFormType = {
-  nickName: string
-  firstName: string
-  lastName: string
-  avatar: string
+type PropsType = {
+  user: User
+  setUser: ({ }: User) => void
 }
 
-export const SettingsPage: React.FC = () => {
+
+
+export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const [dataForm, setDataForm] = useState<DataFormType>({
-    nickName: '',
-    firstName: '',
-    lastName: '',
-    avatar: ''
-  });
+  const [avatar, setAvatar] = useState<string | null>(user.avatar.url);
+  const [nickname, setNickname] = useState<string>(user.nickname);
+  const [firstName, setFirstName] = useState<string>(user.firstName);
+  const [lastName, setLastName] = useState<string>(user.lastName);
 
   useEffect(() => {
     userApi.getUser().then((user) => {
-      setDataForm({
-        nickName: user.nickname,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        avatar: user.avatar?.thumb.url
-      })
+      setUser(user)
     });
   }, [])
 
   const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {
     if (element.target.files && element.target.files.length > 0) {
       const reader = new FileReader();
-      reader.readAsDataURL(element.target.files[0]);
-      reader.onloadend = () => {
+      const selectedImage = element.target.files[0]
+      reader.onload = () => {
         if (typeof (reader.result) === "string")
-          setDataForm({ ...dataForm, avatar: reader.result });
+          setAvatar(reader.result)
       };
+      reader.readAsDataURL(selectedImage);
     }
   };
 
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    alert(JSON.stringify(dataForm));
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    let user = await userApi.updateUser(lastName, firstName, nickname, avatar)
+    setUser(user)
   };
 
   return (
     <form className={style.container} onSubmit={handleSubmit}>
       <div>
-        {dataForm.avatar ? (
+        {avatar ? (
           <div className={style.avatarForm}>
-            <img src={dataForm.avatar} className={style.avatar} />
+            <img src={avatar} className={style.avatar} />
             <div onMouseLeave={() => setIsOpenMenu(false)}>
               <div
                 className={`${style.menuButton} menu-button`}
@@ -86,7 +82,7 @@ export const SettingsPage: React.FC = () => {
                       if (fileInput.current) {
                         fileInput.current.value = ''
                       }
-                      setDataForm({ ...dataForm, avatar: '' });
+                      setAvatar(null);
                     }}
                   >
                     Delete
@@ -124,13 +120,13 @@ export const SettingsPage: React.FC = () => {
         />
       </div>
       <div className="form-element">
-        <div>Nickname</div>
+        <div>nickname</div>
         <input
           className="input"
-          value={dataForm.nickName}
+          value={nickname}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, nickName: element.currentTarget.value })
+            setNickname(element.currentTarget.value)
           }
         />
       </div>
@@ -138,10 +134,10 @@ export const SettingsPage: React.FC = () => {
         <div>First name</div>
         <input
           className="input"
-          value={dataForm.firstName}
+          value={firstName}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, firstName: element.currentTarget.value })
+            setFirstName(element.currentTarget.value)
           }
         />
       </div>
@@ -149,10 +145,10 @@ export const SettingsPage: React.FC = () => {
         <div>Last name</div>
         <input
           className="input"
-          value={dataForm.lastName}
+          value={lastName}
           type="text"
           onChange={(element) =>
-            setDataForm({ ...dataForm, lastName: element.currentTarget.value })
+            setLastName(element.currentTarget.value)
           }
         />
       </div>

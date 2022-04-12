@@ -91,6 +91,7 @@ gem 'webpacker', '~> 5'
 gem 'rails-assets-bulma', source: 'https://rails-assets.org'
 gem 'fog-aws', require: false
 gem 'carrierwave', '>= 2.0.0.rc', '< 3.0'
+gem 'carrierwave-base64'
 gem 'nanoid'
 gem 'action_policy', '~> 0.5.4'
 gem 'react-rails'
