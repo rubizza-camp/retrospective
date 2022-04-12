@@ -37,3 +37,11 @@ export type BoardType = {
     [key: string]: Array<Card>
   }
 };
+
+export type NewBoardType = {
+  title: string | number
+  columnEmojis: Array<string>
+  columnNames: Array<string>
+  private: boolean
+}
+

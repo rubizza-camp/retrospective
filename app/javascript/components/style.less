@@ -3,7 +3,7 @@
 // для erb, вынести отдельно
 
 body {
-	font-family: 'OpenSans', sans-serif;
+  font-family: "OpenSans", sans-serif;
 }
 
 html,
@@ -136,7 +136,7 @@ select:focus-visible {
 }
 
 .column-header {
-  font-family: 'OpenSansBold';
+  font-family: "OpenSansBold";
   display: block;
   padding-bottom: 20px;
 }
@@ -170,8 +170,8 @@ a.active {
   background-color: #fff;
   margin: 15% auto;
   border-radius: 4px;
-  width: 238px;
-  height: 89px;
+  width: 273px;
+  height: 137px;
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
@@ -244,7 +244,6 @@ a.active {
 }
 
 .menu-button {
-  z-index: 1;
   cursor: pointer;
   border-radius: 4px;
   width: 40px;
@@ -254,7 +253,7 @@ a.active {
 }
 
 .menu-button:hover {
-  background-color: #EFEFEF;
+  background-color: #efefef;
 }
 
 .menu-button svg {
@@ -270,13 +269,14 @@ a.active {
   display: block;
   transition: all ease 0.5s;
   padding: 16px 0;
-  background-color: white; 
-  position: absolute; 
+  background-color: white;
+  position: absolute;
   right: 0;
   width: 144px;
-  border: 1px solid #D9D8D8;
+  border: 1px solid #d9d8d8;
   border-radius: 4px;
   box-shadow: 0 8px 16px rgba(117, 125, 92, 0.25);
+  z-index: 1;
 }
 
 .closed {
@@ -288,6 +288,7 @@ a.active {
   background-color: white;
   cursor: pointer;
   list-style-type: none;
+  margin-bottom: -1px;
 }
 
 .list-item:hover {

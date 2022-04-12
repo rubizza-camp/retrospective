@@ -102,6 +102,7 @@ const BoardsContainer: React.FC = () => {
         ))}
       </div>
       <CreateBoard
+        setBoards={setStartBoards}
         isCreateBoardOpen={isCreateBoardOpen}
         setCreateBoardOpen={setCreateBoardOpen}
       />

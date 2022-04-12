@@ -6,6 +6,8 @@ import { getBoardDateName } from "../../utils/get-date";
 import style from "./style.module.less";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { EmojiIconProps, EmojiDataStateType } from "../../typings/emoji";
+import { boardApi } from "../api/boards-api";
+import { BoardType } from "../../typings/board";
 
 const EmojiIcon: React.FC<EmojiIconProps> = ({
   emojiColumnName,
@@ -34,14 +36,17 @@ const EmojiIcon: React.FC<EmojiIconProps> = ({
 type CreateBoardProps = {
   isCreateBoardOpen: boolean;
   setCreateBoardOpen: (isCreateBoardOpen: boolean) => void;
+  setBoards: (boards: Array<BoardType>) => void
 };
 
 export const CreateBoard: React.FC<CreateBoardProps> = ({
   isCreateBoardOpen,
   setCreateBoardOpen,
+  setBoards
 }) => {
-  const [formData, setformData] = useState({
-    boardName: getBoardDateName(Date.now()),
+
+  const initialFormData = {
+    title: getBoardDateName(Date.now()),
     firstColumnName: "Mad",
     firstColumnEmoji: {
       emoji: "😔",
@@ -54,22 +59,34 @@ export const CreateBoard: React.FC<CreateBoardProps> = ({
     thirdColumnEmoji: {
       emoji: "🤗",
     },
-  });
+  }
+  const [formData, setFormData] = useState(initialFormData);
 
   const [emojiData, setEmojiData] = useState<EmojiDataStateType>({
     emojiColumnName: "",
     emojiPickerOpen: false,
   });
 
-  const handleSubmit = (event: React.FormEvent) => {
-    alert(JSON.stringify(formData));
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    const board = {
+      title: formData.title,
+      columnNames: [formData.firstColumnName, formData.secondColumnName, formData.thirdColumnName],
+      columnEmojis: [formData.firstColumnEmoji.emoji, formData.secondColumnEmoji.emoji, formData.thirdColumnEmoji.emoji],
+      private: false
+    }
+    const response = await boardApi.createBoard(board)
+    if (response) {
+      setBoards(response);
+    }
     setCreateBoardOpen(false);
+    setFormData(initialFormData)
   };
 
   const onEmojiClick =
     (name: string) => (event: MouseEvent, emojiObject: IEmojiData) => {
-      setformData({
+      setFormData({
         ...formData,
         [name]: emojiObject,
       });
@@ -92,12 +109,12 @@ export const CreateBoard: React.FC<CreateBoardProps> = ({
             <div>Board name</div>
             <input
               className="input"
-              value={formData.boardName}
+              value={formData.title}
               type="text"
               onChange={(element) =>
-                setformData({
+                setFormData({
                   ...formData,
-                  boardName: element.currentTarget.value,
+                  title: element.currentTarget.value,
                 })
               }
               required
@@ -110,7 +127,7 @@ export const CreateBoard: React.FC<CreateBoardProps> = ({
               value={formData.firstColumnName}
               type="text"
               onChange={(element) =>
-                setformData({
+                setFormData({
                   ...formData,
                   firstColumnName: element.currentTarget.value,
                 })
@@ -130,7 +147,7 @@ export const CreateBoard: React.FC<CreateBoardProps> = ({
               value={formData.secondColumnName}
               type="text"
               onChange={(element) =>
-                setformData({
+                setFormData({
                   ...formData,
                   secondColumnName: element.currentTarget.value,
                 })
@@ -150,7 +167,7 @@ export const CreateBoard: React.FC<CreateBoardProps> = ({
               value={formData.thirdColumnName}
               type="text"
               onChange={(element) =>
-                setformData({
+                setFormData({
                   ...formData,
                   thirdColumnName: element.currentTarget.value,
                 })
@@ -172,6 +189,7 @@ export const CreateBoard: React.FC<CreateBoardProps> = ({
               className="button cancel-button"
               onClick={() => {
                 setCreateBoardOpen(false);
+                setFormData(initialFormData)
               }}
             >
               Cancel

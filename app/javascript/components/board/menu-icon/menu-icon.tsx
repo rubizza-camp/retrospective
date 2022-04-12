@@ -26,7 +26,10 @@ export const MenuIcon: React.FC<Props> = ({
 
 
   return (
-    <div onMouseLeave={() => setIsOpenMenu(false)}>
+    <div onMouseLeave={(e) => {
+      e.stopPropagation()
+      setIsOpenMenu(false)
+    }}>
       <div className="menu-button" onClick={onClickHandler}>
         <FontAwesomeIcon icon={faEllipsisH as IconProp} size="lg" color="#C6C6C4" />
       </div>

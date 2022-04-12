@@ -44,7 +44,7 @@ export const BoardPage: React.FC = () => {
                 />
               </div>
               <div>
-                {board.cardsByType[column[0]].map((card, index) => (
+                {board.cardsByType[column[0]] && board.cardsByType[column[0]].map((card, index) => (
                   <div key={index}>
                     {card.body}
                   </div>
@@ -73,7 +73,12 @@ export const BoardPage: React.FC = () => {
                 className={style.icon}
                 onClick={() => history('/boards')}
               />
-              <Avatar isSquare avatar="" id={board.id} firstName={board.title} />
+              <Avatar
+                isSquare
+                avatar=""
+                id={board.id}
+                firstName={board.title}
+              />
               <div style={{ marginLeft: "10px" }} >
                 <div>
                   {board.title}

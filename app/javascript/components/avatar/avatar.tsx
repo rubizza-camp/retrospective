@@ -24,12 +24,18 @@ export const Avatar: React.FC<Props> = ({
 }) => {
   if (avatar) {
     if (isSquare) {
-      return <img src={avatar} className={style.squareAvatar} />;
+      return <img
+        src={avatar}
+        style={{ width: `${width}px`, height: `${height}px` }}
+        className={style.squareAvatar} />;
     }
 
     return (
-      <div className={style.roundAvatarContainer}>
-        <img src={avatar} className={style.roundAvatar} />
+      <div style={{ width: `${width}px`, height: `${height}px` }} className={style.roundAvatarContainer}>
+        <img
+          src={avatar}
+          className={style.roundAvatar}
+        />
       </div>
     );
   }

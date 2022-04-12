@@ -14,9 +14,9 @@ export type EmojiDataStateType = {
 
 export type EmojiIconProps = {
   emojiColumnName: EmojiColumnNameType;
-  setEmojiData: ({}: EmojiDataStateType) => void;
+  setEmojiData: ({ }: EmojiDataStateType) => void;
   formData: {
-    boardName: string | number;
+    title: string | number;
     firstColumnName: string;
     secondColumnName: string;
     thirdColumnName: string;
@@ -25,3 +25,5 @@ export type EmojiIconProps = {
     thirdColumnEmoji: ColumnEmoji;
   };
 };
+
+

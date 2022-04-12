@@ -1,5 +1,5 @@
 import { api } from './api';
-import { BoardType } from '../../typings/board'
+import { BoardType, NewBoardType } from '../../typings/board'
 
 export const boardApi = {
   async getBoards() {
@@ -28,6 +28,10 @@ export const boardApi = {
   async getBoard(boardSlug: string) {
     const board = await api.get<BoardType>(`boards/${boardSlug}`);
     return board.data;
+  },
+  async createBoard(board: NewBoardType) {
+    await api.post<BoardType>(`boards`, { board });
+    return this.getBoards();
   },
 
 };
