@@ -1,15 +1,16 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faAngleLeft, faCog, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { BoardType } from '../../typings/board';
-import { boardApi } from '../api/boards-api';
-import { Avatar } from '../avatar/avatar';
-import { UserMenu } from '../user-menu/user-menu';
-import style from './style.module.less';
-
-
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faAngleLeft, faCog, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { BoardType } from "../../typings/board";
+import { boardApi } from "../api/boards-api";
+import { Avatar } from "../avatar/avatar";
+import { UserMenu } from "../user-menu/user-menu";
+import style from "./style.module.less";
+import { Card } from "./card/card";
+import { cardApi } from "../api/card-api";
+import NewCardBody from "./new-card-body/new-card-body";
 
 export const BoardPage: React.FC = () => {
   const history = useNavigate();
@@ -19,50 +20,37 @@ export const BoardPage: React.FC = () => {
 
   useEffect(() => {
     if (params.boardSlug) {
-      boardApi.getBoard(params?.boardSlug).then(board => {
+      boardApi.getBoard(params?.boardSlug).then((board) => {
         setBoard(board);
         console.log(board);
-      })
+      });
     }
-  }, [])
+  }, []);
 
-  const generateColumns = () => {
-    if (board) {
-      return board.columnNames
-        .map((name, index) => ([name, board.columnEmojis[index]]))
-        .map((column, index) => {
-          return (
-            <div key={index} className={style.itemsColumn}>
-              <div className={style.columnHeader}>
-                <span>{column[0]}  {column[1]}</span>
-                <FontAwesomeIcon
-                  icon={faPlus as IconProp}
-                  size="sm"
-                  color="gray"
-                  className={style.icon}
-                  onClick={() => alert('создание карточки')}
-                />
-              </div>
-              <div>
-                {board.cardsByType[column[0]].map((card, index) => (
-                  <div key={index}>
-                    {card.body}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )
-        })
-    }
-  };
+  const generateColumns = () =>
+    board?.columnNames.map((name, index) => {
+      return (
+        <div key={index} className={style.itemsColumn}>
+          <div className={style.columnHeader}>
+            <span>
+              {name} {board.columnEmojis[index]}
+            </span>
+            <NewCardBody kind={name} boardSlug={board.slug} />
+          </div>
+          <div>
+            {board.cardsByType[name].map((card, index) => {
+              console.log(card);
 
-
-
-
+              return <Card key={index} {...card} />;
+            })}
+          </div>
+        </div>
+      );
+    });
 
   return (
     <div>
-      {board &&
+      {board && (
         <div className={style.header}>
           <div>
             <div className={style.boardInfo}>
@@ -71,10 +59,15 @@ export const BoardPage: React.FC = () => {
                 size="lg"
                 color="#474343"
                 className={style.icon}
-                onClick={() => history('/boards')}
+                onClick={() => history("/boards")}
               />
-              <Avatar isSquare avatar="" id={board.id} firstName={board.title} />
-              <div style={{ marginLeft: "10px" }} >
+              <Avatar
+                isSquare
+                avatar=""
+                id={board.id}
+                firstName={board.title}
+              />
+              <div style={{ marginLeft: "10px" }}>
                 <div>
                   {board.title}
                   <FontAwesomeIcon
@@ -82,7 +75,11 @@ export const BoardPage: React.FC = () => {
                     size="sm"
                     color="gray"
                     className={style.icon}
-                    onClick={() => alert('будет перенаправлять на другую страницу или открывать модальное окно')}
+                    onClick={() =>
+                      alert(
+                        "будет перенаправлять на другую страницу или открывать модальное окно"
+                      )
+                    }
                   />
                 </div>
                 <div className={style.boardCount}>#{board.boardsCount}</div>
@@ -90,7 +87,7 @@ export const BoardPage: React.FC = () => {
             </div>
           </div>
           <div className={style.users}>
-            {board.users.map(user => {
+            {board.users.map((user) => {
               return (
                 <Avatar
                   width={48}
@@ -102,7 +99,7 @@ export const BoardPage: React.FC = () => {
                   firstName={user.firstName}
                   lastName={user.lastName}
                 />
-              )
+              );
             })}
             <FontAwesomeIcon
               icon={faPlus as IconProp}
@@ -110,16 +107,15 @@ export const BoardPage: React.FC = () => {
               color="gray"
               className={style.icon}
               onClick={() => {
-                navigator.clipboard.writeText(window.location.href)
-                alert('ссылка для приглашения скопирована!')
+                navigator.clipboard.writeText(window.location.href);
+                alert("ссылка для приглашения скопирована!");
               }}
             />
           </div>
           <UserMenu />
-        </div>}
-      <div className={style.itemsContainer}>
-        {generateColumns()}
-      </div>
+        </div>
+      )}
+      <div className={style.itemsContainer}>{generateColumns()}</div>
     </div>
-  )
-}
+  );
+};
