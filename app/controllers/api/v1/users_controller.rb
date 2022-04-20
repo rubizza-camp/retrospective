@@ -11,6 +11,7 @@ module API
 
       def update
         if @current_user.update(user_params)
+          avatar_delete
           render json: @current_user
         else
           render_json_error(@current_user.errors.full_messages)
@@ -33,6 +34,13 @@ module API
 
       def user_params
         params.require(:user).permit(:nickname, :first_name, :last_name, :avatar)
+      end
+
+      def avatar_delete
+        return unless user_params[:avatar].nil?
+
+        @current_user.remove_avatar!
+        @current_user.save
       end
 
       def prepare_and_make_response(user)

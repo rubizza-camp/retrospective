@@ -77,11 +77,15 @@
     "@popperjs/core": "^2.10.2",
     "@rails/actioncable": "^6.0.3",
     "@rails/webpacker": "^5.4.3",
+    "@reduxjs/toolkit": "^1.8.1",
     "@svgr/webpack": "^5.5.0",
+    "@types/jest": "^27.4.1",
     "@types/react": "^17.0.38",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.11",
+    "@types/react-redux": "^7.1.23",
     "@types/react-router-dom": "^5.3.3",
+    "@types/redux-thunk": "^2.1.0",
     "actioncable": "^5.2.4",
     "apollo-boost": "^0.4.7",
     "apollo-cache-inmemory": "^1.6.6",
@@ -98,6 +102,7 @@
     "graphql": "^15.4.0",
     "graphql-ruby-client": "^1.8.1",
     "graphql-tag": "^2.10.3",
+    "jest": "^27.5.1",
     "less": "^4.0.0",
     "less-loader": "^7.2.0",
     "linkifyjs": "^2.1.9",
@@ -108,10 +113,13 @@
     "react-beautiful-dnd": "13.1.0",
     "react-bulma-components": "3.4.0",
     "react-dom": "^16.12.0",
+    "react-redux": "^7.2.8",
     "react-router-dom": "^6.2.1",
     "react-select": "^3.0.8",
     "react-textarea-autosize": "^8.3.0",
     "react_ujs": "^2.6.1",
+    "redux": "^4.1.2",
+    "redux-thunk": "^2.4.1",
     "typescript": "^4.5.5"
   },
   "devDependencies": {
@@ -130,6 +138,13 @@
   "scripts": {
     "lint": "xo app/javascript",
     "lint:fix": "yarn lint --fix",
-    "test": "yarn lint"
+    "test": "yarn lint",
+    "test-jest": "jest",
+    "test-watch": "jest --watch"
+  },
+  "jest": {
+    "roots": [
+      "app/javascript"
+    ]
   }
 }

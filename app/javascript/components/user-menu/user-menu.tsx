@@ -3,17 +3,17 @@ import { faCog, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../typings/user";
+import { selectCurrentUser } from '../../redux/app/slice';
+import { useAppSelector } from '../../redux/store';
 import { getFullnameOrNickname } from '../../utils/helpers';
 import { Avatar } from "../avatar/avatar";
 import style from "./style.module.less";
-type PropsType = {
-  user: User
-}
 
-export const UserMenu: React.FC<PropsType> = ({ user }) => {
+
+export const UserMenu: React.FC = () => {
   const history = useNavigate();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const user = useAppSelector(selectCurrentUser);
 
   return (
     <div

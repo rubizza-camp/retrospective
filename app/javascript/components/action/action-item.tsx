@@ -66,7 +66,7 @@ export const ActionItem: React.FC<Props> = ({ item, deleteCallback }) => {
           <div className={style.authorAvatar}>
             <Avatar
               avatar={item.author.avatar.url}
-              id={item.id}
+              id={item.author.id}
               isSquare={false}
               firstName={item.author.firstName}
               lastName={item.author.lastName}

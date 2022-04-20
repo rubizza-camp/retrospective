@@ -21,16 +21,20 @@
 // const ReactRailsUJS = require('react_ujs');
 // ReactRailsUJS.useContext(componentRequireContext);
 
-import React from 'react';
-import {render} from 'react-dom';
-import {App} from '../components/app';
-import {BrowserRouter} from 'react-router-dom';
+import React from "react";
+import { render } from "react-dom";
+import { App } from "../components/app";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "../redux/store";
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   render(
     <BrowserRouter>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>,
-    document.querySelector('#root')
+    document.querySelector("#root")
   );
 });

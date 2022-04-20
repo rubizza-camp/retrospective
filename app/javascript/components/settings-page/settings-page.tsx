@@ -2,29 +2,29 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import { getUserAsync, updateUserAsync } from '../../redux/app/slice';
+import { useAppDispatch } from '../../redux/store';
 import { User } from '../../typings/user';
-import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
 type PropsType = {
   user: User
-  setUser: ({ }: User) => void
 }
 
+export const SettingsPage: React.FC<PropsType> = ({ user }) => {
+  const dispatch = useAppDispatch()
 
-
-export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
+
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [avatar, setAvatar] = useState<string | null>(user.avatar.url);
   const [nickname, setNickname] = useState<string>(user.nickname);
   const [firstName, setFirstName] = useState<string>(user.firstName);
   const [lastName, setLastName] = useState<string>(user.lastName);
 
+
   useEffect(() => {
-    userApi.getUser().then((user) => {
-      setUser(user)
-    });
+    dispatch(getUserAsync())
   }, [])
 
   const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,11 +39,9 @@ export const SettingsPage: React.FC<PropsType> = ({ user, setUser }) => {
     }
   };
 
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let user = await userApi.updateUser(lastName, firstName, nickname, avatar)
-    setUser(user)
+    dispatch(updateUserAsync({ lastName, firstName, nickname, avatar }))
   };
 
   return (

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import logo from '../../assets/images/logo.png';
-import { User } from '../typings/user';
+import { getUserAsync, selectCurrentUser } from '../redux/app/slice';
+import { useAppDispatch, useAppSelector } from '../redux/store';
 import ActionItemsContainer from './action-items-container';
-import { userApi } from './api/user-api';
 import { BoardPage } from './board-page/board-page';
 import BoardsContainer from './boards-container';
 import { SettingsPage } from './settings-page/settings-page';
@@ -13,13 +13,12 @@ import { UserMenu } from './user-menu/user-menu';
 
 export const App = () => {
   const history = useNavigate();
+  const dispatch = useAppDispatch()
 
-  const [user, setUser] = useState<User | null>(null);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   useEffect(() => {
-    userApi.getUser().then((user) => {
-      setUser(user)
-    });
+    dispatch(getUserAsync())
   }, [])
 
   return (
@@ -41,7 +40,7 @@ export const App = () => {
             </NavLink>
           </div>
           <div>
-            {user && <UserMenu user={user} />}
+            <UserMenu />
           </div>
         </div>}
       <div>
@@ -49,7 +48,7 @@ export const App = () => {
           <Route path="/boards" element={<BoardsContainer />} />
           <Route path="/cards" element={<ActionItemsContainer />} />
           <Route path="/board/:boardSlug" element={<BoardPage />} />
-          <Route path="/settings" element={user && <SettingsPage user={user} setUser={setUser} />} />
+          <Route path="/settings" element={currentUser && <SettingsPage user={currentUser} />} />
           <Route path="*" element={<Navigate to="/boards" />} />
         </Routes>
       </div>
