@@ -2,9 +2,10 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { getUserAsync, updateUserAsync } from '../../redux/app/slice';
-import { useAppDispatch } from '../../redux/store';
+import { useDispatch } from "react-redux";
 import { User } from '../../typings/user';
+import {actions} from '../../redux/user/slice'
+import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
 type PropsType = {
@@ -12,7 +13,7 @@ type PropsType = {
 }
 
 export const SettingsPage: React.FC<PropsType> = ({ user }) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
   const fileInput = useRef(null) as MutableRefObject<HTMLInputElement | null>;
 
@@ -24,8 +25,15 @@ export const SettingsPage: React.FC<PropsType> = ({ user }) => {
 
 
   useEffect(() => {
-    dispatch(getUserAsync())
-  }, [])
+    try {
+      dispatch(actions.fetchRequest());
+      userApi.getUser().then((user) => {
+        dispatch(actions.fetchSuccess(user));
+      });
+    } catch {
+      dispatch(actions.fetchFailure());
+    }
+  }, []);
 
   const onChangeHandler = (element: React.ChangeEvent<HTMLInputElement>) => {
     if (element.target.files && element.target.files.length > 0) {
@@ -41,7 +49,14 @@ export const SettingsPage: React.FC<PropsType> = ({ user }) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(updateUserAsync({ lastName, firstName, nickname, avatar }))
+    dispatch(actions.updateRequest());
+    try {
+      userApi.updateUser(lastName, firstName, nickname, avatar).then((user) => {
+        dispatch(actions.updateSuccess(user));
+      });
+    } catch {
+      dispatch(actions.updateFailure());
+    }
   };
 
   return (

@@ -3,17 +3,18 @@ import { faCog, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { selectCurrentUser } from '../../redux/app/slice';
-import { useAppSelector } from '../../redux/store';
+import { useSelector } from 'react-redux';
 import { getFullnameOrNickname } from '../../utils/helpers';
 import { Avatar } from "../avatar/avatar";
+import { RootState } from '../../redux/store';
 import style from "./style.module.less";
 
 
 export const UserMenu: React.FC = () => {
   const history = useNavigate();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-  const user = useAppSelector(selectCurrentUser);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
+
 
   return (
     <div
@@ -21,23 +22,23 @@ export const UserMenu: React.FC = () => {
         setIsOpenMenu(false);
       }}
     >
-      {user && <div
+      {currentUser && <div
         className={style.userMenu}
         onClick={() => setIsOpenMenu(!isOpenMenu)}
       >
         <div className={style.userName}>
           {getFullnameOrNickname(
-            user.firstName,
-            user.lastName,
-            user.nickname
+            currentUser.firstName,
+            currentUser.lastName,
+            currentUser.nickname
           )}
         </div>
         <Avatar
           isSquare
-          avatar={user.avatar.url}
-          id={user.id}
-          firstName={user.firstName}
-          lastName={user.lastName}
+          avatar={currentUser.avatar.url}
+          id={currentUser.id}
+          firstName={currentUser.firstName}
+          lastName={currentUser.lastName}
         />
       </div>}
       <div className={isOpenMenu ? `${style.opened} opened` : "closed"}>

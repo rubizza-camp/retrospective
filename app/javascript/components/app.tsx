@@ -1,25 +1,34 @@
 import React, { useEffect } from 'react';
 import { Navigate, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
 import logo from '../../assets/images/logo.png';
-import { getUserAsync, selectCurrentUser } from '../redux/app/slice';
-import { useAppDispatch, useAppSelector } from '../redux/store';
 import ActionItemsContainer from './action-items-container';
 import { BoardPage } from './board-page/board-page';
 import BoardsContainer from './boards-container';
 import { SettingsPage } from './settings-page/settings-page';
+import { UserMenu } from './user-menu/user-menu';
+import { RootState } from '../redux/store';
+import { userApi } from './api/user-api';
+import { actions } from '../redux/user/slice';
 import './style.less';
 import style from './style.module.less';
-import { UserMenu } from './user-menu/user-menu';
 
 export const App = () => {
   const history = useNavigate();
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
-  const currentUser = useAppSelector(selectCurrentUser);
+  const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   useEffect(() => {
-    dispatch(getUserAsync())
-  }, [])
+    dispatch(actions.fetchRequest);
+    try {
+      userApi.getUser().then((user) => {
+        dispatch(actions.fetchSuccess(user));
+      });
+    } catch {
+      dispatch(actions.fetchFailure);
+    }
+  }, []);
 
   return (
     <div>
