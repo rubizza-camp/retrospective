@@ -7,6 +7,7 @@ type Props = {
   role: string
   isOpenMenu: boolean
   setIsOpenMenu: (isOpenMenu: boolean) => void
+  setMenuButtonVisisble: (isMenuButtonVisisble: boolean) => void
   historyBoard: () => void
   deleteBoard: () => void
   continueBoard: () => void
@@ -19,6 +20,7 @@ export const MenuIcon: React.FC<Props> = ({
   historyBoard,
   deleteBoard,
   continueBoard,
+  setMenuButtonVisisble
 }) => {
   const onClickHandler = () => {
     setIsOpenMenu(!isOpenMenu);
@@ -29,6 +31,7 @@ export const MenuIcon: React.FC<Props> = ({
     <div onMouseLeave={(e) => {
       e.stopPropagation()
       setIsOpenMenu(false)
+      setMenuButtonVisisble(false)
     }}>
       <div className="menu-button" onClick={onClickHandler}>
         <FontAwesomeIcon icon={faEllipsisH as IconProp} size="lg" color="#C6C6C4" />

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { useDispatch } from "react-redux";
 import { User } from '../../typings/user';
-import {actions} from '../../redux/user/slice'
+import { actions } from '../../redux/user/slice'
 import { userApi } from '../api/user-api';
 import style from './style.module.less';
 
@@ -26,12 +26,12 @@ export const SettingsPage: React.FC<PropsType> = ({ user }) => {
 
   useEffect(() => {
     try {
-      dispatch(actions.fetchRequest());
+      dispatch(actions.pending());
       userApi.getUser().then((user) => {
-        dispatch(actions.fetchSuccess(user));
+        dispatch(actions.setCurrentUser(user));
       });
     } catch {
-      dispatch(actions.fetchFailure());
+      dispatch(actions.rejected());
     }
   }, []);
 
@@ -49,13 +49,13 @@ export const SettingsPage: React.FC<PropsType> = ({ user }) => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(actions.updateRequest());
+    dispatch(actions.pending());
     try {
       userApi.updateUser(lastName, firstName, nickname, avatar).then((user) => {
-        dispatch(actions.updateSuccess(user));
+        dispatch(actions.setCurrentUser(user));
       });
     } catch {
-      dispatch(actions.updateFailure());
+      dispatch(actions.rejected());
     }
   };
 

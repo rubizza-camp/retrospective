@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../typings/user";
 
 export interface UserState {
@@ -17,28 +17,17 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    fetchRequest: (state): UserState => ({ ...state, fetching: true }),
-    fetchSuccess: (state, action): UserState => ({
-      ...state,
-      fetching: false,
-      currentUser: action.payload
-    }),
-    fetchFailure: (state): UserState => ({
-      ...state,
-      fetching: false,
-      apiError: true
-    }),
-    updateRequest: (state): UserState => ({ ...state, fetching: true }),
-    updateSuccess: (state, action): UserState => ({
-      ...state,
-      fetching: false,
-      currentUser: action.payload
-    }),
-    updateFailure: (state): UserState => ({
-      ...state,
-      fetching: false,
-      apiError: true
-    }),
+    pending: (state) => {
+      state.fetching = true
+    },
+    rejected: (state) => {
+      state.fetching = false
+      state.apiError = true
+    },
+    setCurrentUser: (state, action: PayloadAction<User>) => {
+      state.fetching = false
+      state.currentUser = action.payload
+    }
   },
 });
 

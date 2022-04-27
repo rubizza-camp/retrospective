@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { actions } from "../../redux/boards-page/slice";
 import { BoardType } from "../../typings/board";
 import { getDate } from "../../utils/get-date";
 import { boardApi } from "../api/boards-api";
@@ -8,10 +10,9 @@ import { MenuIcon } from "./menu-icon/menu-icon";
 import style from "./style.module.less";
 
 type Props = {
-  setHistoryBoards: (boards: Array<BoardType>) => void
-  setBoards: (boards: Array<BoardType>) => void
   setIsModal: (isModal: boolean) => void
   role: string
+  isHistoryBoard: boolean
   board: BoardType
   historyBoards: Array<BoardType>
 };
@@ -19,29 +20,28 @@ type Props = {
 const Board: React.FC<Props> = ({
   role,
   board,
-  setBoards,
   setIsModal,
-  setHistoryBoards,
-  historyBoards,
+  isHistoryBoard
 }) => {
+  const dispatch = useDispatch()
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isMenuButtonVisisble, setMenuButtonVisisble] = useState(false);
 
   const continueBoard = async () => {
     const boards = await boardApi.continueBoard(board.slug);
     if (boards) {
-      setBoards(boards);
+      dispatch(actions.setBoards(boards));
     }
-
+    setMenuButtonVisisble(false);
     setIsOpenMenu(false);
   };
 
   const historyBoard = async () => {
     const boards = await boardApi.historyBoard(board.slug);
     if (boards) {
-      setHistoryBoards(boards);
+      dispatch(actions.setHistoryBoards(boards));
     }
-
+    setMenuButtonVisisble(false);
     setIsOpenMenu(false);
     setIsModal(true);
   };
@@ -49,9 +49,9 @@ const Board: React.FC<Props> = ({
   const deleteBoard = async () => {
     const boards = await boardApi.deleteBoard(board.slug);
     if (boards) {
-      setBoards(boards);
+      dispatch(actions.setBoards(boards));
     }
-
+    setMenuButtonVisisble(false);
     setIsOpenMenu(false);
   };
 
@@ -60,6 +60,7 @@ const Board: React.FC<Props> = ({
       className={style.board}
       onMouseEnter={() => {
         setMenuButtonVisisble(true);
+
       }}
       onMouseLeave={() => {
         setMenuButtonVisisble(false);
@@ -70,9 +71,10 @@ const Board: React.FC<Props> = ({
         <span className={style.title}>
           <NavLink to={`/board/${board.slug}`}>{board.title}</NavLink>
         </span>
-        {!historyBoards.length && isMenuButtonVisisble && (
+        {isHistoryBoard && isMenuButtonVisisble && (
           <MenuIcon
             role={role}
+            setMenuButtonVisisble={setMenuButtonVisisble}
             continueBoard={continueBoard}
             deleteBoard={deleteBoard}
             historyBoard={historyBoard}

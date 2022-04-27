@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from "react-redux";
 import logo from '../../assets/images/logo.png';
 import ActionItemsContainer from './action-items-container';
 import { BoardPage } from './board-page/board-page';
@@ -20,13 +20,13 @@ export const App = () => {
   const currentUser = useSelector((state: RootState) => state.user.currentUser);
 
   useEffect(() => {
-    dispatch(actions.fetchRequest);
+    dispatch(actions.pending());
     try {
       userApi.getUser().then((user) => {
-        dispatch(actions.fetchSuccess(user));
+        dispatch(actions.setCurrentUser(user));
       });
     } catch {
-      dispatch(actions.fetchFailure);
+      dispatch(actions.rejected());
     }
   }, []);
 

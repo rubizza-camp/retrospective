@@ -1,6 +1,11 @@
 import { ActionItemType } from "./actionItem";
 import { User } from "./user";
 
+export enum ROLE {
+  Creator = 'creator',
+  Participating = 'participating'
+}
+
 export type Comment = {
   id: number
   content: string

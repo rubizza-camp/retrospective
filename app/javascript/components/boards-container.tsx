@@ -1,33 +1,44 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../redux/boards-page/slice';
+import { RootState } from '../redux/store';
+import { ROLE } from '../typings/board';
 import { boardApi } from './api/boards-api';
-import style from './board/style.module.less';
-import './style.less';
-import { BoardType } from '../typings/board';
-import ModalWindow from './board/modal/modal-window';
 import Board from './board/board';
+import ModalWindow from './board/modal/modal-window';
+import style from './board/style.module.less';
 import { CreateBoard } from './create-board/create-board';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import './style.less';
 
 const BoardsContainer: React.FC = () => {
-  const [startBoards, setStartBoards] = useState<Array<BoardType> | []>([]);
-  const [historyBoards, setHistoryBoards] = useState<Array<BoardType> | []>([]);
+
+  const dispatch = useDispatch()
+
+  const { boards, historyBoards, role } = useSelector((state: RootState) => state.board);
+
   const [isModal, setIsModal] = useState(false);
-  const [role, setRole] = useState('creator');
   const [isCreateBoardOpen, setCreateBoardOpen] = useState(false);
 
-
   useEffect(() => {
-    if (role === 'creator') {
-      boardApi.getBoards().then((response) => {
-        setStartBoards(response);
-      });
-    } else {
-      boardApi.getBoardsWhereIAm().then((response) => {
-        setStartBoards(response);
-      });
+    dispatch(actions.pending());
+    try {
+      if (role === ROLE.Creator) {
+        boardApi.getBoards().then(boards => {
+          dispatch(actions.setBoards(boards))
+        })
+      } else {
+        boardApi.getBoardsWhereIAm().then(boards => {
+          dispatch(actions.setBoards(boards))
+
+        })
+      }
+    } catch {
+      dispatch(actions.rejected());
     }
+
   }, [role]);
 
   return (
@@ -35,16 +46,14 @@ const BoardsContainer: React.FC = () => {
       <ModalWindow
         visible={isModal}
         setVisible={setIsModal}
-        setHistoryBoards={setHistoryBoards}
       >
         {historyBoards.map((board) => (
           <Board
             key={board.id}
+            isHistoryBoard={false}
             role={role}
             setIsModal={setIsModal}
             historyBoards={historyBoards}
-            setBoards={setStartBoards}
-            setHistoryBoards={setHistoryBoards}
             board={board}
           />
         ))}
@@ -72,7 +81,7 @@ const BoardsContainer: React.FC = () => {
               : style.button
           }
           type="button"
-          onClick={() => setRole('creator')}
+          onClick={() => dispatch(actions.setRole(ROLE.Creator))}
         >
           My Boards
         </button>
@@ -83,26 +92,24 @@ const BoardsContainer: React.FC = () => {
               : style.button
           }
           type="button"
-          onClick={() => setRole('participating')}
+          onClick={() => dispatch(actions.setRole(ROLE.Participating))}
         >
           Boards where I am
         </button>
       </div>
       <div className={style.boards}>
-        {startBoards.map((board) => (
+        {boards.map((board) => (
           <Board
             key={board.id}
             role={role}
+            isHistoryBoard={true}
             setIsModal={setIsModal}
             historyBoards={historyBoards}
-            setBoards={setStartBoards}
-            setHistoryBoards={setHistoryBoards}
             board={board}
           />
         ))}
       </div>
       <CreateBoard
-        setBoards={setStartBoards}
         isCreateBoardOpen={isCreateBoardOpen}
         setCreateBoardOpen={setCreateBoardOpen}
       />

@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import Picker, { IEmojiData } from "emoji-picker-react";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faSmile } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Picker, { IEmojiData } from "emoji-picker-react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { actions } from "../../redux/boards-page/slice";
+import { EmojiDataStateType, EmojiIconProps } from "../../typings/emoji";
 import { getBoardDateName } from "../../utils/get-date";
-import style from "./style.module.less";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { EmojiIconProps, EmojiDataStateType } from "../../typings/emoji";
 import { boardApi } from "../api/boards-api";
-import { BoardType } from "../../typings/board";
+import style from "./style.module.less";
 
 const EmojiIcon: React.FC<EmojiIconProps> = ({
   emojiColumnName,
@@ -36,15 +37,13 @@ const EmojiIcon: React.FC<EmojiIconProps> = ({
 type CreateBoardProps = {
   isCreateBoardOpen: boolean;
   setCreateBoardOpen: (isCreateBoardOpen: boolean) => void;
-  setBoards: (boards: Array<BoardType>) => void
 };
 
 export const CreateBoard: React.FC<CreateBoardProps> = ({
   isCreateBoardOpen,
-  setCreateBoardOpen,
-  setBoards
+  setCreateBoardOpen
 }) => {
-
+  const dispatch = useDispatch()
   const initialFormData = {
     title: getBoardDateName(Date.now()),
     firstColumnName: "Mad",
@@ -78,7 +77,7 @@ export const CreateBoard: React.FC<CreateBoardProps> = ({
     }
     const response = await boardApi.createBoard(board)
     if (response) {
-      setBoards(response);
+      dispatch(actions.setBoards(response));
     }
     setCreateBoardOpen(false);
     setFormData(initialFormData)
