@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Droppable, Draggable, DragDropContext, DropResult } from 'react-beautiful-dnd';
-
-import { ActionItemType, ACTION_ITEM_STATUS } from '../typings/actionItem'
+import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { useDispatch, useSelector } from "react-redux";
+import { actions } from "../redux/action-items/slice";
+import { RootState } from "../redux/store";
+import { ActionItemType, ACTION_ITEM_STATUS } from '../typings/actionItem';
 import { ActionItem } from "./action/action-item";
 import { actionItemsApi } from "./api/action-items-api";
 import "./style.less";
 
+
 const ActionItemsContainer: React.FC = () => {
-  const [actionItems, setActionItems] = useState<Array<ActionItemType>>([]);
+  const dispatch = useDispatch()
+  const { actionItems } = useSelector((state: RootState) => state.actionItem);
+
   const [isModalOpen, setModalOpen] = useState(false);
   const [cardId, setCardId] = useState<number | null>(null);
   const columns = [
@@ -17,9 +22,14 @@ const ActionItemsContainer: React.FC = () => {
   ];
 
   useEffect(() => {
-    actionItemsApi
-      .getActionItems()
-      .then((response) => setActionItems(response));
+    dispatch(actions.pending())
+    try {
+      actionItemsApi
+        .getActionItems()
+        .then((response) => dispatch(actions.setActionItems(response)));
+    } catch {
+      dispatch(actions.rejected());
+    }
   }, []);
 
   const handleOnDragEnd = (items: Array<ActionItemType>) => (result: DropResult) => {
@@ -28,10 +38,14 @@ const ActionItemsContainer: React.FC = () => {
     if (!destination) {
       return;
     }
-
-    actionItemsApi
-      .changeActionItemStatus(Number(draggableId), destination.droppableId)
-      .then((response) => setActionItems(response));
+    dispatch(actions.pending())
+    try {
+      actionItemsApi
+        .changeActionItemStatus(Number(draggableId), destination.droppableId)
+        .then((response) => dispatch(actions.setActionItems(response)));
+    } catch {
+      dispatch(actions.rejected());
+    }
   };
 
   const getColumnName = (name: string) => {
@@ -102,8 +116,8 @@ const ActionItemsContainer: React.FC = () => {
               onClick={() => {
                 setModalOpen(false);
                 actionItemsApi
-                  .changeActionItemStatus(Number(cardId), 'closed')
-                  .then((response) => setActionItems(response));
+                  .changeActionItemStatus(Number(cardId), ACTION_ITEM_STATUS.Closed)
+                  .then((response) => dispatch(actions.setActionItems(response)));
               }}
             >
               Delete
