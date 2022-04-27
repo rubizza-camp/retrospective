@@ -11,13 +11,14 @@ import Board from './board/board';
 import ModalWindow from './board/modal/modal-window';
 import style from './board/style.module.less';
 import { CreateBoard } from './create-board/create-board';
+import { Spinner } from './spinner/spinner';
 import './style.less';
 
 const BoardsContainer: React.FC = () => {
 
   const dispatch = useDispatch()
 
-  const { boards, historyBoards, role } = useSelector((state: RootState) => state.board);
+  const { boards, historyBoards, role, fetching } = useSelector((state: RootState) => state.board);
 
   const [isModal, setIsModal] = useState(false);
   const [isCreateBoardOpen, setCreateBoardOpen] = useState(false);
@@ -76,7 +77,7 @@ const BoardsContainer: React.FC = () => {
       <div className={style.buttons}>
         <button
           className={
-            role === 'creator'
+            role === ROLE.Creator
               ? `${style.activeButton} ${style.button}`
               : style.button
           }
@@ -87,7 +88,7 @@ const BoardsContainer: React.FC = () => {
         </button>
         <button
           className={
-            role === 'participating'
+            role === ROLE.Participating
               ? `${style.activeButton} ${style.button}`
               : style.button
           }
@@ -97,18 +98,20 @@ const BoardsContainer: React.FC = () => {
           Boards where I am
         </button>
       </div>
-      <div className={style.boards}>
-        {boards.map((board) => (
-          <Board
-            key={board.id}
-            role={role}
-            isHistoryBoard={true}
-            setIsModal={setIsModal}
-            historyBoards={historyBoards}
-            board={board}
-          />
-        ))}
-      </div>
+      <Spinner fetching={fetching} styles={{paddingTop: '100px', paddingLeft: '250px'}}>
+        <div className={style.boards}>
+          {boards.map((board) => (
+            <Board
+              key={board.id}
+              role={role}
+              isHistoryBoard={true}
+              setIsModal={setIsModal}
+              historyBoards={historyBoards}
+              board={board}
+            />
+          ))}
+        </div>
+      </Spinner>
       <CreateBoard
         isCreateBoardOpen={isCreateBoardOpen}
         setCreateBoardOpen={setCreateBoardOpen}
