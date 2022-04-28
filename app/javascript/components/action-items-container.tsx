@@ -6,12 +6,13 @@ import { RootState } from "../redux/store";
 import { ActionItemType, ACTION_ITEM_STATUS } from '../typings/actionItem';
 import { ActionItem } from "./action/action-item";
 import { actionItemsApi } from "./api/action-items-api";
+import { Spinner } from "./spinner/spinner";
 import "./style.less";
 
 
 const ActionItemsContainer: React.FC = () => {
   const dispatch = useDispatch()
-  const { actionItems } = useSelector((state: RootState) => state.actionItem);
+  const { actionItems, fetching } = useSelector((state: RootState) => state.actionItem);
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [cardId, setCardId] = useState<number | null>(null);
@@ -48,6 +49,18 @@ const ActionItemsContainer: React.FC = () => {
     }
   };
 
+  const handleDeleteItem = () => {
+    setModalOpen(false);
+    dispatch(actions.pending());
+    try {
+      actionItemsApi
+        .changeActionItemStatus(Number(cardId), ACTION_ITEM_STATUS.Closed)
+        .then((response) => dispatch(actions.setActionItems(response)));
+    } catch {
+      dispatch(actions.rejected());
+    }
+  };
+
   const getColumnName = (name: string) => {
     switch (name) {
       case ACTION_ITEM_STATUS.ToDo:
@@ -61,50 +74,52 @@ const ActionItemsContainer: React.FC = () => {
 
   return (
     <div className="items-container">
-      <DragDropContext onDragEnd={handleOnDragEnd(actionItems)}>
-        {columns.map((columnName, index) => (
-          <div key={index} className="items-column">
-            <span className="column-header">{getColumnName(columnName)}</span>
-            <Droppable droppableId={columnName}>
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {actionItems.map((item) => {
-                    if (item.status === columnName) {
-                      return (
-                        <Draggable
-                          key={item.id}
-                          draggableId={String(item.id)}
-                          index={item.id}
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <ActionItem
-                                key={item.id}
-                                deleteCallback={() => {
-                                  setModalOpen(true);
-                                  setCardId(item.id);
-                                }}
-                                item={item}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      );
-                    }
+      <Spinner fetching={fetching} styles={{paddingTop: '20%', paddingLeft: '48%'}}>
+        <DragDropContext onDragEnd={handleOnDragEnd(actionItems)}>
+          {columns.map((columnName, index) => (
+            <div key={index} className="items-column">
+              <span className="column-header">{getColumnName(columnName)}</span>
+              <Droppable droppableId={columnName}>
+                {(provided) => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {actionItems.map((item) => {
+                      if (item.status === columnName) {
+                        return (
+                          <Draggable
+                            key={item.id}
+                            draggableId={String(item.id)}
+                            index={item.id}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <ActionItem
+                                  key={item.id}
+                                  deleteCallback={() => {
+                                    setModalOpen(true);
+                                    setCardId(item.id);
+                                  }}
+                                  item={item}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        );
+                      }
 
-                    return null;
-                  })}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          </div>
-        ))}
-      </DragDropContext>
+                      return null;
+                    })}
+                    {provided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </div>
+          ))}
+        </DragDropContext>
+      </Spinner>
       <div className={isModalOpen ? "modal-visible" : "modal-hidden"}>
         <div className="modal-content">
           <div>
@@ -113,12 +128,7 @@ const ActionItemsContainer: React.FC = () => {
           <div>
             <button
               className="button delete-button"
-              onClick={() => {
-                setModalOpen(false);
-                actionItemsApi
-                  .changeActionItemStatus(Number(cardId), ACTION_ITEM_STATUS.Closed)
-                  .then((response) => dispatch(actions.setActionItems(response)));
-              }}
+              onClick={handleDeleteItem}
             >
               Delete
             </button>

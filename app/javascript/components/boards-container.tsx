@@ -98,7 +98,7 @@ const BoardsContainer: React.FC = () => {
           Boards where I am
         </button>
       </div>
-      <Spinner fetching={fetching} styles={{paddingTop: '100px', paddingLeft: '250px'}}>
+      <Spinner fetching={fetching} styles={{paddingTop: '5%', paddingLeft: '20%'}}>
         <div className={style.boards}>
           {boards.map((board) => (
             <Board
