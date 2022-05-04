@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import { SpinnerCircular } from "spinners-react/lib/esm/SpinnerCircular";
+import { SpinnerCircular } from "spinners-react";
 import style from "./style.module.less";
 
 type Props = {
