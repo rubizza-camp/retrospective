@@ -14,6 +14,7 @@ describe 'Cards API', type: :request do
     allow(author).to receive(:allowed?).with('destroy_card', card).and_return(true)
     allow(author).to receive(:allowed?).with('destroy_any_card', card).and_return(true)
   end
+
   describe 'POST /api/v1/cards' do
     let(:request) do
       post '/api/v1/cards', params: { body: 'my test card', kind: 'mad',
@@ -29,7 +30,7 @@ describe 'Cards API', type: :request do
     it 'return created card' do
       request
 
-      expect(json_body['data']['card']).to include('body' => 'my test card')
+      expect(json_body['body']).to eq('my test card')
     end
 
     it 'create card in db' do
@@ -37,8 +38,7 @@ describe 'Cards API', type: :request do
     end
 
     it 'broadcast created card' do
-      expect { request }.to have_broadcasted_to(board).from_channel(CardsChannel)
-                                                      .with(start_with('{"data":{"card":'))
+      expect { request }.to have_broadcasted_to('card').with(start_with('{"data":{"card":'))
     end
   end
 
@@ -55,16 +55,12 @@ describe 'Cards API', type: :request do
 
     it 'return updated card' do
       request
-      handler = serialize_resource(card.reload)
 
-      expect(json_body).to eq(JSON.parse(handler))
+      expect(json_body['body']).to eq('new text')
     end
 
     it 'broadcast updated card' do
-      handler = serialize_resource(card)
-
-      expect { request }.to have_broadcasted_to(board).from_channel(CardsChannel)
-                                                      .with(handler)
+      expect { request }.to have_broadcasted_to('card').with(start_with('{"data":{"card":'))
     end
   end
 
@@ -83,7 +79,7 @@ describe 'Cards API', type: :request do
       request
       handler = serialize_resource(card)
 
-      expect(json_body).to eq(JSON.parse(handler))
+      expect(json_body['body']).to eq(JSON.parse(handler)['data']['card']['body'])
     end
 
     it 'delete card in db' do
@@ -93,8 +89,8 @@ describe 'Cards API', type: :request do
     it 'broadcast deleted card' do
       handler = serialize_resource(card)
 
-      expect { request }.to have_broadcasted_to(board).from_channel(CardsChannel)
-                                                      .with(handler)
+      expect { request }.to have_broadcasted_to('card').from_channel(CardsChannel)
+                                                       .with(handler)
     end
   end
 
@@ -128,14 +124,14 @@ describe 'Cards API', type: :request do
         request
         handler = serialize_resource(card.reload)
 
-        expect(json_body).to eq(JSON.parse(handler))
+        expect(json_body['body']).to eq(JSON.parse(handler)['data']['card']['body'])
       end
 
       it 'broadcast liked card' do
         handler = serialize_resource(card)
 
-        expect { request }.to have_broadcasted_to(board).from_channel(CardsChannel)
-                                                        .with(handler)
+        expect { request }.to have_broadcasted_to('card').from_channel(CardsChannel)
+                                                         .with(handler)
       end
     end
   end

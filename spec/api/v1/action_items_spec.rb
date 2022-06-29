@@ -59,8 +59,9 @@ RSpec.describe API::V1::ActionItemsController, type: :controller do
     end
 
     it 'broadcast created item' do
-      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
-                                                      .with(start_with('{"data":{"actionItem":'))
+      expect do
+        subject
+      end.to have_broadcasted_to('action_item').with(start_with('{"data":{"actionItem":'))
     end
   end
 
@@ -79,7 +80,7 @@ RSpec.describe API::V1::ActionItemsController, type: :controller do
     end
 
     it 'broadcast updated item' do
-      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
+      expect { subject }.to have_broadcasted_to('action_item').from_channel(ActionItemsChannel)
     end
   end
 
@@ -95,7 +96,7 @@ RSpec.describe API::V1::ActionItemsController, type: :controller do
     end
 
     it 'broadcast deleted item' do
-      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
+      expect { subject }.to have_broadcasted_to('action_item').from_channel(ActionItemsChannel)
     end
   end
 
@@ -117,7 +118,7 @@ RSpec.describe API::V1::ActionItemsController, type: :controller do
     end
 
     it 'broadcast closed item' do
-      expect { subject }.to have_broadcasted_to(board).from_channel(ActionItemsChannel)
+      expect { subject }.to have_broadcasted_to('action_item').from_channel(ActionItemsChannel)
     end
   end
 

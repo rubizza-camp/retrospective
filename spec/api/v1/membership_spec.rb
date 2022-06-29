@@ -67,7 +67,7 @@ describe 'Membership API', type: :request do
         request
         handler = serialize_resource(membership)
 
-        expect(json_body).to eq(JSON.parse(handler))
+        expect(json_body).to eq(JSON(handler))
       end
 
       it 'delete membership in db' do
@@ -81,8 +81,8 @@ describe 'Membership API', type: :request do
       it 'broadcast deleted membership' do
         handler = serialize_resource(membership)
 
-        expect { request }.to have_broadcasted_to(board).from_channel(MembershipsChannel)
-                                                        .with(handler)
+        expect { request }.to have_broadcasted_to('membership').from_channel(MembershipsChannel)
+                                                               .with(handler)
       end
     end
   end
@@ -127,10 +127,10 @@ describe 'Membership API', type: :request do
     end
 
     it 'broadcast created membership' do
-      expect { request }.to have_broadcasted_to(board).from_channel(MembershipsChannel)
-                                                      .with(
-                                                        start_with('{"data":{"memberships":')
-                                                      )
+      expect { request }.to have_broadcasted_to('membership').from_channel(MembershipsChannel)
+                                                             .with(
+                                                               start_with('{"data":{"memberships":')
+                                                             )
     end
   end
 
@@ -168,8 +168,8 @@ describe 'Membership API', type: :request do
     it 'broadcast toggled membership' do
       handler = serialize_resource(creatorship)
 
-      expect { request }.to have_broadcasted_to(board).from_channel(MembershipsChannel)
-                                                      .with(handler)
+      expect { request }.to have_broadcasted_to('membership').from_channel(MembershipsChannel)
+                                                             .with(handler)
     end
   end
 end
