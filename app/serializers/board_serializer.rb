@@ -14,7 +14,7 @@ class BoardSerializer < ActiveModel::Serializer
   def previous_action_items
     return [] unless object.previous_board
 
-    object.previous_board.action_items
+    ActiveModelSerializers::SerializableResource.new(object.previous_board.action_items).as_json
   end
 
   def previous_board_slug
