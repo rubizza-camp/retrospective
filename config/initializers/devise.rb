@@ -259,10 +259,10 @@ Devise.setup do |config|
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
-  config.omniauth :alfred, ENV['ALFRED_KEY'], ENV['ALFRED_SECRET'], scope: 'user'
-  config.omniauth :google_oauth2, ENV['GOOGLE_KEY'], ENV['GOOGLE_SECRET'], name: :google
-  config.omniauth :facebook, ENV['FACEBOOK_KEY'], ENV['FACEBOOK_SECRET'], secure_image_url: true
-  config.omniauth :github, ENV['GITHUB_KEY'], ENV['GITHUB_SECRET'], scope: 'user'
+  config.omniauth :alfred, ENV.fetch('ALFRED_KEY', nil), ENV.fetch('ALFRED_SECRET', nil), scope: 'user'
+  config.omniauth :google_oauth2, ENV.fetch('GOOGLE_KEY', nil), ENV.fetch('GOOGLE_SECRET', nil), name: :google
+  config.omniauth :facebook, ENV.fetch('FACEBOOK_KEY', nil), ENV.fetch('FACEBOOK_SECRET', nil), secure_image_url: true
+  config.omniauth :github, ENV.fetch('GITHUB_KEY', nil), ENV.fetch('GITHUB_SECRET', nil), scope: 'user'
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

@@ -22,7 +22,7 @@ module API
         authorize! action_item, context: { user: current_user, board: @board }
 
         if action_item.save
-          prepare_and_make_response(action_item, @board)
+          prepare_and_make_response(action_item)
         else
           render_json_error(action_item.errors.full_messages)
         end
@@ -30,7 +30,11 @@ module API
 
       # app/graphql/mutations/update_action_item_mutation.rb
       def update
-        authorize! @action_item, context: { user: current_user, board: @board }
+        unless @action_item.author_id == current_user.id
+          authorize! @action_item,
+                     context: { user: current_user,
+                                board: @board }
+        end
 
         if @action_item.update(action_item_params)
           prepare_and_make_response(@action_item)
@@ -41,7 +45,11 @@ module API
 
       # app/graphql/mutations/destroy_action_item_mutation.rb
       def destroy
-        authorize! @action_item, context: { user: current_user, board: @board }
+        unless @action_item.author_id == current_user.id
+          authorize! @action_item,
+                     context: { user: current_user,
+                                board: @board }
+        end
 
         if @action_item.destroy
           prepare_and_make_response(@action_item)
@@ -68,7 +76,7 @@ module API
         authorize! @action_item, context: { user: current_user, board: @board }
 
         if @action_item.move!(@board)
-          prepare_and_make_response(@action_item, @board)
+          prepare_and_make_response(@action_item)
         else
           render_json_error(@action_item.errors.full_messages)
         end
@@ -77,13 +85,13 @@ module API
       private
 
       def action_item_params
-        params.permit(:body, :assignee_id, :status)
+        params.permit(:body, :assignee_id, :author_id, :status)
       end
 
-      def prepare_and_make_response(action_item, board = nil)
+      def prepare_and_make_response(action_item)
         payload = serialize_resource(action_item)
 
-        ActionItemsChannel.broadcast_to(board || action_item.board, payload)
+        ActionCable.server.broadcast('action_item', payload)
         render json: action_item
       end
 

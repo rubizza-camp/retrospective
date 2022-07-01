@@ -43,7 +43,6 @@ module API
         end
       end
 
-      # app/graphql/mutations/like_card_mutation.rb
       def like
         if @card.like!
           prepare_and_make_response(@card)
@@ -61,8 +60,8 @@ module API
       def prepare_and_make_response(card)
         payload = serialize_resource(card)
 
-        CardsChannel.broadcast_to(card.board, payload)
-        render json: payload
+        ActionCable.server.broadcast('card', payload)
+        render json: card
       end
     end
   end

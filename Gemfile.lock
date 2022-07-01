@@ -509,7 +509,7 @@ DEPENDENCIES
   redis (~> 4.2)
   rspec-rails (~> 4.0.1)
   rspec_junit_formatter
-  rubocop (~> 1.6.1)
+  rubocop
   sass-rails (~> 6.0)
   selenium-webdriver
   sentry-raven

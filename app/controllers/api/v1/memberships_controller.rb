@@ -37,7 +37,7 @@ module API
 
         if users.any?
           result = Boards::InviteUsers.new(@board, users).call
-          prepare_and_make_response(result.value!, @board)
+          prepare_and_make_response(result.value!)
         else
           render_json_error('User was not found', :not_found)
         end
@@ -58,7 +58,7 @@ module API
         if @membership.persisted?
           render_json_error(@membership.errors.full_messages)
         else
-          prepare_and_make_response(@membership, @membership.board)
+          prepare_and_make_response(@membership)
         end
       end
       # rubocop:enable Metrics/MethodLength
@@ -69,7 +69,7 @@ module API
                                 context: { membership: @membership }
 
         if @membership.update(ready: !@membership.ready)
-          prepare_and_make_response(@membership, @membership.board)
+          prepare_and_make_response(@membership)
         else
           render_json_error(@membership.errors.full_messages)
         end
@@ -77,10 +77,10 @@ module API
 
       private
 
-      def prepare_and_make_response(membership, board)
+      def prepare_and_make_response(membership)
         payload = serialize_resource(membership)
 
-        MembershipsChannel.broadcast_to(board, payload)
+        ActionCable.server.broadcast('membership', payload)
         render json: payload
       end
     end
