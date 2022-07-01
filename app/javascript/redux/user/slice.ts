@@ -3,31 +3,31 @@ import { User } from "../../typings/user";
 
 export interface UserState {
   currentUser: User | null;
-  fetching: boolean,
-  apiError: boolean
+  fetching: boolean;
+  apiError: boolean;
 }
 
 const initialState: UserState = {
   fetching: false,
   currentUser: null,
-  apiError: false
+  apiError: false,
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     pending: (state) => {
-      state.fetching = true
+      state.fetching = true;
     },
     rejected: (state) => {
-      state.fetching = false
-      state.apiError = true
+      state.fetching = false;
+      state.apiError = true;
     },
     setCurrentUser: (state, action: PayloadAction<User>) => {
-      state.fetching = false
-      state.currentUser = action.payload
-    }
+      state.fetching = false;
+      state.currentUser = action.payload;
+    },
   },
 });
 
