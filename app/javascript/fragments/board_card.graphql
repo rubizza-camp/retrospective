@@ -1,18 +1,15 @@
-
-
 fragment BoardCard on BoardCard {
-column_names
-column_emojis
-created_at
-id
-previous_board_id
-private
-slug
-title
-updated_at
-users_count
+  column_names
+  column_emojis
+  created_at
+  id
+  previous_board_id
+  private
+  slug
+  title
+  updated_at
+  users_count
 }
-
 
 fragment Boards on Boards {
   boards {

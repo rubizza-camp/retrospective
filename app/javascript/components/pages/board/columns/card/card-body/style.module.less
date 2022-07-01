@@ -1,0 +1,94 @@
+.top {
+  display: flex;
+  justify-content: flex-end;
+  height: 24px;
+  margin: 8px 11px 16px 8px;
+}
+
+.showContent {
+  overflow-wrap: break-word;
+  white-space: pre-line;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.content {
+  overflow-wrap: break-word;
+  white-space: pre-line;
+  overflow: hidden;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: all;
+}
+.text {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 150%;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.015em;
+  color: #797474;
+  cursor: pointer;
+}
+
+.cardText a {
+  color: #8d8e8a;
+
+  &:visited {
+    color: #8d8e8a;
+  }
+}
+
+.textarea {
+  overflow: hidden;
+  resize: none;
+  width: calc(100% - 16px);
+  margin: 0 8px;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: -0.01em;
+  box-sizing: border-box;
+  background: inherit;
+}
+
+.textarea:focus {
+  outline: none;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdownButton {
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: bold;
+  outline: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dropdownContent {
+  float: left;
+  position: absolute;
+  z-index: 10;
+  top: 20px;
+}
+
+.dropdownItem {
+  width: 100px;
+  height: 30px;
+  margin-bottom: 2px;
+  padding: 4px 8px;
+  background: rgba(27, 29, 21, 0.5);
+  border-radius: 4px;
+  font-size: 14px;
+  color: #ffffff;
+  cursor: pointer;
+}

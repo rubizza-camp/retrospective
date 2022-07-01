@@ -1,0 +1,36 @@
+.card {
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0.015em;
+  color: #1b1d15;
+  box-shadow: none;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1em; //! doesn't seem to work in safari?
+  margin-bottom: 16px;
+  transition: all 0.35s ease-out;
+}
+
+.done {
+  background: #f8fdf4;
+}
+.closed {
+  background: #d6d4d4;
+}
+.pending {
+  background: #fdf4f4;
+}
+.in_progress {
+  background: #fffbec;
+}
+
+.cardColor {
+  background-color: #f7f7f7;
+}
+
+.card:not(:last-child) {
+  margin-bottom: 16px;
+}

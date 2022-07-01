@@ -2,9 +2,9 @@
 
 fragment Comment on Comment {
   id
-    content
-    author {
-      ...User
-    }
-    likes
+  content
+  author {
+    ...User
+  }
+  likes
 }

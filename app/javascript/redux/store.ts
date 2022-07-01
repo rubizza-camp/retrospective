@@ -1,14 +1,13 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import user from "./user/slice";
 import actionItem from "./action-items/slice";
-import board from "./boards-page/slice";
-
+import board from "./boards/slice";
 
 export const store = configureStore({
   reducer: {
     user,
     actionItem,
-    board
+    board,
   },
 });
 

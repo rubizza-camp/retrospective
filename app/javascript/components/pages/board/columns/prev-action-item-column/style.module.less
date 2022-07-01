@@ -1,0 +1,113 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  position: relative;
+  cursor: default;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.hide {
+  font-size: 14px;
+  color: #8d8e8a;
+  cursor: pointer;
+}
+
+.plus {
+  font-size: 16px;
+  font-weight: bold;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+
+.lineGradient {
+  margin: 0;
+  padding: 0;
+  height: 2px;
+  border: none;
+  border-radius: 2px;
+  background: linear-gradient(
+      to right,
+      transparent 15.33%,
+      #fafafa 15.33% 16.93%,
+      transparent 16.93% 32.26%,
+      #fafafa 32.26% 33.86%,
+      transparent 33.86% 49.19%,
+      #fafafa 49.19% 50.79%,
+      transparent 50.79% 66.12%,
+      #fafafa 66.12% 67.72%,
+      transparent 67.72% 83.05%,
+      #fafafa 83.05% 84.65%,
+      transparent 84.65%
+    ),
+    linear-gradient(
+      to right,
+      #db2d22 15.33%,
+      #db9122 15.33% 50.79%,
+      #22db98 50.79%
+    );
+
+  background-size: 100% 2px;
+  margin-bottom: 16px;
+}
+
+.lineYellow {
+  margin: 0;
+  padding: 0;
+  height: 2px;
+  border: none;
+  border-radius: 2px;
+  background: linear-gradient(
+      to right,
+      transparent 32.26%,
+      #fafafa 32.26% 33.86%,
+      transparent 33.86% 66.12%,
+      #fafafa 66.12% 67.72%,
+      transparent 67.72%
+    ),
+    #db9122;
+
+  background-size: 100% 2px;
+}
+
+.items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  width: 100%;
+}
+
+.hiddenItems {
+  width: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.line {
+  width: 100%;
+  height: 2px;
+  margin: 2px;
+}
+
+.done {
+  background: #22db98;
+}
+.closed {
+  background: #9b9a99;
+}
+.pending {
+  background: #ed9690;
+}
+.in_progress {
+  background: #fffbec;
+}
