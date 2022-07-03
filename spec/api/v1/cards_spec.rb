@@ -30,7 +30,7 @@ describe 'Cards API', type: :request do
     it 'return created card' do
       request
 
-      expect(json_body['body']).to eq('my test card')
+      expect(json_body['value']['body']).to eq('my test card')
     end
 
     it 'create card in db' do
@@ -38,7 +38,7 @@ describe 'Cards API', type: :request do
     end
 
     it 'broadcast created card' do
-      expect { request }.to have_broadcasted_to('card').with(start_with('{"data":{"card":'))
+      expect { request }.to have_broadcasted_to('card').with(start_with('{"data":{"value":'))
     end
   end
 
