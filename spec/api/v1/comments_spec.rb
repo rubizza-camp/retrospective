@@ -33,8 +33,8 @@ describe 'Comments API', type: :request do
     end
 
     it 'broadcast created comment' do
-      expect { request }.to have_broadcasted_to(board).from_channel(CommentsChannel)
-                                                      .with(start_with('{"data":{"comment":'))
+      expect { request }.to have_broadcasted_to('comment').from_channel(ActionItemsChannel)
+                                                          .with(start_with('{"data":{"comment":'))
     end
   end
 
@@ -63,8 +63,8 @@ describe 'Comments API', type: :request do
     it 'broadcast updated comment' do
       handler = serialize_resource(comment)
 
-      expect { request }.to have_broadcasted_to(board).from_channel(CommentsChannel)
-                                                      .with(handler)
+      expect { request }.to have_broadcasted_to('comment').from_channel(ActionItemsChannel)
+                                                          .with(handler)
     end
   end
 
@@ -97,8 +97,8 @@ describe 'Comments API', type: :request do
     it 'broadcast deleted comment' do
       handler = serialize_resource(comment)
 
-      expect { request }.to have_broadcasted_to(board).from_channel(CommentsChannel)
-                                                      .with(handler)
+      expect { request }.to have_broadcasted_to('comment').from_channel(ActionItemsChannel)
+                                                          .with(handler)
     end
   end
 
@@ -138,8 +138,8 @@ describe 'Comments API', type: :request do
       it 'broadcast liked comment' do
         handler = serialize_resource(comment)
 
-        expect { request }.to have_broadcasted_to(board).from_channel(CommentsChannel)
-                                                        .with(handler)
+        expect { request }.to have_broadcasted_to('comment').from_channel(ActionItemsChannel)
+                                                            .with(handler)
       end
     end
   end
