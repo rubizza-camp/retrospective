@@ -15,6 +15,7 @@ module API
       # app/graphql/mutations/add_comment_mutation.rb
       def create
         board = Board.joins(:cards).find_by(cards: { id: params[:card_id] })
+
         authorize! board, to: :create_comments?
         comment = Comment.new(comment_params.merge!(author: current_user))
 
@@ -61,7 +62,7 @@ module API
       def prepare_and_make_response(comment)
         payload = serialize_resource(comment)
 
-        CommentsChannel.broadcast_to(comment.card.board, payload)
+        ActionCable.server.broadcast('comment', payload)
         render json: payload
       end
     end
