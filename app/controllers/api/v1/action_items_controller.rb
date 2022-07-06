@@ -14,7 +14,6 @@ module API
         render json: action_items
       end
 
-      # app/graphql/mutations/add_action_item_mutation.rb
       def create
         action_item = ActionItem.new(action_item_params.merge!(board: @board,
                                                                author: current_user))
@@ -28,7 +27,6 @@ module API
         end
       end
 
-      # app/graphql/mutations/update_action_item_mutation.rb
       def update
         unless @action_item.author_id == current_user.id
           authorize! @action_item,
@@ -43,7 +41,6 @@ module API
         end
       end
 
-      # app/graphql/mutations/destroy_action_item_mutation.rb
       def destroy
         unless @action_item.author_id == current_user.id
           authorize! @action_item,
