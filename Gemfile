@@ -42,6 +42,7 @@ gem 'dotenv-rails'
 gem 'sentry-raven'
 gem 'net-smtp'
 gem 'net-pop'
+gem 'net-imap'
 
 # Authentication
 gem 'devise'
