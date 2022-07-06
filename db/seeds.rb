@@ -95,21 +95,21 @@ end
 # Create cards
 board1 = Board.find_by(title: 'TestUser1_RetroBoard')
 board2 = Board.find_by(title: 'TestUser2_RetroBoard')
-cards_params = [{ kind: 'mad', body: 'user1 is very mad', author_id: user1.id, board_id: board1.id, author: user1 },
-                { kind: 'sad', body: 'user1 is very sad', author_id: user1.id, board_id: board1.id, author: user1 },
-                { kind: 'glad', body: 'user1 is very glad #1', author_id: user1.id, board_id: board1.id, author: user1 },
-                { kind: 'glad', body: 'user1 is very glad #2', author_id: user1.id, board_id: board1.id, author: user1 },
-                { kind: 'sad', body: 'user2 is very sad', author_id: user2.id, board_id: board1.id, author: user2 },
-                { kind: 'mad', body: 'user3 is very mad', author_id: user3.id, board_id: board1.id, author: user3 },
-                { kind: 'mad', body: 'user4 is very mad', author_id: user4.id, board_id: board1.id, author: user4 },
-                { kind: 'mad', body: 'user5 is very mad', author_id: user5.id, board_id: board1.id, author: user5 },
-                { kind: 'mad', body: 'user3 is very mad', author_id: user3.id, board_id: board2.id, author: user3 },
-                { kind: 'sad', body: 'user3 is very sad #1', author_id: user3.id, board_id: board2.id, author: user3 },
-                { kind: 'sad', body: 'user3 is very sad #2', author_id: user3.id, board_id: board2.id, author: user3 }]
+cards_params = [{ kind: 'mad', body: 'user1 is very mad', board_id: board1.id, author: user1, board: board1 },
+                { kind: 'sad', body: 'user1 is very sad', board_id: board1.id, author: user1, board: board1 },
+                { kind: 'glad', body: 'user1 is very glad #1', board_id: board1.id, author: user1, board: board1 },
+                { kind: 'glad', body: 'user1 is very glad #2', board_id: board1.id, author: user1, board: board1 },
+                { kind: 'sad', body: 'user2 is very sad', board_id: board1.id, author: user2, board: board1 },
+                { kind: 'mad', body: 'user3 is very mad', board_id: board1.id, author: user3, board: board1 },
+                { kind: 'mad', body: 'user4 is very mad', board_id: board1.id, author: user4, board: board1 },
+                { kind: 'mad', body: 'user5 is very mad', board_id: board1.id, author: user5, board: board1 },
+                { kind: 'mad', body: 'user3 is very mad', board_id: board2.id, author: user3, board: board2 },
+                { kind: 'sad', body: 'user3 is very sad #1', board_id: board2.id, author: user3, board: board2 },
+                { kind: 'sad', body: 'user3 is very sad #2', board_id: board2.id, author: user3, board: board2 }]
 cards_params.each do |params|
   next if Card.where(body: params[:body], board_id: params[:board_id]).exists?
 
-  Boards::Cards::Create.new(params.delete(:author)).call(params)
+  Boards::Cards::Create.new(params[:author], params[:board]).call(params.slice(:kind, :body))
 end
 
 # Create action items
