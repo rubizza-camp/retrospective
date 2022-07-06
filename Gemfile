@@ -40,6 +40,7 @@ gem 'redis', '~> 4.2'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'dotenv-rails'
 gem 'sentry-raven'
+gem 'net-smtp'
 
 # Authentication
 gem 'devise'
