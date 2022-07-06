@@ -6,9 +6,7 @@ CarrierWave.configure do |config|
   config.permissions = 0o600
   config.directory_permissions = 0o777
 
-  if Rails.env.development?
-    config.asset_host = Rails.application.config.assets.host
-  end
+  config.asset_host = Rails.application.config.assets.host if Rails.env.development?
 
   if Rails.env.production?
     config.storage = :fog

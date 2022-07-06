@@ -488,7 +488,6 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   bullet
   capybara (>= 2.15)
-  carrierwave (>= 2.0.0.rc, < 3.0)
   carrierwave-base64
   chromedriver-helper
   coffee-rails (~> 5.0)
