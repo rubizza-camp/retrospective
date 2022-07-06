@@ -1,35 +1,25 @@
 # frozen_string_literal: true
 
-if Rails.env.test?
-  CarrierWave::Uploader::Base.descendants.each do |klass|
-    next if klass.anonymous?
-
-    klass.class_eval do
-      def cache_dir
-        "#{Rails.root}/spec/support/uploads/tmp"
-      end
-
-      def store_dir
-        "#{Rails.root}/spec/support/uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-      end
-    end
-  end
-end
-
-require 'fog/aws'
-
 CarrierWave.configure do |config|
-  if Rails.env.staging? || Rails.env.production?
-    config.fog_credentials = {
-      provider: 'AWS',
-      aws_access_key_id: ENV.fetch('S3_KEY', nil),
-      aws_secret_access_key: ENV.fetch('S3_SECRET', nil),
-      region: 'eu-north-1'
-    }
-    config.fog_directory = ENV.fetch('S3_BUCKET_NAME', nil)
+  config.storage = :file
+  config.enable_processing = !Rails.env.test?
+  config.permissions = 0o600
+  config.directory_permissions = 0o777
+
+  if Rails.env.development?
+    config.asset_host = Rails.application.config.assets.host
+  end
+
+  if Rails.env.production?
     config.storage = :fog
-  else
-    config.storage = :file
-    config.enable_processing = Rails.env.development?
+    config.fog_credentials = {
+      provider: 'AWS', # required
+      aws_access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', nil), # required unless using use_iam_profile
+      aws_secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY', nil), # required unless using use_iam_profile
+      region: 'eu-central-1' # optional, defaults to 'us-east-1'
+    }
+    config.fog_directory = ENV.fetch('AWS_BUCKET_NAME', nil) # required
+    config.fog_public    = false
+    config.cache_dir     = "#{Rails.root}/tmp/uploads"         # To let CarrierWave work on Heroku
   end
 end
