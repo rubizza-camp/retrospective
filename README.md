@@ -1,4 +1,4 @@
-[![Ruby](https://img.shields.io/badge/Ruby-2.7.0-brightgreen.svg?style=flat-square)](https://www.ruby-lang.org/)
+[![Ruby](https://img.shields.io/badge/Ruby-3.1.0-brightgreen.svg?style=flat-square)](https://www.ruby-lang.org/)
 [![React](https://img.shields.io/badge/React-16.12.0-blue.svg?style=flat-square)](https://reactjs.org/)
 
 # Retrospective
