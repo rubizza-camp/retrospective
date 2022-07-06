@@ -41,6 +41,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'dotenv-rails'
 gem 'sentry-raven'
 gem 'net-smtp'
+gem 'net-pop'
 
 # Authentication
 gem 'devise'
