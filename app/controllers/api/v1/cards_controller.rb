@@ -12,7 +12,6 @@ module API
         authorize! @card
       end
 
-      # app/graphql/mutations/add_card_mutation.rb
       def create
         board = Board.find_by!(slug: params[:board_slug])
         authorize! board, to: :create_cards?
@@ -25,7 +24,6 @@ module API
         end
       end
 
-      # app/graphql/mutations/update_card_mutation.rb
       def update
         if @card.update(card_params)
           prepare_and_make_response(@card)
@@ -34,7 +32,6 @@ module API
         end
       end
 
-      # app/graphql/mutations/destroy_card_mutation.rb
       def destroy
         if @card.destroy
           prepare_and_make_response(@card)
