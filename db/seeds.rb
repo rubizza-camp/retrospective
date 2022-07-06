@@ -17,6 +17,18 @@ user7 = User.find_or_create_by(email: 'tu7@mail.com') { |u| u.password = '123456
 user8 = User.find_or_create_by(email: 'tu8@mail.com') { |u| u.password = '123456', u.nickname = 'tu8', u.provider = 'provider', u.uid = 'uid8', u.last_name = 'Ivanova', u.first_name = 'Sveta' }
 user9 = User.find_or_create_by(email: 'tu9@mail.com') { |u| u.password = '123456', u.nickname = 'tu9', u.provider = 'provider', u.uid = 'uid9', u.last_name = 'Mokhova', u.first_name = 'Lyubov' }
 
+# Create boards
+board_params = [{ title: 'TestUser1_RetroBoard', author: user1 },
+                { title: 'TestUser2_RetroBoard', author: user2 },
+                { title: 'TestUser3_RetroBoard', author: user2 },
+                { title: 'TestUser4_RetroBoard', author: user2 },
+                { title: 'TestUser5_RetroBoard', author: user2 }]
+board_params.each do |params|
+  next if Board.where(title: params[:title]).exists?
+
+  Boards::Create.new(params.delete(:author)).call(params)
+end
+
 Team.create(name: 'Wolves', user_ids: [user1.id, user2.id, user3.id, user4.id, user5.id]) unless Team.where(name: 'Wolves').exists?
 Team.create(name: 'Tigers', user_ids: [user1.id, user5.id]) unless Team.where(name: 'Tigers').exists?
 Team.create(name: 'Eagles', user_ids: [user2.id, user3.id, user4.id]) unless Team.where(name: 'Eagles').exists?
@@ -61,18 +73,6 @@ errors = []
   end
 end
 puts errors
-
-# Create boards
-board_params = [{ title: 'TestUser1_RetroBoard', author: user1 },
-                { title: 'TestUser2_RetroBoard', author: user2 },
-                { title: 'TestUser3_RetroBoard', author: user2 },
-                { title: 'TestUser4_RetroBoard', author: user2 },
-                { title: 'TestUser5_RetroBoard', author: user2 }]
-board_params.each do |params|
-  next if Board.where(title: params[:title]).exists?
-
-  Boards::Create.new(params.delete(:author)).call(params)
-end
 
 # Invite users to board1
 board1 = Board.find_by(title: 'TestUser1_RetroBoard')
