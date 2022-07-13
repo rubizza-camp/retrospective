@@ -40,7 +40,7 @@ const ActionItem: React.FC<PropsType> = ({
   const [editMode, setEditMode] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [actionItemAssigneeId, setActionItemAssigneeId] = useState(
-    assignee?.id + ''
+    assignee?.id ? `${assignee?.id}` : ''
   );
 
   useEffect(() => {
