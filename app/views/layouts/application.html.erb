@@ -19,7 +19,6 @@
       <% else %>
         <div class="wrapper">
           <div class="inner">
-            <%= image_tag 'logo.png', class: 'logo' %>
             <% providers.each do |provider| %>
               <%= link_to "Sign in with #{provider.capitalize}", send("user_#{provider}_omniauth_authorize_path") %>
             <% end %>
