@@ -151,7 +151,7 @@ const ActionItem: React.FC<PropsType> = ({
         {assignee && (
           <ActionItemAssignee
             id={assignee.id}
-            avatar={assignee.avatar?.thumb?.url}
+            avatar={assignee.avatar?.url}
             firstName={assignee.firstName}
             lastName={assignee.lastName}
             nickName={assignee.nickname}

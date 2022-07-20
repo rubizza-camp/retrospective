@@ -18,7 +18,7 @@ export const CardUser: React.FC<PropsType> = ({
   avatar,
   id,
 }) => {
-  const url = avatar?.thumb?.url;
+  const url = avatar?.url;
   return (
     <div className="avatar__container">
       <Avatar

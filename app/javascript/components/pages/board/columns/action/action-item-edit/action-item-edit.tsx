@@ -76,7 +76,7 @@ const ActionItemEdit: React.FC<PropsType> = ({
                     <Avatar
                       id={user.id}
                       isSquare={false}
-                      avatar={user.avatar?.thumb?.url}
+                      avatar={user.avatar?.url}
                       firstName={user.firstName}
                       lastName={user.lastName}
                     />
@@ -101,7 +101,7 @@ const ActionItemEdit: React.FC<PropsType> = ({
           firstName={currentAssignee.firstName}
           lastName={currentAssignee.lastName}
           nickName={currentAssignee.nickname}
-          avatar={currentAssignee.avatar?.thumb?.url}
+          avatar={currentAssignee.avatar?.url}
           id={currentAssignee.id}
         />
       )}

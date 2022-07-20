@@ -81,7 +81,7 @@ export const Header: React.FC<PropsType> = ({ board, setBoardSettingOpen }) => {
                 height={48}
                 key={user.id}
                 isSquare={false}
-                avatar={user.avatar?.thumb.url}
+                avatar={user.avatar?.url}
                 id={user.id}
                 firstName={user.firstName}
                 lastName={user.lastName}
