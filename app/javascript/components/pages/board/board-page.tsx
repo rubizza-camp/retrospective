@@ -51,7 +51,9 @@ export const BoardPage: React.FC = () => {
     }
   }, [params.boardSlug]);
 
-  const cable = ActionCable.createConsumer("ws://localhost:3000/cable");
+  const ActionCableUrl = process.env.URL || 'ws://localhost:3000/cable'
+
+  const cable = ActionCable.createConsumer(ActionCableUrl);
 
   const createSubscription = () => {
     cable.subscriptions.create(
