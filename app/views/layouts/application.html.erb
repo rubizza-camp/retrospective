@@ -15,11 +15,12 @@
       <p id="notice" class="alert"><%= notice %></p>
       <p id="alert" class="alert"><%= alert %></p>
       <% if user_signed_in? %>
-        <p class="logout-button"><%= button_to 'Logout', destroy_user_session_path, method: :delete, id: "logoutBtn"%></p>
+        <%= button_to 'Logout', destroy_user_session_path, method: :delete, id: "logoutBtn", class: "logout-button"%>
         <div id='root'></div>
       <% else %>
         <div class="wrapper">
           <div class="inner">
+            <%= image_tag 'logo.png', class: 'logo' %>
             <% providers.each do |provider| %>
               <%= link_to "Sign in with #{provider.capitalize}", send("user_#{provider}_omniauth_authorize_path") %>
             <% end %>

@@ -1,1 +1,1 @@
-{}
+//= link logo.png

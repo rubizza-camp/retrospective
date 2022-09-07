@@ -1,0 +1,40 @@
+.wrapper {
+  height: 100vh;
+  background-color: #f7f7f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 20%) 0px 11px 15px -7px,
+    rgb(0 0 0 / 14%) 0px 24px 38px 3px, rgb(0 0 0 / 12%) 0px 9px 46px 8px;
+  padding: 20px;
+}
+
+.inner a {
+  display: block;
+  height: 40px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 10px 28px;
+  background-color: #f7f7f7;
+  margin: 10px;
+}
+
+.alert {
+  position: absolute;
+  top: 0;
+  left: 10px;
+}
+
+.logout-button {
+  display: none;
+}
+
+.logo {
+  margin: 20px 0 20px calc(50% - 24px);
+}
