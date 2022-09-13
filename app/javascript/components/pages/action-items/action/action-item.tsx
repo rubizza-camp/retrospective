@@ -1,15 +1,11 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { ActionItemType } from "../../../../typings/actionItem";
 import { getFullnameOrNickname } from "../../../../utils/helpers";
 import { Avatar } from "../../../common/avatar/avatar";
+import { boardApi } from "../../../../api/boards-api";
+
 import style from "./style.module.less";
-import {boardApi} from "../../../../api/boards-api";
-import {BoardType} from "../../../../typings/board";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../../../redux/store";
-import {actions} from "../../../../redux/boards/slice";
-import {string} from "prop-types";
 
 type Props = {
   item: ActionItemType;
@@ -21,28 +17,28 @@ export const ActionItem: React.FC<Props> = ({ item, deleteCallback }) => {
   const [isDeleteButtonVisible, setDeleteButtonVisible] = useState(false);
   const [boardSlug, setBoardSlug] = useState('');
 
-  const getBoardSlug = useCallback(async () => {
-    try {
-      const boards = await boardApi.getBoards();
-      const myBoards = await boardApi.getBoardsWhereIAm();
-      const allBroads = [...boards, ...myBoards];
-
-      if (allBroads.length > 0) {
-        const filteredBoard = allBroads.filter((board) => board.id === item.boardId);
-        setBoardSlug(filteredBoard[0].slug);
-      } else {
-        setBoardSlug('');
-      }
-    }
-    catch (error) {
-      setBoardSlug('');
-      throw new Error(`Something went wrong. Error ${error}`);
-    }
-  }, []);
-
   useEffect(() => {
+    const getBoardSlug = async () => {
+      try {
+        const boards = await boardApi.getBoards();
+        const myBoards = await boardApi.getBoardsWhereIAm();
+        const allBroads = [...boards, ...myBoards];
+
+        if (allBroads.length > 0) {
+          const filteredBoard = allBroads.filter((board) => board.id === item.boardId);
+          setBoardSlug(filteredBoard[0].slug);
+        } else {
+          setBoardSlug('');
+        }
+      }
+      catch (error) {
+        setBoardSlug('');
+        throw new Error(`Something went wrong. Error ${error}`);
+      }
+    };
+
     getBoardSlug();
-  }, [getBoardSlug]);
+  }, []);
 
   return (
     <div
